@@ -1,0 +1,73 @@
+---
+import DeliveryChargeNote from "../../components/DeliveryChargeNote";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const prerender = true;
+
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+
+const pages = {
+  delivery: {
+    eyebrow: "CUSTOMER CARE",
+    title: "Delivery",
+    intro: "Delivery is available across Pakistan.",
+    sections: [
+      ["Dispatch time", "Orders are normally prepared within 2–4 working days after article and stock confirmation."],
+      ["Delivery charges", "LIVE_DELIVERY"],
+      ["Cash on Delivery", "Pay the courier when your parcel arrives. Keep your mobile number available for delivery calls."],
+      ["Checking your parcel", "Please check the outer packaging before accepting a visibly damaged parcel."],
+    ],
+  },
+  exchange: {
+    eyebrow: "CUSTOMER CARE",
+    title: "Exchange Policy",
+    intro: "A clear exchange process for clothing orders.",
+    sections: [
+      ["Exchange window", "Contact Haley Wali within 7 days of delivery."],
+      ["Article condition", "The article must be unused, unwashed and returned with its original packaging and tags."],
+      ["Pret sizing", "Size exchanges depend on available stock."],
+      ["Unstitched suits", "Cut, washed or stitched fabric cannot be exchanged. Sale conditions are shown with the article."],
+    ],
+  },
+  about: {
+    eyebrow: "OUR STORE",
+    title: "About Haley Wali",
+    intro: "Haley Wali creates customised clothing for a simple online shopping experience in Pakistan.",
+    sections: [
+      ["HW Exclusive", "Our own customised articles launched under the Haley Wali name."],
+      ["Pret and unstitched", "Each article clearly shows whether it is ready to wear or unstitched."],
+      ["Our packing", "Each order is checked and prepared with Haley Wali tags and packing details."],
+      ["Made for Pakistan", "Simple shopping, local delivery and Cash on Delivery."],
+    ],
+  },
+} as const;
+
+export function getStaticPaths() {
+  return ["delivery", "exchange", "about"].map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const page = pages[Astro.params.slug as keyof typeof pages] ?? pages.about;
+---
+
+<BaseLayout title={`${page.title} — Haley Wali`} description={page.intro}>
+  <section class="page-shell narrow">
+    <p class="eyebrow">{page.eyebrow}</p>
+    <h1 class="display-title">{page.title}</h1>
+    <p class="info-intro">{page.intro}</p>
+    <div class="info-sections">
+      {page.sections.map(([heading, copy]) => (
+        <article>
+          <h2>{heading}</h2>
+          {copy === "LIVE_DELIVERY"
+            ? <DeliveryChargeNote apiBase={apiBase} client:load />
+            : <p>{copy}</p>}
+        </article>
+      ))}
+    </div>
+    <div class="info-page-action">
+      <a class="primary-button" href={Astro.params.slug === "exchange" ? "/contact?type=exchange" : "/contact"}>{Astro.params.slug === "exchange" ? "START EXCHANGE OR RETURN REQUEST" : "CONTACT HALEY WALI"}</a>
+    </div>
+  </section>
+</BaseLayout>

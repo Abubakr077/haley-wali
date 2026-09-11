@@ -1,0 +1,15 @@
+---
+import OrderSuccess from "../components/OrderSuccess";
+import BaseLayout from "../layouts/BaseLayout.astro";
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
+---
+
+<BaseLayout
+  title="Order Received — Haley Wali"
+  description="Your Haley Wali Cash on Delivery order has been received."
+  indexable={false}
+>
+  <section class="page-shell narrow">
+    <OrderSuccess whatsappNumber={whatsappNumber} client:load />
+  </section>
+</BaseLayout>

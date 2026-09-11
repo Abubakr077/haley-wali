@@ -1,0 +1,21 @@
+{
+  "name": "Haley Wali",
+  "short_name": "Haley Wali",
+  "description": "Customised HW Exclusive clothing with Cash on Delivery across Pakistan.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fffafb",
+  "theme_color": "#f5e8eb",
+  "icons": [
+    {
+      "src": "/brand/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

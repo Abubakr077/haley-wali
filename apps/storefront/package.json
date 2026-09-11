@@ -1,0 +1,25 @@
+{
+  "name": "@haley-wali/storefront",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "HALEY_STOREFRONT_LOCAL=1 ASTRO_DEV_BACKGROUND=0 ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=../../.wrangler/config WRANGLER_WRITE_LOGS=false WRANGLER_LOG_PATH=../../.wrangler/storefront.log MINIFLARE_REGISTRY_PATH=../../.wrangler/storefront-registry astro dev --host 127.0.0.1",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=../../.wrangler/config WRANGLER_WRITE_LOGS=false WRANGLER_LOG_PATH=../../.wrangler/storefront.log MINIFLARE_REGISTRY_PATH=../../.wrangler/storefront-registry astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=../../.wrangler/config WRANGLER_WRITE_LOGS=false WRANGLER_LOG_PATH=../../.wrangler/storefront.log MINIFLARE_REGISTRY_PATH=../../.wrangler/storefront-registry astro preview --host 127.0.0.1",
+    "check": "HALEY_STOREFRONT_LOCAL=1 ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=../../.wrangler/config WRANGLER_WRITE_LOGS=false WRANGLER_LOG_PATH=../../.wrangler/storefront.log MINIFLARE_REGISTRY_PATH=../../.wrangler/storefront-registry astro check"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "12.6.13",
+    "@astrojs/react": "4.4.2",
+    "astro": "5.18.2",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}

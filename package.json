@@ -1,0 +1,56 @@
+{
+  "name": "haley-wali-catalog-operations",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/storefront"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev --hostname 127.0.0.1",
+    "dev:storefront": "npm run dev --workspace @haley-wali/storefront",
+    "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
+    "build:storefront": "npm run build --workspace @haley-wali/storefront",
+    "build:all": "npm run build && npm run build:storefront",
+    "cloudflare:whoami": "XDG_CONFIG_HOME=.wrangler/config wrangler whoami",
+    "configure:supabase-storage": "node scripts/configure-supabase-storage.mjs",
+    "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
+    "deploy:cloudflare:update": "node scripts/update-cloudflare.mjs",
+    "deploy:manager": "XDG_CONFIG_HOME=.wrangler/config vinext deploy",
+    "deploy:storefront": "npm run build:storefront && XDG_CONFIG_HOME=.wrangler/config wrangler deploy --config apps/storefront/wrangler.jsonc",
+    "db:migrate:production": "XDG_CONFIG_HOME=.wrangler/config wrangler d1 migrations apply haley-wali-production --remote --config wrangler.jsonc",
+    "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "test": "npm run test:catalog && npm run build:all && node --test tests/rendered-html.test.mjs && node --test tests/review-images.test.mjs",
+    "test:catalog": "node --experimental-strip-types --test tests/catalog-import.test.ts",
+    "import:supplier": "node --experimental-strip-types scripts/import-supplier-local.ts",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "next": "^16.2.11",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "drizzle-kit": "0.31.10",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "react-server-dom-webpack": "19.2.6",
+    "tailwindcss": "4.2.1",
+    "typescript": "5.9.3",
+    "vinext": "0.0.50",
+    "vite": "^8.1.5",
+    "wrangler": "4.92.0"
+  },
+  "type": "module"
+}

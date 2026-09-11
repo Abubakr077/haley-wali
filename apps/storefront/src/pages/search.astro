@@ -1,0 +1,23 @@
+---
+import CatalogExplorer from "../components/CatalogExplorer";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchPublishedArticles } from "../lib/products";
+
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+const initialQuery = Astro.url.searchParams.get("q") ?? "";
+const initialProducts = await fetchPublishedArticles(apiBase);
+---
+
+<BaseLayout
+  title="Search Articles — Haley Wali"
+  description="Search published Haley Wali clothing by name, fabric, colour or collection."
+  indexable={false}
+>
+  <CatalogExplorer
+    initialProducts={initialProducts}
+    initialQuery={initialQuery}
+    apiBase={apiBase}
+    searchMode
+    client:load
+  />
+</BaseLayout>

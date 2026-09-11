@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /bag
+Disallow: /checkout
+Disallow: /success
+
+Sitemap: https://haleywali.pk/sitemap.xml

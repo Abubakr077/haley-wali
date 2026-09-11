@@ -1,0 +1,35 @@
+---
+import { formatPkr } from "../lib/products";
+import type { Product } from "../lib/types";
+
+const { product, priority = false } = Astro.props as {
+  product: Product;
+  priority?: boolean;
+};
+---
+
+<article class="product-card">
+  <a class="product-image" href={`/product?id=${encodeURIComponent(product.id)}`}>
+    <img
+      src={product.image}
+      alt={`${product.name} ${product.title}`}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
+    />
+    <span>{product.badge}</span>
+  </a>
+  <div class="product-copy">
+    <div>
+      <small>{product.brand}</small>
+      <h3>{product.name} · {product.title}</h3>
+      <p>{product.pieces} · {product.type}</p>
+    </div>
+    <div>
+      <span class="product-price-row">
+        {product.originalPrice ? <del>{formatPkr(product.originalPrice)}</del> : null}
+        <strong class={product.originalPrice ? "sale-price" : undefined}>{formatPkr(product.price)}</strong>
+      </span>
+      <a href={`/product?id=${encodeURIComponent(product.id)}`}>VIEW</a>
+    </div>
+  </div>
+</article>

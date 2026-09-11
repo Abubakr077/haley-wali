@@ -1,0 +1,81 @@
+---
+import ProductDetail from "../components/ProductDetail";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchPublishedArticles, formatPkr, products } from "../lib/products";
+import { DEFAULT_SHARE_IMAGE_ALT, SITE_ORIGIN, absoluteUrl, shareImageUrl } from "../lib/site";
+
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
+const initialId = Astro.url.searchParams.get("id") ?? "";
+const liveProducts = initialId ? await fetchPublishedArticles(apiBase) : products;
+const article = liveProducts.find((item) => item.id === initialId);
+const title = article ? `${article.name} — Haley Wali` : "Article Details — Haley Wali";
+const description = article
+  ? `${article.categoryLabel} ${article.type} · ${formatPkr(article.price)} · Cash on Delivery across Pakistan.`
+  : "View Haley Wali clothing details, sizes and Cash on Delivery options.";
+const imageAlt = article ? `${article.name} ${article.title}` : DEFAULT_SHARE_IMAGE_ALT;
+const canonicalSearch = initialId ? `id=${encodeURIComponent(initialId)}` : "";
+const productUrl = absoluteUrl("/product", SITE_ORIGIN, canonicalSearch);
+const productImages = article
+  ? [...new Set([article.image, ...(article.gallery ?? [])])].map((item) => shareImageUrl(item))
+  : [];
+const jsonLd = article
+  ? {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Product",
+          "@id": `${productUrl}#article`,
+          name: article.name,
+          sku: article.articleCode || article.id,
+          image: productImages,
+          description: article.description,
+          category: `${article.categoryLabel} ${article.type}`,
+          color: article.color,
+          material: article.fabric,
+          brand: { "@type": "Brand", name: article.brand },
+          offers: {
+            "@type": "Offer",
+            url: productUrl,
+            priceCurrency: "PKR",
+            price: article.price,
+            itemCondition: "https://schema.org/NewCondition",
+            availability: article.stockQty > 0
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+            seller: { "@id": "https://haleywali.pk/#store" },
+          },
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://haleywali.pk/" },
+            { "@type": "ListItem", position: 2, name: "Shop", item: "https://haleywali.pk/shop" },
+            { "@type": "ListItem", position: 3, name: article.name, item: productUrl },
+          ],
+        },
+      ],
+    }
+  : undefined;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={article?.image}
+  imageAlt={imageAlt}
+  type="product"
+  canonicalSearch={canonicalSearch}
+  jsonLd={jsonLd}
+  productPrice={article?.price}
+  productAvailability={article && article.stockQty > 0 ? "in stock" : "out of stock"}
+>
+  <ProductDetail
+    initialProducts={liveProducts.length ? liveProducts : products}
+    initialId={initialId}
+    apiBase={apiBase}
+    whatsappNumber={whatsappNumber}
+    productUrl={productUrl}
+    client:load
+  />
+</BaseLayout>

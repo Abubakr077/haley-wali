@@ -1,0 +1,124 @@
+---
+import BagCount from "./BagCount";
+import WishlistCount from "./WishlistCount";
+import { fetchPublishedArticles } from "../lib/products";
+
+const path = Astro.url.pathname;
+const category = Astro.url.searchParams.get("category");
+const shopAll = path === "/shop" && category !== "exclusive" && category !== "branded";
+const shopExclusive = path === "/shop" && category === "exclusive";
+const shopBranded = path === "/shop" && category === "branded";
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+const publishedArticles = await fetchPublishedArticles(apiBase);
+const brandedBrands = [...new Map(
+  publishedArticles
+    .filter((article) => article.category === "branded")
+    .map((article) => {
+      const originalName = article.brand.trim().replace(/\s+/g, " ");
+      const name = originalName.toLocaleLowerCase("en") === "branded" ? "Other Brands" : originalName;
+      return [name.toLocaleLowerCase("en"), name] as const;
+    })
+    .filter(([key]) => key),
+).values()].sort((a, b) => a.localeCompare(b, "en"));
+---
+
+<header class="site-header">
+  <a class="brand-mark" href="/" aria-label="Haley Wali home">
+    <img src="/brand/haley-wali-monogram.svg" alt="" width="66" height="52" />
+    <span>HALEY WALI</span>
+  </a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+    <a href="/shop" aria-current={shopAll ? "page" : undefined}>New In</a>
+    <div class="mega-nav-item">
+      <a class="mega-nav-trigger" href="/shop?category=exclusive" aria-current={shopExclusive ? "page" : undefined}>
+        HW Exclusive <span aria-hidden="true"></span>
+      </a>
+      <section class="header-mega-menu" aria-label="HW Exclusive menu">
+        <div class="header-mega-content">
+          <div class="header-mega-intro">
+            <small>HW EXCLUSIVE</small>
+            <h2>Made for Haley Wali.</h2>
+            <p>Explore our own customised articles by the way you prefer to shop.</p>
+            <a href="/shop?category=exclusive">VIEW ALL HW EXCLUSIVE <b aria-hidden="true">→</b></a>
+          </div>
+          <div class="header-mega-column">
+            <small>ARTICLE TYPE</small>
+            <a href="/shop?category=exclusive&type=pret">Pret / Ready to Wear <span aria-hidden="true">→</span></a>
+            <a href="/shop?category=exclusive&type=unstitched">Unstitched <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="header-mega-column">
+            <small>DISCOVER</small>
+            <a href="/shop?category=exclusive">Latest articles <span aria-hidden="true">→</span></a>
+            <a href="/shop">Shop all articles <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="mega-nav-item">
+      <a class="mega-nav-trigger" href="/shop?category=branded" aria-current={shopBranded ? "page" : undefined}>
+        Branded <span aria-hidden="true"></span>
+      </a>
+      <section class="header-mega-menu" aria-label="Branded menu">
+        <div class="header-mega-content">
+          <div class="header-mega-intro">
+            <small>BRANDED</small>
+            <h2>Shop by what you need.</h2>
+            <p>Browse available Pret and unstitched articles from known brands.</p>
+            <a href="/shop?category=branded">VIEW ALL BRANDED <b aria-hidden="true">→</b></a>
+          </div>
+          <div class="header-mega-column">
+            <small>ARTICLE TYPE</small>
+            <a href="/shop?category=branded&type=pret">Pret / Ready to Wear <span aria-hidden="true">→</span></a>
+            <a href="/shop?category=branded&type=unstitched">Unstitched <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="header-mega-column header-brand-links">
+            <small>AVAILABLE BRANDS</small>
+            {brandedBrands.length ? brandedBrands.map((brand) => (
+              <a href={`/shop?category=branded&brand=${encodeURIComponent(brand)}`}>{brand} <span aria-hidden="true">→</span></a>
+            )) : <p>Brands will appear here when Branded articles are published.</p>}
+          </div>
+        </div>
+      </section>
+    </div>
+  </nav>
+  <nav class="utility-nav" aria-label="Shopping tools">
+    <a class="header-search-link" href="/search">
+      <span class="utility-icon utility-search-icon" aria-hidden="true"></span>
+      <span>Search</span>
+    </a>
+    <a class="header-wishlist-link" href="/wishlist">Wishlist <span><WishlistCount client:load /></span></a>
+    <a class="header-bag-button" href="/bag">
+      <span>Bag</span>
+      <span class="header-bag-count"><BagCount client:load /></span>
+    </a>
+  </nav>
+  <details class="mobile-menu">
+    <summary>MENU</summary>
+    <div class="mobile-menu-panel">
+      <a href="/shop">New In</a>
+      <details class="mobile-menu-group">
+        <summary>HW Exclusive <span aria-hidden="true"></span></summary>
+        <div>
+          <a href="/shop?category=exclusive">All HW Exclusive</a>
+          <a href="/shop?category=exclusive&type=pret">Pret / Ready to Wear</a>
+          <a href="/shop?category=exclusive&type=unstitched">Unstitched</a>
+          <a href="/shop?category=exclusive">Latest articles</a>
+        </div>
+      </details>
+      <details class="mobile-menu-group">
+        <summary>Branded <span aria-hidden="true"></span></summary>
+        <div>
+          <a href="/shop?category=branded">All Branded</a>
+          <a href="/shop?category=branded&type=pret">Pret / Ready to Wear</a>
+          <a href="/shop?category=branded&type=unstitched">Unstitched</a>
+          {brandedBrands.map((brand) => (
+            <a href={`/shop?category=branded&brand=${encodeURIComponent(brand)}`}>{brand}</a>
+          ))}
+        </div>
+      </details>
+      <a href="/search">Search</a>
+      <a href="/wishlist">Wishlist <WishlistCount client:load /></a>
+      <a href="/bag">Bag <BagCount client:load /></a>
+    </div>
+  </details>
+</header>

@@ -1,0 +1,58 @@
+---
+import CatalogExplorer from "../components/CatalogExplorer";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchPublishedArticles } from "../lib/products";
+
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+// Render published articles on the server as well as refreshing them in the browser.
+// This keeps the collection visible if a visitor's browser cannot complete a
+// cross-origin refresh request after hydration.
+const initialProducts = await fetchPublishedArticles(apiBase);
+const requestedCategory = Astro.url.searchParams.get("category");
+const initialCategory =
+  requestedCategory === "exclusive" ||
+  requestedCategory === "branded"
+    ? requestedCategory
+    : "all";
+const requestedBrand = Astro.url.searchParams.get("brand")?.trim() || "all";
+const requestedArticleType = Astro.url.searchParams.get("type");
+const initialArticleType = requestedArticleType === "pret" || requestedArticleType === "unstitched"
+  ? requestedArticleType
+  : "all";
+const initialBrand = initialCategory === "branded"
+  ? initialProducts.find((product) =>
+      product.category === "branded"
+      && (product.brand.toLocaleLowerCase("en") === requestedBrand.toLocaleLowerCase("en")
+        || (requestedBrand.toLocaleLowerCase("en") === "other brands"
+          && product.brand.toLocaleLowerCase("en") === "branded")),
+    )
+      ? requestedBrand
+      : "all"
+  : "all";
+const pageTitle = initialCategory === "exclusive"
+  ? "HW Exclusive Clothing in Pakistan — Haley Wali"
+  : initialCategory === "branded"
+    ? "Branded Pret and Unstitched Suits — Haley Wali"
+    : "Shop Women's Clothing in Pakistan — Haley Wali";
+const pageDescription = initialCategory === "exclusive"
+  ? "Shop customised HW Exclusive Pret articles with clear sizing and Cash on Delivery across Pakistan."
+  : initialCategory === "branded"
+    ? "Browse available branded Pret and unstitched suits with Cash on Delivery across Pakistan."
+    : "Browse HW Exclusive clothing plus available branded Pret and unstitched suits with Cash on Delivery across Pakistan.";
+const canonicalSearch = initialCategory === "all" ? "" : `category=${initialCategory}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalSearch={canonicalSearch}
+>
+  <CatalogExplorer
+    initialProducts={initialProducts}
+    initialCategory={initialCategory}
+    initialBrand={initialBrand}
+    initialArticleType={initialArticleType}
+    apiBase={apiBase}
+    client:load
+  />
+</BaseLayout>

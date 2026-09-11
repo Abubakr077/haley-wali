@@ -1,0 +1,20 @@
+---
+import ContactForm from "../components/ContactForm";
+import BaseLayout from "../layouts/BaseLayout.astro";
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+---
+
+<BaseLayout
+  title="Contact — Haley Wali"
+  description="Ask Haley Wali about an article, Pret sizing, delivery or an existing order."
+>
+  <section class="page-shell narrow">
+    <p class="eyebrow">CUSTOMER CARE</p>
+    <h1 class="display-title">Contact us</h1>
+    <p class="info-intro">
+      Ask about an article, Pret sizing, delivery or an existing order. Please
+      include the article name when possible.
+    </p>
+    <ContactForm apiBase={apiBase} client:load />
+  </section>
+</BaseLayout>

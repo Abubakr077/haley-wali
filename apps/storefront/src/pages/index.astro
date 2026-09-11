@@ -1,0 +1,186 @@
+---
+import FeaturedArticles from "../components/FeaturedArticles";
+import HomeHero, { type HomeHeroSlide } from "../components/HomeHero";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadShopSettings } from "../lib/offers";
+import { fetchPublishedArticles } from "../lib/products";
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+const shopSettings = await loadShopSettings(apiBase);
+const exclusiveArticles = (await fetchPublishedArticles(apiBase)).filter(
+  (article) => article.category === "exclusive",
+);
+const initialFeaturedArticles = exclusiveArticles.slice(0, 4);
+const exclusiveArticlePhotos = initialFeaturedArticles
+  .map((article) => ({ src: article.image, alt: `${article.name} ${article.title}` }))
+  .filter((photo, index, photos) => photos.findIndex((candidate) => candidate.src === photo.src) === index);
+const exclusiveCollectionPhotos = exclusiveArticlePhotos.length
+  ? Array.from({ length: 4 }, (_, index) => exclusiveArticlePhotos[index % exclusiveArticlePhotos.length])
+  : [];
+const heroSlides: HomeHeroSlide[] = [
+  {
+    id: "campaign",
+    kicker: "HALEY WALI · HW EXCLUSIVE",
+    heading: "Clothing made for your next look.",
+    description: "Shop our own customised articles with simple sizing, Cash on Delivery and delivery across Pakistan.",
+    image: "/assets/campaign-hero.png",
+    imageKind: "campaign",
+    primaryHref: "/shop?category=exclusive",
+    primaryLabel: "Shop HW Exclusive",
+    secondaryHref: "/info/about",
+    secondaryLabel: "Our story",
+    noteLabel: "NEW COLLECTION",
+    noteValue: "HW Exclusive",
+  },
+  ...(shopSettings.saleActive && shopSettings.salePercent > 0 ? [{
+    id: "season-end-sale",
+    kicker: shopSettings.saleName.toUpperCase(),
+    heading: `Flat ${shopSettings.salePercent}% off every article.`,
+    description: shopSettings.saleDescription || "The reduced price is already shown across HW Exclusive and Branded articles. No sale code is needed.",
+    image: "/assets/season-end-sale-hero.png",
+    imageKind: "sale" as const,
+    primaryHref: "/shop",
+    primaryLabel: "Shop the sale",
+    secondaryHref: "/shop?category=exclusive",
+    secondaryLabel: "Shop HW Exclusive",
+    noteLabel: "NO CODE NEEDED",
+    noteValue: `${shopSettings.salePercent}% applied automatically`,
+  }] : []),
+  ...exclusiveArticles.map((article) => ({
+    id: article.id,
+    kicker: "NEW IN · HW EXCLUSIVE",
+    heading: `Meet ${article.name}.`,
+    description: article.description,
+    image: /mehr/i.test(article.name) ? "/assets/mehr-hero-slide.png" : article.image,
+    mobileImage: article.image,
+    imageKind: "article" as const,
+    primaryHref: `/product?id=${encodeURIComponent(article.id)}`,
+    primaryLabel: `View ${article.name}`,
+    secondaryHref: "/shop?category=exclusive",
+    secondaryLabel: "Shop the collection",
+    noteLabel: "HW EXCLUSIVE",
+    noteValue: article.name,
+  })),
+];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "OnlineStore",
+      "@id": "https://haleywali.pk/#store",
+      name: "Haley Wali",
+      url: "https://haleywali.pk/",
+      logo: "https://haleywali.pk/brand/haley-wali-monogram.svg",
+      image: "https://haleywali.pk/brand/og-share.png",
+      description: "Customised HW Exclusive clothing with Cash on Delivery across Pakistan.",
+      areaServed: { "@type": "Country", name: "Pakistan" },
+      currenciesAccepted: "PKR",
+      paymentAccepted: "Cash on Delivery",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://haleywali.pk/#website",
+      url: "https://haleywali.pk/",
+      name: "Haley Wali",
+      inLanguage: "en-PK",
+      publisher: { "@id": "https://haleywali.pk/#store" },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  pageClass="home-starbucks"
+  themeColor="#f5e8eb"
+  title="Haley Wali — Clothing for Pakistan"
+  description="Shop customised HW Exclusive clothing with Cash on Delivery across Pakistan."
+  jsonLd={jsonLd}
+>
+  <HomeHero slides={heroSlides} client:load />
+
+  <section class="sb-home-section sb-collection-section">
+    <header class="sb-section-heading">
+      <div>
+        <p class="sb-kicker">SHOP YOUR WAY</p>
+        <h2>Two clothing collections, clearly separated.</h2>
+      </div>
+      <p>Start with Haley Wali originals or browse branded articles when stock is available.</p>
+    </header>
+    <nav class="sb-collection-grid" aria-label="Shop Haley Wali collections">
+      <a class="sb-collection-card" href="/shop?category=exclusive">
+        <div class="sb-exclusive-collage" aria-label="Published HW Exclusive article photography">
+          {exclusiveCollectionPhotos.length ? exclusiveCollectionPhotos.map((photo) => (
+            <img src={photo.src} alt={photo.alt} loading="lazy" />
+          )) : <img src="/assets/collection-sheet.png" alt="HW Exclusive customised suits" loading="lazy" />}
+        </div>
+        <div class="sb-collection-copy"><span>OUR OWN ARTICLES</span><h3>HW Exclusive</h3><p>Customised suits made for Haley Wali.</p><span class="sb-button sb-button-outline sb-card-button">Shop collection</span></div>
+      </a>
+      <a class="sb-collection-card" href="/shop?category=branded">
+        <img src="/assets/sapphire.webp" alt="Branded unstitched suit" loading="lazy" />
+        <div class="sb-collection-copy"><span>CHANGING STOCK</span><h3>Branded</h3><p>Pret and unstitched articles from known brands.</p><span class="sb-button sb-button-outline sb-card-button">Browse branded</span></div>
+      </a>
+    </nav>
+  </section>
+
+  <section class="sb-home-section sb-featured-section">
+    <div class="sb-section-heading">
+      <div>
+        <p class="sb-kicker">LATEST STOCK</p>
+        <h2>New HW Exclusive articles</h2>
+      </div>
+      <a class="sb-button sb-button-outline" href="/shop">View all articles</a>
+    </div>
+    <FeaturedArticles initialProducts={initialFeaturedArticles} apiBase={apiBase} client:load />
+  </section>
+
+  <section class="sb-home-section sb-packaging" id="packing">
+    <div class="sb-packaging-copy">
+      <div>
+        <p class="sb-kicker">HALEY WALI PACKING</p>
+        <h2>The final check is part of every order.</h2>
+      </div>
+      <div>
+        <p>
+          Before dispatch, your article, selected size and price are checked.
+          We then prepare it with our Haley Wali tag and sticker.
+        </p>
+        <ul class="sb-check-list">
+          <li><span aria-hidden="true">✓</span> Size and price checked</li>
+          <li><span aria-hidden="true">✓</span> Tag and sticker added</li>
+          <li><span aria-hidden="true">✓</span> Delivery details reviewed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sb-packaging-visual" aria-label="Haley Wali tag and sticker">
+      <img class="sb-tag sb-tag-front" src="/brand/haley-wali-hangtag-front.svg" alt="Front of the Haley Wali tag" loading="lazy" />
+      <img class="sb-tag sb-tag-back" src="/brand/haley-wali-hangtag-back.svg" alt="Back of the Haley Wali tag" loading="lazy" />
+      <img class="sb-sticker" src="/brand/haley-wali-round-sticker.svg" alt="Round Haley Wali brand sticker" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="sb-story-band">
+    <div>
+      <p class="sb-kicker">THE HALEY WALI STORE</p>
+      <h2>Easy online shopping for clothing in Pakistan.</h2>
+    </div>
+    <div>
+      <p>
+        Clear article details, simple Pret sizing and Cash on Delivery—without
+        making clothing shopping feel complicated.
+      </p>
+      <div class="sb-action-row">
+        <a class="sb-button sb-button-light" href="/shop">Start shopping</a>
+        <a class="sb-button sb-button-outline-light" href="/info/about">About Haley Wali</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sb-home-section sb-service-section" aria-label="Store services">
+    <p class="sb-kicker">SHOP WITH CONFIDENCE</p>
+    <div class="sb-service-grid">
+      <article><span>01</span><h3>Cash on Delivery</h3><p>Pay when your parcel reaches you.</p><a class="sb-button sb-button-outline sb-service-button" href="/info/delivery">Delivery details</a></article>
+      <article><span>02</span><h3>Pakistan-wide delivery</h3><p>See the delivery charge before checkout.</p><a class="sb-button sb-button-outline sb-service-button" href="/track">Track an order</a></article>
+      <article><span>03</span><h3>Customer care</h3><p>Ask about an article, size, exchange or order.</p><a class="sb-button sb-button-outline sb-service-button" href="/contact">Contact us</a></article>
+    </div>
+  </section>
+
+</BaseLayout>

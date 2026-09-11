@@ -1,0 +1,125 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import BagCount from "../components/BagCount";
+import "../styles/global.css";
+import {
+  DEFAULT_SHARE_IMAGE_ALT,
+  DEFAULT_SHARE_IMAGE_HEIGHT,
+  DEFAULT_SHARE_IMAGE_PATH,
+  DEFAULT_SHARE_IMAGE_WIDTH,
+  SITE_ORIGIN,
+  absoluteUrl,
+  isDefaultShareImage,
+  shareImageUrl,
+} from "../lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  pageClass?: string;
+  themeColor?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: string;
+  indexable?: boolean;
+  canonicalSearch?: string;
+  jsonLd?: object | object[];
+  productPrice?: number;
+  productAvailability?: "in stock" | "out of stock";
+}
+
+const {
+  title = "Haley Wali — Clothing for Pakistan",
+  description = "Shop customised HW Exclusive clothing with Cash on Delivery across Pakistan.",
+  pageClass = "",
+  themeColor = "#f5e8eb",
+  image,
+  imageAlt = DEFAULT_SHARE_IMAGE_ALT,
+  type = "website",
+  indexable = true,
+  canonicalSearch = "",
+  jsonLd,
+  productPrice,
+  productAvailability,
+} = Astro.props as Props;
+
+const origin = Astro.site?.origin ?? SITE_ORIGIN;
+const canonical = absoluteUrl(Astro.url.pathname, origin, canonicalSearch);
+const shareImage = shareImageUrl(image ?? DEFAULT_SHARE_IMAGE_PATH, origin);
+const showFloatingBag = !["/bag", "/checkout", "/success"].includes(Astro.url.pathname);
+---
+
+<!doctype html>
+<html lang="en-PK">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={indexable ? "index, follow, max-image-preview:large" : "noindex, follow"} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en-PK" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="icon" href="/brand/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/brand/haley-wali-monogram.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content={themeColor} />
+    <meta property="og:site_name" content="Haley Wali" />
+    <meta property="og:locale" content="en_PK" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:secure_url" content={shareImage} />
+    <meta property="og:image:alt" content={imageAlt} />
+    {type === "product" && productPrice !== undefined ? (
+      <>
+        <meta property="product:price:amount" content={String(productPrice)} />
+        <meta property="product:price:currency" content="PKR" />
+        {productAvailability ? <meta property="product:availability" content={productAvailability} /> : null}
+      </>
+    ) : null}
+    {isDefaultShareImage(shareImage) ? (
+      <>
+        <meta property="og:image:width" content={String(DEFAULT_SHARE_IMAGE_WIDTH)} />
+        <meta property="og:image:height" content={String(DEFAULT_SHARE_IMAGE_HEIGHT)} />
+      </>
+    ) : null}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    {jsonLd ? <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} /> : null}
+  </head>
+  <body class={pageClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    {pageClass.includes("home-starbucks") ? (
+      <script is:inline>
+        (() => {
+          const body = document.body;
+          const updateHeader = () => {
+            body.classList.toggle("home-header-scrolled", window.scrollY > 24);
+          };
+
+          updateHeader();
+          window.addEventListener("scroll", updateHeader, { passive: true });
+        })();
+      </script>
+    ) : null}
+    <main id="main">
+      <slot />
+    </main>
+    {showFloatingBag ? (
+      <a class="retail-floating-bag" href="/bag" aria-label="Open shopping bag">
+        <span class="utility-icon utility-bag-icon" aria-hidden="true"></span>
+        <span class="retail-floating-count"><BagCount client:load /></span>
+      </a>
+    ) : null}
+    <Footer />
+  </body>
+</html>

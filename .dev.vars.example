@@ -1,0 +1,10 @@
+# Copy this file to .dev.vars for the local Store Manager Worker.
+# Never commit the real .dev.vars file.
+ADMIN_PASSWORD=choose-a-strong-local-password
+ADMIN_SESSION_SECRET=generate-a-different-long-random-secret
+PUBLIC_STOREFRONT_ORIGIN=http://127.0.0.1:4321
+
+# Required for image uploads in local development and production.
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_SECRET_KEY=
+SUPABASE_STORAGE_BUCKET=haley-wali-articles

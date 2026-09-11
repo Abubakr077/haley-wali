@@ -1,0 +1,18 @@
+---
+import CheckoutForm from "../components/CheckoutForm";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
+---
+
+<BaseLayout
+  title="Cash on Delivery Checkout — Haley Wali"
+  description="Enter delivery details and place a Haley Wali Cash on Delivery order."
+  indexable={false}
+>
+  <section class="page-shell">
+    <p class="eyebrow">CASH ON DELIVERY</p>
+    <h1 class="display-title">Checkout</h1>
+    <CheckoutForm apiBase={apiBase} client:load />
+  </section>
+</BaseLayout>

@@ -1,0 +1,1740 @@
+{
+  "importedAt": "2026-07-24T15:46:18.733Z",
+  "supplier": "Supplier A",
+  "count": 31,
+  "sync": {
+    "discovered": 31,
+    "inserted": 31,
+    "updated": 0,
+    "unchanged": 0
+  },
+  "products": [
+    {
+      "externalId": "9472120717589",
+      "handle": "aafreen-embroidered-3pc-black",
+      "title": "Aafreen Embroidered 3pc - Black",
+      "sourcePricePkr": 6099,
+      "compareAtPricePkr": 11598,
+      "sourceUrl": "https://chaudharyarts.com/products/aafreen-embroidered-3pc-black",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/003.jpg?v=1771947529",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/003.jpg?v=1771947529",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/C444E29B-0B56-4736-B1D8-68DC66449DDB.jpg?v=1772148497",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/9F053700-2C40-4B3B-9284-8D904AA5E2FE.jpg?v=1772148497",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/FA1DB8B7-C69F-49E7-B1CB-86B4F740EE9B.jpg?v=1772148497",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/464550A3-E0BC-48BA-8F31-DC2941737AFE.jpg?v=1772148497",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/005.jpg?v=1772122483",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/001.jpg?v=1772122483",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/002.jpg?v=1772122483",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/004.jpg?v=1772122483"
+      ],
+      "variants": [
+        {
+          "externalId": "49759737282837",
+          "title": "S",
+          "pricePkr": 6099,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AE3-B-S-0"
+        },
+        {
+          "externalId": "49759737315605",
+          "title": "M",
+          "pricePkr": 6099,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AE3-B-M-0"
+        },
+        {
+          "externalId": "49759737348373",
+          "title": "L",
+          "pricePkr": 6099,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AE3-B-L-0"
+        },
+        {
+          "externalId": "49759737381141",
+          "title": "XL",
+          "pricePkr": 6099,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AE3-B-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9449815965973",
+      "handle": "aafreen-embroidered-3pc",
+      "title": "Aafreen Embroidered 3pc - Jade green - Lawn",
+      "sourcePricePkr": 6090,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/aafreen-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_58_619193722_17990766389916262_6414020754741631153_n.webp?v=1772122506",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_58_619193722_17990766389916262_6414020754741631153_n.webp?v=1772122506",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_59_619126195_17990766398916262_5023731304017611879_n.webp?v=1772122506",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_60_619351245_17990766410916262_4252799774739564908_n.webp?v=1768921803",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_61_618614415_17990766440916262_4346895424043692840_n.webp?v=1768921804",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_61_618828266_17990766422916262_7106518609236917405_n.webp?v=1768921803"
+      ],
+      "variants": [
+        {
+          "externalId": "49647445803285",
+          "title": "S",
+          "pricePkr": 6090,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-A3-S-0"
+        },
+        {
+          "externalId": "49647445836053",
+          "title": "M",
+          "pricePkr": 6090,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-A3-M-0"
+        },
+        {
+          "externalId": "49647445868821",
+          "title": "L",
+          "pricePkr": 6090,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-A3-L-0"
+        },
+        {
+          "externalId": "49647445901589",
+          "title": "XL",
+          "pricePkr": 6090,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-A3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9504165527829",
+      "handle": "aafreen-embroidered-3pc-lilac",
+      "title": "Aafreen Embroidered 3pc - Lilac",
+      "sourcePricePkr": 6147,
+      "compareAtPricePkr": 11598,
+      "sourceUrl": "https://chaudharyarts.com/products/aafreen-embroidered-3pc-lilac",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_24.jpg?v=1775560207",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_24.jpg?v=1775560207",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_24.jpg?v=1775560207",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_23.jpg?v=1775560207",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_24.jpg?v=1775560207",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_23.jpg?v=1775560207",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_17.jpg?v=1775560196"
+      ],
+      "variants": [
+        {
+          "externalId": "49854022451477",
+          "title": "S",
+          "pricePkr": 6147,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AL-3-S-0"
+        },
+        {
+          "externalId": "49854022484245",
+          "title": "M",
+          "pricePkr": 6147,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AL-3-M-0"
+        },
+        {
+          "externalId": "49854022517013",
+          "title": "L",
+          "pricePkr": 6147,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AL-3-L-0"
+        },
+        {
+          "externalId": "49854022549781",
+          "title": "XL",
+          "pricePkr": 6147,
+          "compareAtPricePkr": 11598,
+          "available": true,
+          "sku": "CHA-AL-3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9478874824981",
+      "handle": "afifa-embroidered-3pc",
+      "title": "Afifa Embroidered - 3pc",
+      "sourcePricePkr": 4499,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/afifa-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-6.webp?v=1778762584",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-6.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-7.webp?v=1778762585",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-1.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-3.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-2.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-4.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-5.webp?v=1778762584",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Afifa-8.webp?v=1778762584"
+      ],
+      "variants": [
+        {
+          "externalId": "49780827357461",
+          "title": "S",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-AE-3-S-5"
+        },
+        {
+          "externalId": "49780827390229",
+          "title": "M",
+          "pricePkr": 4499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-3-M-6"
+        },
+        {
+          "externalId": "49780827422997",
+          "title": "L",
+          "pricePkr": 4499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-3-L-6"
+        },
+        {
+          "externalId": "49780827455765",
+          "title": "XL",
+          "pricePkr": 4499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-3-XL-6"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9514992173333",
+      "handle": "anmol-embroidered-2pc-1",
+      "title": "Aiza - 2pc",
+      "sourcePricePkr": 4590,
+      "compareAtPricePkr": 9000,
+      "sourceUrl": "https://chaudharyarts.com/products/anmol-embroidered-2pc-1",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Aiza-01_46691038-964b-402a-91f9-af13a312c340.webp?v=1778762828",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Aiza-01_46691038-964b-402a-91f9-af13a312c340.webp?v=1778762828",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Aiza-02.webp?v=1778762829",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Aiza-03.webp?v=1778762828",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Aiza-04.webp?v=1778762829"
+      ],
+      "variants": [
+        {
+          "externalId": "49879409525013",
+          "title": "S",
+          "pricePkr": 4590,
+          "compareAtPricePkr": 9000,
+          "available": true,
+          "sku": "CHA-AE-2-S-3"
+        },
+        {
+          "externalId": "49879409557781",
+          "title": "M",
+          "pricePkr": 4590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-M-3"
+        },
+        {
+          "externalId": "49879409590549",
+          "title": "L",
+          "pricePkr": 4590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-L-3"
+        },
+        {
+          "externalId": "49879409623317",
+          "title": "XL",
+          "pricePkr": 4590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-XL-3"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9518893465877",
+      "handle": "anaya-embroidered-2pc",
+      "title": "Anaya - 2pc",
+      "sourcePricePkr": 3890,
+      "compareAtPricePkr": 6890,
+      "sourceUrl": "https://chaudharyarts.com/products/anaya-embroidered-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-6.webp?v=1778764644",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-6.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-3.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-1.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-4.webp?v=1778764645",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-2.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-5.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-7.webp?v=1778764644",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anaya-8.webp?v=1778764644"
+      ],
+      "variants": [
+        {
+          "externalId": "49893390385429",
+          "title": "S",
+          "pricePkr": 3890,
+          "compareAtPricePkr": 6890,
+          "available": true,
+          "sku": "CHA-AE-2-S-4"
+        },
+        {
+          "externalId": "49893390418197",
+          "title": "M",
+          "pricePkr": 3890,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-M-4"
+        },
+        {
+          "externalId": "49893390450965",
+          "title": "L",
+          "pricePkr": 3890,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-L-4"
+        },
+        {
+          "externalId": "49893390483733",
+          "title": "XL",
+          "pricePkr": 3890,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-XL-4"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9514659152149",
+      "handle": "anmol-embroidered-2pc",
+      "title": "Anmol - 2pc",
+      "sourcePricePkr": 4490,
+      "compareAtPricePkr": 9000,
+      "sourceUrl": "https://chaudharyarts.com/products/anmol-embroidered-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-5.webp?v=1778764839",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-5.webp?v=1778764839",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-3.webp?v=1778764839",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-1.webp?v=1778764839",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-2.webp?v=1778764840",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-4.webp?v=1778764839",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-7.webp?v=1778764839",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Anmol-6.webp?v=1778764839"
+      ],
+      "variants": [
+        {
+          "externalId": "49878596550933",
+          "title": "S",
+          "pricePkr": 4490,
+          "compareAtPricePkr": 9000,
+          "available": true,
+          "sku": "CHA-AE-2-S-2"
+        },
+        {
+          "externalId": "49878596583701",
+          "title": "M",
+          "pricePkr": 4490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-M-2"
+        },
+        {
+          "externalId": "49878596616469",
+          "title": "L",
+          "pricePkr": 4490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-L-2"
+        },
+        {
+          "externalId": "49878596649237",
+          "title": "XL",
+          "pricePkr": 4490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-AE-2-XL-2"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9478898450709",
+      "handle": "ava-embroidered-3pc",
+      "title": "Ava Embroidered - 3pc",
+      "sourcePricePkr": 6350,
+      "compareAtPricePkr": 12999,
+      "sourceUrl": "https://chaudharyarts.com/products/ava-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_14.jpg?v=1772118930",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_14.jpg?v=1772118930",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_14.jpg?v=1772118930",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_13.jpg?v=1772118930",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_14.jpg?v=1772118930",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_13.jpg?v=1772118930",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_11.jpg?v=1772118896",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/07_7.jpg?v=1772118896",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/08_5.jpg?v=1772118896"
+      ],
+      "variants": [
+        {
+          "externalId": "49780847575317",
+          "title": "S",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 12999,
+          "available": true,
+          "sku": "CHA-AE-3-S-4"
+        },
+        {
+          "externalId": "49780847608085",
+          "title": "M",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-AE-3-M-5"
+        },
+        {
+          "externalId": "49780847640853",
+          "title": "L",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-AE-3-L-5"
+        },
+        {
+          "externalId": "49780847673621",
+          "title": "XL",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-AE-3-XL-5"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9366564700437",
+      "handle": "azeen-embroidered-3-pieces",
+      "title": "Azeen Embroidered - 3 pieces",
+      "sourcePricePkr": 4499,
+      "compareAtPricePkr": 10300,
+      "sourceUrl": "https://chaudharyarts.com/products/azeen-embroidered-3-pieces",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-7_2.webp?v=1784110188",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-7_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-3_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-5_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-4_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-6_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-2_2.webp?v=1784110188",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Azeen-1_2.webp?v=1784110188"
+      ],
+      "variants": [
+        {
+          "externalId": "49068301386005",
+          "title": "S",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 10300,
+          "available": true,
+          "sku": "CHA-AE-3P-S"
+        },
+        {
+          "externalId": "49068301418773",
+          "title": "M",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 10300,
+          "available": true,
+          "sku": "CHA-AE-3P-M"
+        },
+        {
+          "externalId": "49068301451541",
+          "title": "L",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 10300,
+          "available": true,
+          "sku": "CHA-AE-3P-L"
+        },
+        {
+          "externalId": "49068301484309",
+          "title": "XL",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 10300,
+          "available": true,
+          "sku": "CHA-AE-3P-XL"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9514051207445",
+      "handle": "coco-2piece",
+      "title": "Coco - 2Piece",
+      "sourcePricePkr": 3890,
+      "compareAtPricePkr": 7780,
+      "sourceUrl": "https://chaudharyarts.com/products/coco-2piece",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_7_689010169_935005056015328_238154170387949507_n.jpg?v=1777893689",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_7_689010169_935005056015328_238154170387949507_n.jpg?v=1777893689",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_2_684894454_18003587714916262_9198869246114050976_n.webp?v=1777893689",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_2_684847033_18003587723916262_2027337824720666379_n.webp?v=1777893689",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_3_687816566_18003587732916262_5077051905829503129_n.webp?v=1777893689"
+      ],
+      "variants": [
+        {
+          "externalId": "49875920650517",
+          "title": "S",
+          "pricePkr": 3890,
+          "compareAtPricePkr": 7780,
+          "available": true,
+          "sku": "CHA-C-2-S-0"
+        },
+        {
+          "externalId": "49875920683285",
+          "title": "M",
+          "pricePkr": 3890,
+          "compareAtPricePkr": 7780,
+          "available": true,
+          "sku": "CHA-C-2-M-0"
+        },
+        {
+          "externalId": "49875920716053",
+          "title": "L",
+          "pricePkr": 3890,
+          "compareAtPricePkr": 7780,
+          "available": true,
+          "sku": "CHA-C-2-L-0"
+        },
+        {
+          "externalId": "49875920748821",
+          "title": "XL",
+          "pricePkr": 3890,
+          "compareAtPricePkr": 7780,
+          "available": true,
+          "sku": "CHA-C-2-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9523357057301",
+      "handle": "crimson-3pc",
+      "title": "Crimson - 3pc",
+      "sourcePricePkr": 3799,
+      "compareAtPricePkr": 9800,
+      "sourceUrl": "https://chaudharyarts.com/products/crimson-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-8.webp?v=1778764963",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-8.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-2.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-1.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-5.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-3.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-4.webp?v=1778764963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Crimson-7.webp?v=1778764963"
+      ],
+      "variants": [
+        {
+          "externalId": "49906933399829",
+          "title": "S",
+          "pricePkr": 3799,
+          "compareAtPricePkr": 9800,
+          "available": true,
+          "sku": "CHA-C3-S-0"
+        },
+        {
+          "externalId": "49906933432597",
+          "title": "M",
+          "pricePkr": 3799,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-C3-M-0"
+        },
+        {
+          "externalId": "49906933465365",
+          "title": "L",
+          "pricePkr": 3799,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-C3-L-0"
+        },
+        {
+          "externalId": "49906933498133",
+          "title": "XL",
+          "pricePkr": 3799,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-C3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9514030956821",
+      "handle": "dilbar-embroidered-3pc",
+      "title": "Dilbar - 3pc",
+      "sourcePricePkr": 6290,
+      "compareAtPricePkr": 12990,
+      "sourceUrl": "https://chaudharyarts.com/products/dilbar-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-3.webp?v=1778765405",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-3.webp?v=1778765405",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-1.webp?v=1778765406",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-2.webp?v=1778765405",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-4.webp?v=1778765405",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Dilbar-5.webp?v=1778765406"
+      ],
+      "variants": [
+        {
+          "externalId": "49875885130005",
+          "title": "S",
+          "pricePkr": 6290,
+          "compareAtPricePkr": 12990,
+          "available": true,
+          "sku": "CHA-DE-3-S-0"
+        },
+        {
+          "externalId": "49875885162773",
+          "title": "M",
+          "pricePkr": 6290,
+          "compareAtPricePkr": 12990,
+          "available": true,
+          "sku": "CHA-DE-3-M-0"
+        },
+        {
+          "externalId": "49875885195541",
+          "title": "L",
+          "pricePkr": 6290,
+          "compareAtPricePkr": 12990,
+          "available": true,
+          "sku": "CHA-DE-3-L-0"
+        },
+        {
+          "externalId": "49875885228309",
+          "title": "XL",
+          "pricePkr": 6290,
+          "compareAtPricePkr": 12990,
+          "available": true,
+          "sku": "CHA-DE-3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9433592856853",
+      "handle": "embrose-embroidered-3pc",
+      "title": "Embrose Embroidered 3pc",
+      "sourcePricePkr": 3990,
+      "compareAtPricePkr": 9398,
+      "sourceUrl": "https://chaudharyarts.com/products/embrose-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_91_StoryBlue_3.jpg?v=1762280452",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_91_StoryBlue_3.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_92_StoryBlue_2.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_93_StoryBlue_4.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_94_StoryBlue_5.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_95_StoryBlue_6.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_96_StoryBlue_7.jpg?v=1762280452",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_97_Story_Blue_1.jpg?v=1762280452"
+      ],
+      "variants": [
+        {
+          "externalId": "49515000594709",
+          "title": "S",
+          "pricePkr": 3990,
+          "compareAtPricePkr": 9398,
+          "available": true,
+          "sku": "CHA-EE3-S-0"
+        },
+        {
+          "externalId": "49515000627477",
+          "title": "M",
+          "pricePkr": 3990,
+          "compareAtPricePkr": 9398,
+          "available": true,
+          "sku": "CHA-EE3-M-0"
+        },
+        {
+          "externalId": "49515000660245",
+          "title": "L",
+          "pricePkr": 3990,
+          "compareAtPricePkr": 9398,
+          "available": true,
+          "sku": "CHA-EE3-L-0"
+        },
+        {
+          "externalId": "49515000693013",
+          "title": "XL",
+          "pricePkr": 3990,
+          "compareAtPricePkr": 9398,
+          "available": true,
+          "sku": "CHA-EE3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9527025041685",
+      "handle": "emily-2pc",
+      "title": "Emily - 3pc",
+      "sourcePricePkr": 6250,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/emily-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-3_3.webp?v=1779187079",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-3_3.webp?v=1779187079",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-2_9504b2a7-f394-4a59-a9a4-8d4cc4075d2c.webp?v=1778853794",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-6_1.webp?v=1779187079",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-1_2f4118da-0121-4377-82ea-b80c4d76c2c6.webp?v=1778853794",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-3_1_1b4faba8-a06a-4213-bf28-5e90b82d144b.webp?v=1778853794",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-4_1c36ef52-27dc-45b0-8004-1d3eb7e13280.webp?v=1778853795",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-8.webp?v=1779187079",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Emily-2_2.webp?v=1779187115"
+      ],
+      "variants": [
+        {
+          "externalId": "49921022460181",
+          "title": "S",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-E-3-S-0"
+        },
+        {
+          "externalId": "49921022492949",
+          "title": "M",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-E-3-M-0"
+        },
+        {
+          "externalId": "49921022525717",
+          "title": "L",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-E-3-L-0"
+        },
+        {
+          "externalId": "49921022558485",
+          "title": "XL",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-E-3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9522297340181",
+      "handle": "gul-naaz-embroidered-3pc",
+      "title": "Gul naaz - 3pc",
+      "sourcePricePkr": 6250,
+      "compareAtPricePkr": 10500,
+      "sourceUrl": "https://chaudharyarts.com/products/gul-naaz-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/GulNaaz-9.webp?v=1778765766",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/GulNaaz-9.webp?v=1778765766",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/2222.jpg?v=1777978288",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/GulNaaz-5.webp?v=1778765766",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7743.jpg?v=1777897325",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7758.jpg?v=1777897325",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7745.jpg?v=1777897326",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7741.jpg?v=1777897325",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7724.jpg?v=1777897325",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/GulNaaz-3.webp?v=1778765766"
+      ],
+      "variants": [
+        {
+          "externalId": "49901894074645",
+          "title": "S",
+          "pricePkr": 6250,
+          "compareAtPricePkr": 10500,
+          "available": true,
+          "sku": "CHA-GNE--S-0"
+        },
+        {
+          "externalId": "49901894107413",
+          "title": "M",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-GNE--M-0"
+        },
+        {
+          "externalId": "49901894140181",
+          "title": "L",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-GNE--L-0"
+        },
+        {
+          "externalId": "49901894172949",
+          "title": "XL",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-GNE--XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9477804294421",
+      "handle": "haniya-embroiderd-3pc-lawn",
+      "title": "Haniya Embroiderd 3pc - Lawn",
+      "sourcePricePkr": 6050,
+      "compareAtPricePkr": 12100,
+      "sourceUrl": "https://chaudharyarts.com/products/haniya-embroiderd-3pc-lawn",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_3_download_4_d51eeaa0-b158-437f-a9ed-0bd888d971fc.jpg?v=1770988203",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_3_download_4_d51eeaa0-b158-437f-a9ed-0bd888d971fc.jpg?v=1770988203",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_4_download_62_2c693604-9309-4790-896b-1da7c8f27a02.jpg?v=1770988203",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_5_download_63_dfe5252f-e859-451c-a66f-bd680485df9f.jpg?v=1770988202",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_6_download_64_b3322fe6-3e39-42b5-a03f-9783d92ed6f2.jpg?v=1770988203",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_7_download_66_2525354c-e4f6-4919-b063-bc6642e2e06b.jpg?v=1770988203",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_8_download_65_af604923-f184-486c-8068-020ec327dd1b.jpg?v=1770988202",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_9_download_67_771f378f-99a1-44e5-b02a-28fb17e9e49b.jpg?v=1770988202"
+      ],
+      "variants": [
+        {
+          "externalId": "49776783458581",
+          "title": "S",
+          "pricePkr": 6050,
+          "compareAtPricePkr": 12100,
+          "available": true,
+          "sku": "CHA-HE3-L-S-0"
+        },
+        {
+          "externalId": "49776783491349",
+          "title": "M",
+          "pricePkr": 6050,
+          "compareAtPricePkr": 12100,
+          "available": true,
+          "sku": "CHA-HE3-L-M-0"
+        },
+        {
+          "externalId": "49776783524117",
+          "title": "L",
+          "pricePkr": 6050,
+          "compareAtPricePkr": 12100,
+          "available": true,
+          "sku": "CHA-HE3-L-L-0"
+        },
+        {
+          "externalId": "49776783556885",
+          "title": "XL",
+          "pricePkr": 6050,
+          "compareAtPricePkr": 12100,
+          "available": true,
+          "sku": "CHA-HE3-L-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9478897828117",
+      "handle": "laaj-embroidered-3pc",
+      "title": "Laaj Embroidered - 3pc",
+      "sourcePricePkr": 6350,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/laaj-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_17.jpg?v=1772529522",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_17.jpg?v=1772529522",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_18.jpg?v=1772529521",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_17.jpg?v=1772529521",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_18.jpg?v=1772529521",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_18.jpg?v=1772529521"
+      ],
+      "variants": [
+        {
+          "externalId": "49780845117717",
+          "title": "S",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-LE-3-S-2"
+        },
+        {
+          "externalId": "49780845150485",
+          "title": "M",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-LE-3-M-2"
+        },
+        {
+          "externalId": "49780845183253",
+          "title": "L",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-LE-3-L-2"
+        },
+        {
+          "externalId": "49780845216021",
+          "title": "XL",
+          "pricePkr": 6350,
+          "compareAtPricePkr": 1199,
+          "available": true,
+          "sku": "CHA-LE-3-XL-2"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9524021166357",
+      "handle": "liana-3pc",
+      "title": "Liana - 3pc",
+      "sourcePricePkr": 5490,
+      "compareAtPricePkr": 11500,
+      "sourceUrl": "https://chaudharyarts.com/products/liana-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_18_f8c48fcc-6cc6-429b-8380-b11cb7d353f8.jpg?v=1778140034",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_18_f8c48fcc-6cc6-429b-8380-b11cb7d353f8.jpg?v=1778140034",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-3.webp?v=1778765963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-4.webp?v=1778765962",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-1.webp?v=1778765963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-2.webp?v=1778765963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-5.webp?v=1778765963",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Liana-6.webp?v=1778765964"
+      ],
+      "variants": [
+        {
+          "externalId": "49910620225813",
+          "title": "S",
+          "pricePkr": 5490,
+          "compareAtPricePkr": 11500,
+          "available": true,
+          "sku": "CHA-P3-S-0"
+        },
+        {
+          "externalId": "49910620258581",
+          "title": "M",
+          "pricePkr": 5490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-P3-M-0"
+        },
+        {
+          "externalId": "49910620291349",
+          "title": "L",
+          "pricePkr": 5490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-P3-L-0"
+        },
+        {
+          "externalId": "49910620324117",
+          "title": "XL",
+          "pricePkr": 5490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-P3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9522288656661",
+      "handle": "maheen-embroidered-3pc",
+      "title": "Maheen - 3pc",
+      "sourcePricePkr": 6250,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/maheen-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Create_a_luxury_202605020658.jpg?v=1777994970",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Create_a_luxury_202605020658.jpg?v=1777994970",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/1111.jpg?v=1777978258",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7789.jpg?v=1777894092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7794.jpg?v=1777894092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7790.jpg?v=1777894092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7782.jpg?v=1777894092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/DSC7780.jpg?v=1777894092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Generate_a_high-end_202605020654.jpg?v=1777994970"
+      ],
+      "variants": [
+        {
+          "externalId": "49901683048725",
+          "title": "S",
+          "pricePkr": 6250,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-ME--S-0"
+        },
+        {
+          "externalId": "49901683081493",
+          "title": "M",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ME--M-0"
+        },
+        {
+          "externalId": "49901683114261",
+          "title": "L",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ME--L-0"
+        },
+        {
+          "externalId": "49901683147029",
+          "title": "XL",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ME--XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9564264333589",
+      "handle": "maya-2pc",
+      "title": "Maya - 2pc",
+      "sourcePricePkr": 4349,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/maya-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300538_-_Copy.jpg?v=1782828784",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300538_-_Copy.jpg?v=1782828784",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300531.jpg?v=1782828092",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300528.jpg?v=1782828093",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300527.jpg?v=1782828093",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_202606300526.jpg?v=1782828093",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/HARD_CONSTRAINT__Each_input_image_2026063005343_-_Copy.jpg?v=1782828784"
+      ],
+      "variants": [
+        {
+          "externalId": "50004616937749",
+          "title": "S",
+          "pricePkr": 4349,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-M-2-S-1"
+        },
+        {
+          "externalId": "50004616970517",
+          "title": "M",
+          "pricePkr": 4349,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-M-2-M-1"
+        },
+        {
+          "externalId": "50004617003285",
+          "title": "L",
+          "pricePkr": 4349,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-M-2-L-1"
+        },
+        {
+          "externalId": "50004617036053",
+          "title": "XL",
+          "pricePkr": 4349,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-M-2-XL-1"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9457084104981",
+      "handle": "mehjbeen-embroidered-2pc",
+      "title": "Mehjbeen Embroidered 2pc - Lawn",
+      "sourcePricePkr": 4499,
+      "compareAtPricePkr": 8398,
+      "sourceUrl": "https://chaudharyarts.com/products/mehjbeen-embroidered-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_86_Noura2ndOct-2630_4901bd21-6b90-45ef-9ea1-0a53786adff4.jpg?v=1767957073",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_86_Noura2ndOct-2630_4901bd21-6b90-45ef-9ea1-0a53786adff4.jpg?v=1767957073",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_88_Noura2ndOct-2651_6617274a-673b-4e08-adc2-84a7c481226b.jpg?v=1767957073",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_91_Noura2ndOct-2664.jpg?v=1767957073",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_94_Noura2ndOct-2701_39e8e81b-ef16-420d-b37b-8ec71f32c08d.jpg?v=1767957073",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_97_Noura2ndOct-2713.jpg?v=1767957073",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_100_Noura2ndOct-2717.jpg?v=1767957073"
+      ],
+      "variants": [
+        {
+          "externalId": "49689683984661",
+          "title": "S",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 8398,
+          "available": true,
+          "sku": "CHA-ME2-S-1"
+        },
+        {
+          "externalId": "49689684017429",
+          "title": "M",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 8398,
+          "available": true,
+          "sku": "CHA-ME2-M-1"
+        },
+        {
+          "externalId": "49689684050197",
+          "title": "L",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 8398,
+          "available": true,
+          "sku": "CHA-ME2-L-1"
+        },
+        {
+          "externalId": "49689684082965",
+          "title": "XL",
+          "pricePkr": 4499,
+          "compareAtPricePkr": 8398,
+          "available": true,
+          "sku": "CHA-ME2-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9449822486805",
+      "handle": "mehroo-embroidered-3pcs",
+      "title": "Mehroo Embroidered 3pcs",
+      "sourcePricePkr": 6090,
+      "compareAtPricePkr": 10980,
+      "sourceUrl": "https://chaudharyarts.com/products/mehroo-embroidered-3pcs",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Mehroo-1_952d10e5-cf42-482c-9a69-70ffb5d52a8f.jpg?v=1766592174",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Mehroo-1_952d10e5-cf42-482c-9a69-70ffb5d52a8f.jpg?v=1766592174",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Mehroo-2_3684e192-6bc3-4dbf-8f4d-09df70720a99.jpg?v=1766592174",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_13208970-37b1-4357-a9c6-09bfe1c05a2d.jpg?v=1766592174",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Mehroo-3_889bf511-37bb-4e2c-9e22-380cc94c7708.jpg?v=1766592174",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/Mehroo-4_25a33da9-0225-4379-b7b5-df26fb50f4b3.jpg?v=1766592174",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_6ce01f51-e511-4d67-8913-15f005e9af4b.jpg?v=1766592174"
+      ],
+      "variants": [
+        {
+          "externalId": "49647480406293",
+          "title": "S",
+          "pricePkr": 6090,
+          "compareAtPricePkr": 10980,
+          "available": true,
+          "sku": "CHA-ME3-S-2"
+        },
+        {
+          "externalId": "49647480439061",
+          "title": "M",
+          "pricePkr": 6090,
+          "compareAtPricePkr": 10980,
+          "available": true,
+          "sku": "CHA-ME3-M-2"
+        },
+        {
+          "externalId": "49647480471829",
+          "title": "L",
+          "pricePkr": 6090,
+          "compareAtPricePkr": 10980,
+          "available": true,
+          "sku": "CHA-ME3-L-2"
+        },
+        {
+          "externalId": "49647480504597",
+          "title": "XL",
+          "pricePkr": 6090,
+          "compareAtPricePkr": 10980,
+          "available": true,
+          "sku": "CHA-ME3-XL-2"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9480669528341",
+      "handle": "navya-embroidered-3pc",
+      "title": "NAVYA - Embroidered 3pc",
+      "sourcePricePkr": 7350,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/navya-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_71_6_dc7fa874-f8f4-4f42-9c53-93e24c9a888b.jpg?v=1772215463",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_71_6_dc7fa874-f8f4-4f42-9c53-93e24c9a888b.jpg?v=1772215463",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_117_4_64938aec-4d6d-43b0-bed1-b68e04389c50.jpg?v=1772215463",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_113_7_2aefabc9-22d2-4826-b6cd-d68373a91cc9.jpg?v=1772215463",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_4_3_779dffa3-776f-4eef-b95b-a05eeee73e11.jpg?v=1772215463",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_115_3_779dffa3-776f-4eef-b95b-a05eeee73e11.jpg?v=1771845943",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_116_1_11d7f6b8-b29e-4ffd-8c4a-a9a8a8e1e558.jpg?v=1771845943"
+      ],
+      "variants": [
+        {
+          "externalId": "49785608339733",
+          "title": "S",
+          "pricePkr": 7350,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-N-E3-S-0"
+        },
+        {
+          "externalId": "49785608372501",
+          "title": "M",
+          "pricePkr": 7350,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-N-E3-M-0"
+        },
+        {
+          "externalId": "49785608405269",
+          "title": "L",
+          "pricePkr": 7350,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-N-E3-L-0"
+        },
+        {
+          "externalId": "49785608438037",
+          "title": "XL",
+          "pricePkr": 7350,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-N-E3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9483094688021",
+      "handle": "pakeeza-embroidered-3pc",
+      "title": "Pakeeza Embroidered - 3pc",
+      "sourcePricePkr": 7490,
+      "compareAtPricePkr": 15000,
+      "sourceUrl": "https://chaudharyarts.com/products/pakeeza-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1761_JPG.jpg?v=1772531698",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1761_JPG.jpg?v=1772531698",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1757_JPG.jpg?v=1772531698",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1758_JPG.jpg?v=1772531698",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1759_JPG.jpg?v=1772531698",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/IMG_1762_JPG.jpg?v=1772531698",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_IMG-3765-edited_jpg.jpg?v=1778146024"
+      ],
+      "variants": [
+        {
+          "externalId": "49793593573653",
+          "title": "S",
+          "pricePkr": 7490,
+          "compareAtPricePkr": 15000,
+          "available": true,
+          "sku": "CHA-PE-3-S-0"
+        },
+        {
+          "externalId": "49793593606421",
+          "title": "M",
+          "pricePkr": 7490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PE-3-M-0"
+        },
+        {
+          "externalId": "49793593639189",
+          "title": "L",
+          "pricePkr": 7490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PE-3-L-0"
+        },
+        {
+          "externalId": "49793593671957",
+          "title": "XL",
+          "pricePkr": 7490,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PE-3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9555344130325",
+      "handle": "pari-zad-3pc",
+      "title": "Pari Zad - 3pc",
+      "sourcePricePkr": 6499,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/pari-zad-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/07_38b774f1-55a7-4573-8eb2-efd4bbe7fd76.jpg?v=1782302974",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/07_38b774f1-55a7-4573-8eb2-efd4bbe7fd76.jpg?v=1782302974",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_56a1d088-927b-4e06-b09e-83fdc7fce6a8.jpg?v=1782302975",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_26f0d318-9ca5-44a6-a507-8dc6fd616991.jpg?v=1782302975",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_b458e62f-38b6-460e-9cb7-805e11f0ea5f.jpg?v=1782302975",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_69c747e7-5440-47b1-babf-401f1b9bfef9.jpg?v=1782302975",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_d2eccb3b-d885-4abc-bcb9-51efd68e588b.jpg?v=1782302975",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_35cc82cb-cb30-48f7-90ba-cfb2c2726b59.jpg?v=1782302975"
+      ],
+      "variants": [
+        {
+          "externalId": "49989401870613",
+          "title": "S",
+          "pricePkr": 6499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PZ-3-S-0"
+        },
+        {
+          "externalId": "49989401903381",
+          "title": "M",
+          "pricePkr": 6499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PZ-3-M-0"
+        },
+        {
+          "externalId": "49989401936149",
+          "title": "L",
+          "pricePkr": 6499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PZ-3-L-0"
+        },
+        {
+          "externalId": "49989401968917",
+          "title": "XL",
+          "pricePkr": 6499,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-PZ-3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9438812111125",
+      "handle": "sahrosh-embroidered-3pc",
+      "title": "Sahrosh Embroidered 3pc",
+      "sourcePricePkr": 5790,
+      "compareAtPricePkr": 9298,
+      "sourceUrl": "https://chaudharyarts.com/products/sahrosh-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_74_resize-17146690721389992229ezgif5f55daa0471.progressive_a2e91e57-35ff-4bb0-9225-27c22b5e238e.jpg?v=1763635069",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_74_resize-17146690721389992229ezgif5f55daa0471.progressive_a2e91e57-35ff-4bb0-9225-27c22b5e238e.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_10_6A-2_7f44bbeb-b9c6-422d-b15e-e97f168b9b46.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_11_6A-6.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_12_6A-3_2b6e5f8e-3c94-4cc0-8e37-c08d358857b4.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_13_6A-1_454a9ead-21c7-44b6-9105-232ee56cfa83.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_14_6A-4_1d055765-fb04-4bae-9074-237b08ca3034.jpg?v=1763635069",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_15_6A-5_44c42941-dae0-4ae8-9da1-0e9f500aa2dc.jpg?v=1763635069"
+      ],
+      "variants": [
+        {
+          "externalId": "49550319288597",
+          "title": "S",
+          "pricePkr": 5790,
+          "compareAtPricePkr": 9298,
+          "available": true,
+          "sku": "CHA-SE3-S-2"
+        },
+        {
+          "externalId": "49550319321365",
+          "title": "M",
+          "pricePkr": 5790,
+          "compareAtPricePkr": 9298,
+          "available": true,
+          "sku": "CHA-SE3-M-2"
+        },
+        {
+          "externalId": "49550319354133",
+          "title": "L",
+          "pricePkr": 5790,
+          "compareAtPricePkr": 9298,
+          "available": true,
+          "sku": "CHA-SE3-L-2"
+        },
+        {
+          "externalId": "49550319386901",
+          "title": "XL",
+          "pricePkr": 5790,
+          "compareAtPricePkr": 9298,
+          "available": true,
+          "sku": "CHA-SE3-XL-2"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9552146923797",
+      "handle": "sky-fall-2pc",
+      "title": "Sky Fall - 2pc",
+      "sourcePricePkr": 4399,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/sky-fall-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/The_trouser_should_be_wide_202606180556.jpg?v=1781787637",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/The_trouser_should_be_wide_202606180556.jpg?v=1781787637",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/id____FINAL_PROMPT_05_NECKLINE_CHEST_EMBROIDERY_CLOSEUP____inputs_____202606180552.jpg?v=1781787637",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/purpose____Generate_premium_ethnic_202606180520.jpg?v=1781787636",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/The_trouser_is_not_actually_202606180551.jpg?v=1781787637",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/The_trouser_should_be_wide_202606180557.jpg?v=1781787636",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/The_trouser_should_be_wide_202606180558.jpg?v=1781787637"
+      ],
+      "variants": [
+        {
+          "externalId": "49981857661205",
+          "title": "S",
+          "pricePkr": 4399,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-SF3-S-0"
+        },
+        {
+          "externalId": "49981857693973",
+          "title": "M",
+          "pricePkr": 4399,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-SF3-M-0"
+        },
+        {
+          "externalId": "49981857726741",
+          "title": "L",
+          "pricePkr": 4399,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-SF3-L-0"
+        },
+        {
+          "externalId": "49981857759509",
+          "title": "XL",
+          "pricePkr": 4399,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-SF3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9524717158677",
+      "handle": "vaneeza-3pc",
+      "title": "Vaneeza - 3pc",
+      "sourcePricePkr": 6250,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/vaneeza-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Generate_a_full_202605040313.jpg?v=1778238276",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Generate_a_full_202605040313.jpg?v=1778238276",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/08_2.jpg?v=1778238233",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/07_12.jpg?v=1778238233",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_15.jpg?v=1778238234",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_20.jpg?v=1778238234",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_20.jpg?v=1778238234",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_17.jpg?v=1778238234",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_16_94fdde08-5c2f-4bf9-a3d1-9b8158704efd.jpg?v=1778238234",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/prompt____Create_a_dynamic_202605040314.jpg?v=1778238276"
+      ],
+      "variants": [
+        {
+          "externalId": "49913031328021",
+          "title": "S",
+          "pricePkr": 6250,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-VE-3-S-1"
+        },
+        {
+          "externalId": "49913031360789",
+          "title": "M",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-VE-3-M-1"
+        },
+        {
+          "externalId": "49913031393557",
+          "title": "L",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-VE-3-L-1"
+        },
+        {
+          "externalId": "49913031426325",
+          "title": "XL",
+          "pricePkr": 6250,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-VE-3-XL-1"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9574123569429",
+      "handle": "wania-3pc",
+      "title": "Wania - 3pc",
+      "sourcePricePkr": 6590,
+      "compareAtPricePkr": null,
+      "sourceUrl": "https://chaudharyarts.com/products/wania-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.1644_23afea1b-155a-429c-ad95-a11cc74d2b2c.jpg?v=1783691903",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.1644_23afea1b-155a-429c-ad95-a11cc74d2b2c.jpg?v=1783691903",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16.39PM_3053de28-e978-411f-98a2-a9650b55e553.jpg?v=1783691904",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16.38PM_1_1a7651cf-964d-444d-8ede-0a1106082786.jpg?v=1783691904",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16.38PM_2_b529a65a-f1cf-4048-ac70-01425e79c4cd.jpg?v=1783691903",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16_8913565d-9f0a-4cd1-ab52-b9054de6c72e.jpg?v=1783691904",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16.39PM_1_1_06414bd0-6773-4c29-a077-02632b163dac.jpg?v=1783691903",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/imgi_1_WhatsAppImage2026-04-17at5.16.37PM_895468f6-07a1-4fe4-a89b-64e4665b0171.jpg?v=1783691903"
+      ],
+      "variants": [
+        {
+          "externalId": "50025608347925",
+          "title": "S",
+          "pricePkr": 6590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-W3-S-0"
+        },
+        {
+          "externalId": "50025608380693",
+          "title": "M",
+          "pricePkr": 6590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-W3-M-0"
+        },
+        {
+          "externalId": "50025608413461",
+          "title": "L",
+          "pricePkr": 6590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-W3-L-0"
+        },
+        {
+          "externalId": "50025608446229",
+          "title": "XL",
+          "pricePkr": 6590,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-W3-XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9518906867989",
+      "handle": "yumna-embroidered-3pc",
+      "title": "Yumna - 3pc",
+      "sourcePricePkr": 6050,
+      "compareAtPricePkr": 12500,
+      "sourceUrl": "https://chaudharyarts.com/products/yumna-embroidered-3pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_13_1e013a40-bcb0-4ad3-851c-7c4a098b392a.jpg?v=1777477422",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_13_1e013a40-bcb0-4ad3-851c-7c4a098b392a.jpg?v=1777477422",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_9.jpg?v=1777477422",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_10_31faf0d1-c10a-4088-bb7a-98c63846822b.jpg?v=1777477422",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_11.jpg?v=1777477422",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_12.jpg?v=1777477422",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_13_7c882b68-2f3d-4fbc-ac07-beb527397c6c.jpg?v=1777477422"
+      ],
+      "variants": [
+        {
+          "externalId": "49893440815381",
+          "title": "S",
+          "pricePkr": 6050,
+          "compareAtPricePkr": 12500,
+          "available": true,
+          "sku": "CHA-YE--S-0"
+        },
+        {
+          "externalId": "49893440848149",
+          "title": "M",
+          "pricePkr": 6050,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-YE--M-0"
+        },
+        {
+          "externalId": "49893440880917",
+          "title": "L",
+          "pricePkr": 6050,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-YE--L-0"
+        },
+        {
+          "externalId": "49893440913685",
+          "title": "XL",
+          "pricePkr": 6050,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-YE--XL-0"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    },
+    {
+      "externalId": "9519794716949",
+      "handle": "zirwah-embroidered-2pc",
+      "title": "Zirwah - 2pc",
+      "sourcePricePkr": 4549,
+      "compareAtPricePkr": 9000,
+      "sourceUrl": "https://chaudharyarts.com/products/zirwah-embroidered-2pc",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_10.jpg?v=1777554871",
+      "gallery": [
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/06_10.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/07_8.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/05_11_ae927944-96ac-4053-8784-e5f704882df1.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/04_12.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/03_14.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/02_13.jpg?v=1777554871",
+        "https://cdn.shopify.com/s/files/1/0836/5581/9541/files/01_14.jpg?v=1777554871"
+      ],
+      "variants": [
+        {
+          "externalId": "49895579549973",
+          "title": "S",
+          "pricePkr": 4549,
+          "compareAtPricePkr": 9000,
+          "available": true,
+          "sku": "CHA-ZE-2-S-4"
+        },
+        {
+          "externalId": "49895579582741",
+          "title": "M",
+          "pricePkr": 4549,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ZE-2-M-2"
+        },
+        {
+          "externalId": "49895579615509",
+          "title": "L",
+          "pricePkr": 4549,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ZE-2-L-2"
+        },
+        {
+          "externalId": "49895579648277",
+          "title": "XL",
+          "pricePkr": 4549,
+          "compareAtPricePkr": null,
+          "available": true,
+          "sku": "CHA-ZE-2-XL-2"
+        }
+      ],
+      "available": true,
+      "sourceUpdatedAt": "2026-07-24T20:46:06+05:00",
+      "pricingStatus": "awaiting_cost",
+      "publishStatus": "draft"
+    }
+  ]
+}
