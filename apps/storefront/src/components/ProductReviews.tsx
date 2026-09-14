@@ -17,6 +17,10 @@ type Review = {
   createdAt: string;
 };
 
+type RatingDistribution = Record<1 | 2 | 3 | 4 | 5, number>;
+
+const emptyDistribution: RatingDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
 function detectedImageType(bytes: Uint8Array): { contentType: string; extension: string } | null {
   if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return { contentType: "image/jpeg", extension: "jpg" };
   if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return { contentType: "image/png", extension: "png" };
@@ -79,6 +83,7 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
   const [reviews, setReviews] = useState<Review[]>([]);
   const [average, setAverage] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
+  const [distribution, setDistribution] = useState<RatingDistribution>(emptyDistribution);
   const [loading, setLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -101,12 +106,13 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
     fetch(`${apiBase}/api/reviews?productId=${encodeURIComponent(productId)}`)
       .then(async (response) => {
         if (!response.ok) throw new Error("Reviews could not be loaded.");
-        return response.json() as Promise<{ reviews?: Review[]; average?: number; count?: number }>;
+        return response.json() as Promise<{ reviews?: Review[]; average?: number; count?: number; distribution?: RatingDistribution }>;
       })
       .then((result) => {
         setReviews(result.reviews ?? []);
         setAverage(Number(result.average ?? 0));
         setReviewCount(Number(result.count ?? result.reviews?.length ?? 0));
+        setDistribution(result.distribution ?? emptyDistribution);
       })
       .catch(() => setLoadFailed(true))
       .finally(() => setLoading(false));
@@ -154,12 +160,7 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
       <div className="reviews-heading">
         <div>
           <p className="eyebrow">CUSTOMER FEEDBACK</p>
-          <h2 id="reviews-heading">REVIEWS</h2>
-        </div>
-        <div className="review-summary" aria-label={reviewCount ? `${average} out of 5 from ${reviewCount} reviews` : "No reviews yet"}>
-          <strong>{reviewCount ? average.toFixed(1) : "NEW"}</strong>
-          <span aria-hidden="true">{reviewCount ? "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average)) : "☆☆☆☆☆"}</span>
-          <small>{reviewCount} {reviewCount === 1 ? "review" : "reviews"}</small>
+          <h2 id="reviews-heading">RATINGS &amp; REVIEWS</h2>
         </div>
         <details className="review-compose">
           <summary>WRITE A REVIEW</summary>
@@ -183,17 +184,41 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
         </details>
       </div>
 
+      <div className="review-overview">
+        <div className="review-score" aria-label={reviewCount ? `${average} out of 5 from ${reviewCount} reviews` : "No reviews yet"}>
+          <strong>{reviewCount ? average.toFixed(1) : "—"}</strong>
+          <span aria-hidden="true">{reviewCount ? "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average)) : "☆☆☆☆☆"}</span>
+          <small>Based on {reviewCount} {reviewCount === 1 ? "review" : "reviews"}</small>
+        </div>
+        <div className="review-breakdown" aria-label="Rating distribution">
+          {([5, 4, 3, 2, 1] as const).map((value) => (
+            <div key={value}>
+              <span>{value} star</span>
+              <span className="review-breakdown-track" aria-hidden="true"><i style={{ width: `${reviewCount ? (distribution[value] / reviewCount) * 100 : 0}%` }} /></span>
+              <strong>{distribution[value]}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="reviews-list">
+          <div className="reviews-list-heading"><h3>MOST RECENT REVIEWS</h3><span>{reviewCount} total</span></div>
           {loading ? <LoadingState compact label="Loading reviews" /> : null}
           {!loading && loadFailed ? <p className="review-empty">Reviews are temporarily unavailable.</p> : null}
           {!loading && !loadFailed && !reviews.length ? <p className="review-empty">No customer reviews yet. You can be the first to review this article.</p> : null}
           {reviews.map((review) => (
             <article className="review-card" key={review.id}>
-              <div><span className="review-stars" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</span><time dateTime={review.createdAt}>{new Intl.DateTimeFormat("en-PK", { dateStyle: "medium" }).format(new Date(review.createdAt))}</time></div>
-              {review.title ? <h3>{review.title}</h3> : null}
+              <header className="review-card-header">
+                <div className="review-author">
+                  <span aria-hidden="true">{review.name.trim().charAt(0).toUpperCase()}</span>
+                  <div><strong>{review.name}</strong><small>Customer review</small></div>
+                </div>
+                <time dateTime={review.createdAt}>{new Intl.DateTimeFormat("en-PK", { dateStyle: "medium" }).format(new Date(review.createdAt))}</time>
+              </header>
+              <span className="review-stars" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</span>
+              {review.title ? <h4>{review.title}</h4> : null}
               <p>{review.comment}</p>
               {review.imageUrl ? <img className="review-customer-image" src={review.imageUrl} alt="Photo shared with this review" loading="lazy" /> : null}
-              <strong>{review.name}</strong>
             </article>
           ))}
       </div>

@@ -2653,16 +2653,37 @@ async function getPublishedReviews(db: CatalogDatabase, productId: string) {
        ORDER BY created_at DESC LIMIT 50`,
     ).bind(productId).all(),
     db.prepare(
-      `SELECT COUNT(*) AS count, ROUND(AVG(rating), 1) AS average
+      `SELECT COUNT(*) AS count,
+              ROUND(AVG(rating), 1) AS average,
+              SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS fiveStar,
+              SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS fourStar,
+              SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS threeStar,
+              SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS twoStar,
+              SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS oneStar
        FROM product_reviews
        WHERE product_id = ? AND status = 'approved'`,
-    ).bind(productId).first<{ count: number; average: number | null }>(),
+    ).bind(productId).first<{
+      count: number;
+      average: number | null;
+      fiveStar: number;
+      fourStar: number;
+      threeStar: number;
+      twoStar: number;
+      oneStar: number;
+    }>(),
   ]);
   const reviews = result.results ?? [];
   return {
     reviews,
     count: Number(summary?.count ?? 0),
     average: Number(summary?.average ?? 0),
+    distribution: {
+      5: Number(summary?.fiveStar ?? 0),
+      4: Number(summary?.fourStar ?? 0),
+      3: Number(summary?.threeStar ?? 0),
+      2: Number(summary?.twoStar ?? 0),
+      1: Number(summary?.oneStar ?? 0),
+    },
   };
 }
 

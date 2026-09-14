@@ -85,6 +85,9 @@ uploading them under the `reviews/` prefix in Supabase Storage. A hidden spam
 field, length limits and a maximum of five submissions per network address per
 hour protect the free D1 plan from basic abuse without storing a raw IP address.
 Deleting a review also removes its Haley Wali-hosted photo.
+The article-specific GET response includes the full approved count, average and
+five-to-one-star distribution; the displayed list remains capped at the latest
+50 reviews.
 
 Legacy `/api/admin/catalog/pret` GET/PATCH routes remain for compatibility.
 
@@ -154,9 +157,11 @@ remains `Branded`; catalogue filters and the Branded mega menu present one
 An article is public only when all relevant rules pass:
 
 - publication status is `published`;
-- selling price exists and is greater than zero;
-- manually added article has stock greater than zero;
-- imported `owned_stock` article has Haley Wali stock greater than zero.
+- selling price exists and is greater than zero.
+
+Publishing still requires real stock to be entered. Once published, reaching
+zero stock does not automatically hide or unpublish the article; it stays
+public with an out-of-stock status until the manager restocks or unpublishes it.
 
 Imports create drafts. Imports do not publish, unpublish because of price edits,
 or overwrite owner pricing.

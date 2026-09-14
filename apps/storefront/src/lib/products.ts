@@ -35,6 +35,7 @@ export type PublishedReview = {
   createdAt: string;
   articleName: string;
   articleImageUrl?: string | null;
+  isSample?: boolean;
 };
 
 export async function fetchLatestReviews(apiBase: string, limit = 6) {

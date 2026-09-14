@@ -93,7 +93,9 @@ attempts from the same network address within 15 minutes.
 7. Choose supply mode:
    - `on_demand`: keep it as a private supplier draft while deciding whether to
      buy it;
-   - `owned_stock`: public only while Haley Wali stock is greater than zero.
+   - `owned_stock`: publish only after Haley Wali has entered real stock; after
+     publication, the article remains public with an out-of-stock status if
+     that quantity later reaches zero.
 8. Review public title, images and variants. For owned stock, enter the exact
    quantity held in each available size rather than only one total quantity.
 9. Publish manually. Publishing owned stock preserves the public article ID,
@@ -186,7 +188,9 @@ charge until an offer makes that order's delivery free.
 6. Only approved reviews and their optional photos appear publicly and
    contribute to the public review count and average. Home shows the latest
    approved reviews in a responsive section after featured articles, with a
-   direct link back to each reviewed article.
+   direct link back to each reviewed article. Before the first approval, Home
+   shows one explicit `Sample review` preview rather than implying that dummy
+   feedback came from a real customer.
 
 ## Failure expectations
 

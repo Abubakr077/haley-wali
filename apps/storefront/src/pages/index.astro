@@ -5,13 +5,27 @@ import LatestReviews from "../components/LatestReviews.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { loadShopSettings } from "../lib/offers";
 import { fetchLatestReviews, fetchPublishedArticles } from "../lib/products";
+import type { PublishedReview } from "../lib/products";
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
 const shopSettings = await loadShopSettings(apiBase);
 const exclusiveArticles = (await fetchPublishedArticles(apiBase)).filter(
   (article) => article.category === "exclusive",
 );
 const initialFeaturedArticles = exclusiveArticles.slice(0, 4);
-const latestReviews = await fetchLatestReviews(apiBase, 6);
+const publishedReviews = await fetchLatestReviews(apiBase, 6);
+const sampleArticle = initialFeaturedArticles[0];
+const latestReviews: PublishedReview[] = publishedReviews.length ? publishedReviews : [{
+  id: "sample-review",
+  productId: sampleArticle?.id ?? "",
+  name: "Sample customer",
+  rating: 5,
+  title: "Beautiful fabric and finishing",
+  comment: "The suit looked just like the photos, the fabric felt lovely and the packing was very neat.",
+  createdAt: "",
+  articleName: sampleArticle?.name ?? "Haley Wali article",
+  articleImageUrl: sampleArticle?.image ?? "/brand/haley-wali-logo.svg",
+  isSample: true,
+}];
 const exclusiveArticlePhotos = initialFeaturedArticles
   .map((article) => ({ src: article.image, alt: `${article.name} ${article.title}` }))
   .filter((photo, index, photos) => photos.findIndex((candidate) => candidate.src === photo.src) === index);

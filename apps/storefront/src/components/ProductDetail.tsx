@@ -197,17 +197,15 @@ export default function ProductDetail({
         </div>
       <div className="detail-copy">
         <span className="product-brand">{product.brand}</span>
-        <div className="detail-title-row">
-          <h1>{product.name}</h1>
-          <a className="detail-rating-summary" href="#reviews-heading" aria-label={product.reviewCount ? `${product.reviewAverage} out of 5 from ${product.reviewCount} reviews. Jump to reviews.` : "No reviews yet. Jump to reviews."}>
-            <span aria-hidden="true">★</span>
-            <strong>{product.reviewCount ? product.reviewAverage.toFixed(1) : "NEW"}</strong>
-            <small>{product.reviewCount} {product.reviewCount === 1 ? "review" : "reviews"}</small>
-          </a>
-        </div>
+        <h1>{product.name}</h1>
         <p className="product-subtitle">
           {product.title} · {product.pieces}{product.articleCode ? ` · ${product.articleCode}` : ""}
         </p>
+        <a className="detail-rating-link" href="#reviews-heading" aria-label={product.reviewCount ? `${product.reviewAverage} out of 5 from ${product.reviewCount} reviews. Jump to reviews.` : "No reviews yet. Write the first review."}>
+          <span className="detail-rating-stars" aria-hidden="true">{product.reviewCount ? "★".repeat(Math.round(product.reviewAverage)) + "☆".repeat(5 - Math.round(product.reviewAverage)) : "☆☆☆☆☆"}</span>
+          <strong>{product.reviewCount ? product.reviewAverage.toFixed(1) : "New"}</strong>
+          <span>{product.reviewCount ? `${product.reviewCount} ${product.reviewCount === 1 ? "review" : "reviews"}` : "Write the first review"}</span>
+        </a>
         <div className="detail-price-row">
           {product.originalPrice ? <del>{formatPkr(product.originalPrice)}</del> : null}
           <strong className="detail-price">{formatPkr(product.price)}</strong>

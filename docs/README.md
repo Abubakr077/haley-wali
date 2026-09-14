@@ -25,4 +25,4 @@ Update `CURRENT_STATUS.md` after every meaningful module or production release.
 Update the other file that owns the changed decision instead of adding the same
 information to several files.
 
-Last documentation review: **2026-09-06**.
+Last documentation review: **2026-09-14**.

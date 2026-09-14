@@ -112,7 +112,14 @@ Status reviewed from source and production configuration on **2026-09-14**.
 - Approved rating averages and counts appear on article cards and beside the
   article name on details. Home shows up to six latest approved reviews in a
   responsive section after featured articles, including review photos and
-  direct article links when available.
+  direct article links when available. Until the first approved review exists,
+  Home shows one clearly marked sample-review preview so its final placement and
+  styling can be reviewed without presenting it as real customer feedback.
+- Article review details follow familiar ecommerce structure: a compact inline
+  rating link below the article subtitle, average score, five-to-one-star
+  distribution, most-recent heading, customer initials and optional review
+  photography. No verified-purchase claim is shown because reviews are not yet
+  linked to completed orders.
 - Product details show exact remaining stock, a device-local wishlist action
   and live related articles; the header links to a dedicated Wishlist page.
 - A free product-page WhatsApp help action is prefilled with the article name,
