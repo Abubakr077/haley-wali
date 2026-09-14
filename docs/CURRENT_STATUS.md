@@ -110,9 +110,9 @@ Status reviewed from source and production configuration on **2026-09-14**.
   article details disable sold-out Pret sizes and Add to Bag, and checkout keeps
   its server-side stock validation.
 - Approved rating averages and counts appear on article cards and beside the
-  article name on details. Home shows up to six latest approved reviews in a
-  responsive section after featured articles, including review photos and
-  direct article links when available. Until the first approved review exists,
+  article name on details. Home shows up to six latest approved reviews in one
+  horizontally scrollable card row after featured articles, including review
+  photos and direct article links when available. Until the first approved review exists,
   Home shows one clearly marked sample-review preview so its final placement and
   styling can be reviewed without presenting it as real customer feedback.
 - Article review details follow familiar ecommerce structure: a compact inline

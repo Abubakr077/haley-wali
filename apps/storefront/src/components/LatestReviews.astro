@@ -15,7 +15,11 @@ const hasOnlySample = reviews.length === 1 && reviews[0]?.isSample;
       </div>
       <p>{hasOnlySample ? "A preview of how approved customer feedback will appear here." : "Recent feedback shared by Haley Wali customers and checked before publication."}</p>
     </header>
-    <div class:list={["home-review-grid", { "is-single": reviews.length === 1 }]}>
+    <div
+      class:list={["home-review-grid", { "is-single": reviews.length === 1 }]}
+      aria-label="Latest customer reviews"
+      tabindex="0"
+    >
       {reviews.map((review) => (
         <article class:list={["home-review-card", { "has-photo": Boolean(review.imageUrl) }]}>
           {review.imageUrl ? <img src={review.imageUrl} alt={`Photo shared in a review of ${review.articleName}`} loading="lazy" /> : null}

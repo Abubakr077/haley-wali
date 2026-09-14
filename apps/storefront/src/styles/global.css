@@ -1280,9 +1280,25 @@ img { max-width: 100%; }
 }
 .home-starbucks .sb-featured-section .home-catalog-empty h3 { color: var(--sb-green); }
 .home-starbucks .sb-latest-reviews { background: var(--sb-cream); }
-.home-review-grid { width: min(100%, 1320px); margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.home-review-grid.is-single { grid-template-columns: minmax(0, 720px); justify-content: center; }
-.home-review-card { min-width: 0; overflow: hidden; display: grid; border: 1px solid rgba(92, 49, 48, .08); border-radius: 12px; background: var(--sb-card); box-shadow: var(--retail-card-shadow); }
+.home-review-grid {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 0 0 14px;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline proximity;
+  scrollbar-color: var(--sb-accent) rgba(92, 49, 48, .12);
+  scrollbar-width: thin;
+}
+.home-review-grid::-webkit-scrollbar { height: 8px; }
+.home-review-grid::-webkit-scrollbar-track { border-radius: 50px; background: rgba(92, 49, 48, .12); }
+.home-review-grid::-webkit-scrollbar-thumb { border-radius: 50px; background: var(--sb-accent); }
+.home-review-grid.is-single { justify-content: center; }
+.home-review-card { min-width: 0; flex: 0 0 calc((100% - 40px) / 3); overflow: hidden; display: grid; scroll-snap-align: start; border: 1px solid rgba(92, 49, 48, .08); border-radius: 12px; background: var(--sb-card); box-shadow: var(--retail-card-shadow); }
+.home-review-grid.is-single .home-review-card { flex-basis: min(100%, 720px); }
 .home-review-card.has-photo { grid-template-columns: minmax(105px, 34%) minmax(0, 1fr); }
 .home-review-card>img { width: 100%; height: 100%; min-height: 310px; display: block; object-fit: cover; object-position: center; }
 .home-review-copy { min-width: 0; padding: clamp(22px, 2.6vw, 32px); display: flex; flex-direction: column; }
@@ -1377,7 +1393,7 @@ img { max-width: 100%; }
   .home-starbucks .sb-collection-card { grid-template-columns: 1fr; }
   .home-starbucks .sb-collection-card>img,
   .home-starbucks .sb-exclusive-collage { min-height: 300px; aspect-ratio: 1.25; }
-  .home-review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-review-card { flex-basis: calc((100% - 20px) / 2); }
 }
 
 @media (max-width: 760px) {
@@ -1429,7 +1445,7 @@ img { max-width: 100%; }
   .home-starbucks .sb-collection-card>img,
   .home-starbucks .sb-exclusive-collage { min-height: 300px; aspect-ratio: auto; }
   .home-starbucks .sb-collection-copy { padding: 24px; }
-  .home-review-grid { grid-template-columns: 1fr; }
+  .home-review-card { flex-basis: min(86vw, 420px); }
   .home-starbucks .sb-packaging { grid-template-columns: 1fr; gap: 40px; }
   .home-starbucks .sb-packaging-visual { min-height: 470px; }
   .home-starbucks .sb-story-band { padding: 68px 20px; grid-template-columns: 1fr; gap: 44px; }

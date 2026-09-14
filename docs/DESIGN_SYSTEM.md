@@ -170,12 +170,14 @@ Downloads folder. Do not require those external files at runtime.
   article name. Product details repeat that summary beside the name and link it
   to the full review section. When stock is zero, retain the article photography
   and replace the image badge with a high-contrast `Out of stock` status.
-- Home places up to six latest approved reviews in a responsive card grid after
-  featured articles. Review photos may lead their card; text-only reviews use
-  the same card treatment. Keep this content in the page flow so it never covers
-  navigation or the floating bag control. If there are no approved reviews, one
-  visibly labelled sample card previews this area and disappears automatically
-  after the first real approved review.
+- Home places up to six latest approved reviews in one horizontally scrollable
+  card row after featured articles. Keep the scrollbar visible, allow touch and
+  trackpad scrolling, and show three cards at once on desktop, two on tablets
+  and most of one card on phones. Review photos may lead their card; text-only
+  reviews use the same card treatment. Keep this content in the page flow so it
+  never covers navigation or the floating bag control. If there are no approved
+  reviews, one visibly labelled sample card previews this area and disappears
+  automatically after the first real approved review.
 - Pret product details show one Article Measurements table using that article's
   saved values. Sizes are columns, measurements are rows, and the selected size
   is highlighted. The heading stays stacked above the table so size columns can
