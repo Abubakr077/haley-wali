@@ -1,0 +1,37 @@
+---
+import type { PublishedReview } from "../lib/products";
+
+const { reviews } = Astro.props as { reviews: PublishedReview[] };
+const dateFormatter = new Intl.DateTimeFormat("en-PK", { dateStyle: "medium" });
+---
+
+{reviews.length ? (
+  <section class="sb-home-section sb-latest-reviews" aria-labelledby="latest-reviews-heading">
+    <header class="sb-section-heading">
+      <div>
+        <p class="sb-kicker">CUSTOMER FEEDBACK</p>
+        <h2 id="latest-reviews-heading">Latest article reviews</h2>
+      </div>
+      <p>Recent feedback shared by Haley Wali customers and checked before publication.</p>
+    </header>
+    <div class="home-review-grid">
+      {reviews.map((review) => (
+        <article class:list={["home-review-card", { "has-photo": Boolean(review.imageUrl) }]}>
+          {review.imageUrl ? <img src={review.imageUrl} alt={`Photo shared in a review of ${review.articleName}`} loading="lazy" /> : null}
+          <div class="home-review-copy">
+            <div class="home-review-meta">
+              <span class="review-stars" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</span>
+              <time datetime={review.createdAt}>{dateFormatter.format(new Date(review.createdAt))}</time>
+            </div>
+            {review.title ? <h3>{review.title}</h3> : null}
+            <p>“{review.comment}”</p>
+            <footer>
+              <strong>{review.name}</strong>
+              <a href={`/product?id=${encodeURIComponent(review.productId)}#reviews-heading`}>View {review.articleName}</a>
+            </footer>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+) : null}

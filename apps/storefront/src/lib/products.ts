@@ -24,6 +24,32 @@ export async function fetchPublishedArticles(apiBase: string) {
   }
 }
 
+export type PublishedReview = {
+  id: string;
+  productId: string;
+  name: string;
+  rating: number;
+  title?: string;
+  comment: string;
+  imageUrl?: string | null;
+  createdAt: string;
+  articleName: string;
+  articleImageUrl?: string | null;
+};
+
+export async function fetchLatestReviews(apiBase: string, limit = 6) {
+  try {
+    const response = await fetch(`${apiBase}/api/reviews?latest=1&limit=${limit}`, {
+      headers: { accept: "application/json" },
+    });
+    if (!response.ok) return [] as PublishedReview[];
+    const result = (await response.json()) as { reviews?: PublishedReview[] };
+    return result.reviews ?? [];
+  } catch {
+    return [] as PublishedReview[];
+  }
+}
+
 export type PublishedArticle = {
   id: string;
   title: string;
@@ -34,6 +60,8 @@ export type PublishedArticle = {
   salePercent?: number;
   saleName?: string;
   stockQty?: number;
+  reviewAverage?: number;
+  reviewCount?: number;
   imageUrl: string | null;
   gallery?: string[];
   variants?: Array<{ title: string; available: boolean; stockQty?: number }>;
@@ -56,7 +84,7 @@ export type PublishedArticle = {
 
 export function mapPublishedArticle(article: PublishedArticle): Product {
   const variants = (article.variants ?? []).filter(
-    (variant) => variant.available && !/^default title$/i.test(variant.title),
+    (variant) => !/^default title$/i.test(variant.title),
   );
   return {
     id: article.id,
@@ -76,6 +104,8 @@ export function mapPublishedArticle(article: PublishedArticle): Product {
     salePercent: article.salePercent,
     saleName: article.saleName,
     stockQty: Number(article.stockQty ?? 0),
+    reviewAverage: Number(article.reviewAverage ?? 0),
+    reviewCount: Number(article.reviewCount ?? 0),
     image: article.imageUrl ?? "/brand/haley-wali-logo.svg",
     gallery: article.gallery,
     color: article.color || "As shown",

@@ -645,6 +645,12 @@ img { max-width: 100%; }
 .detail-copy { padding: clamp(28px, 3.5vw, 40px); align-self: start; position: sticky; top: 68px; }
 .detail-copy .product-brand { color: var(--muted); text-transform: uppercase; }
 .detail-copy h1 { margin: 12px 0 8px; font-size: clamp(38px, 4vw, 64px); line-height: .95; font-weight: 500; letter-spacing: -.05em; }
+.detail-title-row { margin: 12px 0 8px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; }
+.detail-copy .detail-title-row h1 { min-width: 0; margin: 0; flex: 1 1 240px; }
+.detail-rating-summary { min-width: max-content; padding: 8px 11px; display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 5px; border: 1px solid var(--line); border-radius: 10px; background: var(--blush-wash); color: var(--accent); }
+.detail-rating-summary>span { grid-row: 1 / span 2; font-size: 18px; }
+.detail-rating-summary strong { font-size: 13px; line-height: 1; }
+.detail-rating-summary small { color: var(--muted); font-size: 9px; line-height: 1.2; }
 .detail-copy .product-subtitle { margin: 0 0 16px; color: var(--muted); }
 .detail-price-row { margin-bottom: 18px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
 .detail-price-row del { color: var(--muted); font-size: 15px; }
@@ -664,6 +670,8 @@ img { max-width: 100%; }
 .size-options input { position: absolute; opacity: 0; pointer-events: none; }
 .size-options span { width: 100%; min-width: 49px; min-height: 45px; display: grid; place-items: center; border: 1px solid var(--line); }
 .size-options input:checked+span { border-color: var(--ink); background: var(--ink); color: white; }
+.size-options input:disabled+span { color: var(--muted); background: var(--chrome); cursor: not-allowed; text-decoration: line-through; }
+.size-options span small { display: block; font-size: 7px; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
 .stock-note { margin: -16px 0 20px; color: var(--muted); font-size: 11px; }
 .article-information { margin-top: 28px; border-top: 1px solid var(--line); }
 .article-information>h2 { margin: 0; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: .06em; }
@@ -1259,6 +1267,19 @@ img { max-width: 100%; }
   text-align: center;
 }
 .home-starbucks .sb-featured-section .home-catalog-empty h3 { color: var(--sb-green); }
+.home-starbucks .sb-latest-reviews { background: var(--sb-cream); }
+.home-review-grid { width: min(100%, 1320px); margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.home-review-card { min-width: 0; overflow: hidden; display: grid; border-radius: 12px; background: var(--sb-card); box-shadow: var(--retail-card-shadow); }
+.home-review-card.has-photo { grid-template-rows: minmax(210px, 280px) 1fr; }
+.home-review-card>img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+.home-review-copy { min-width: 0; padding: 24px; display: flex; flex-direction: column; }
+.home-review-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.home-review-meta time { color: var(--muted); font-size: 10px; }
+.home-review-copy h3 { margin: 22px 0 0; color: var(--sb-green); font-size: 19px; line-height: 1.3; }
+.home-review-copy>p { margin: 14px 0 24px; color: var(--sb-soft); line-height: 1.65; }
+.home-review-copy footer { margin-top: auto; padding-top: 16px; display: flex; align-items: end; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); }
+.home-review-copy footer strong { color: var(--sb-green); font-size: 11px; text-transform: uppercase; }
+.home-review-copy footer a { color: var(--sb-accent); font-size: 11px; font-weight: 700; text-align: right; }
 .home-starbucks .sb-packaging {
   display: grid;
   grid-template-columns: minmax(0, .9fr) minmax(460px, 1.1fr);
@@ -1336,6 +1357,7 @@ img { max-width: 100%; }
   .home-starbucks .sb-collection-card { grid-template-columns: 1fr; }
   .home-starbucks .sb-collection-card>img,
   .home-starbucks .sb-exclusive-collage { min-height: 300px; aspect-ratio: 1.25; }
+  .home-review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -1387,6 +1409,7 @@ img { max-width: 100%; }
   .home-starbucks .sb-collection-card>img,
   .home-starbucks .sb-exclusive-collage { min-height: 300px; aspect-ratio: auto; }
   .home-starbucks .sb-collection-copy { padding: 24px; }
+  .home-review-grid { grid-template-columns: 1fr; }
   .home-starbucks .sb-packaging { grid-template-columns: 1fr; gap: 40px; }
   .home-starbucks .sb-packaging-visual { min-height: 470px; }
   .home-starbucks .sb-story-band { padding: 68px 20px; grid-template-columns: 1fr; gap: 44px; }
@@ -1893,6 +1916,11 @@ main { min-height: 52vh; }
 .product-copy h3 { margin: 8px 0; font-size: 16px; line-height: 1.35; text-transform: none; }
 .product-copy p { font-size: 12px; }
 .product-copy strong { font-size: 14px; font-weight: 600; }
+.product-card.is-sold-out .product-image img { filter: saturate(.72); }
+.product-image>.product-card-stock-status { background: var(--retail-dark); color: white; }
+.home-starbucks .sb-featured-section .product-image>.product-card-stock-status { background: var(--retail-dark); color: white; }
+.product-card-rating { margin: -2px 0 9px; display: flex; align-items: center; gap: 4px; color: var(--retail-accent); font-size: 12px; font-weight: 700; }
+.product-copy .product-card-rating small { color: var(--muted); font-size: 10px; font-weight: 500; text-transform: none; }
 .product-copy a {
   min-height: 34px;
   padding: 7px 14px;
@@ -2257,6 +2285,8 @@ main { min-height: 52vh; }
   .detail-thumbnail-actions { width: 64px; }
   .detail-image-navigation { min-height: 44px; }
   .detail-copy { padding: 28px 20px; }
+  .detail-title-row { align-items: start; }
+  .detail-rating-summary { margin-top: 2px; }
   .detail-measurements .detail-size-table { min-width: 520px; table-layout: auto; }
   .line-form { padding: 22px 18px; }
   .bag-line { grid-template-columns: 85px 1fr; }

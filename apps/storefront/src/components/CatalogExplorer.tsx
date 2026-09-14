@@ -35,8 +35,9 @@ function customerBrandFilterName(value: string) {
 }
 
 export function ProductCard({ product }: { product: Product }) {
+  const soldOut = product.stockQty <= 0;
   return (
-    <article className="product-card">
+    <article className={`product-card${soldOut ? " is-sold-out" : ""}`}>
       <WishlistButton productId={product.id} compact />
       <a
         className="product-image"
@@ -47,12 +48,16 @@ export function ProductCard({ product }: { product: Product }) {
           alt={`${product.name} ${product.title}`}
           loading="lazy"
         />
-        <span>{product.badge}</span>
+        <span className={soldOut ? "product-card-stock-status" : undefined}>{soldOut ? "Out of stock" : product.badge}</span>
       </a>
       <div className="product-copy">
         <div>
           <small>{product.brand}</small>
           <h3>{product.name} · {product.title}</h3>
+          <span className="product-card-rating" aria-label={product.reviewCount ? `${product.reviewAverage} out of 5 from ${product.reviewCount} reviews` : "No reviews yet"}>
+            <span aria-hidden="true">★</span> {product.reviewCount ? product.reviewAverage.toFixed(1) : "New"}
+            <small>({product.reviewCount})</small>
+          </span>
           <p>{product.pieces} · {product.type}</p>
         </div>
         <div>

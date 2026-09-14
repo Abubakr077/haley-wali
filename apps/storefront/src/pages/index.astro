@@ -1,15 +1,17 @@
 ---
 import FeaturedArticles from "../components/FeaturedArticles";
 import HomeHero, { type HomeHeroSlide } from "../components/HomeHero";
+import LatestReviews from "../components/LatestReviews.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { loadShopSettings } from "../lib/offers";
-import { fetchPublishedArticles } from "../lib/products";
+import { fetchLatestReviews, fetchPublishedArticles } from "../lib/products";
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
 const shopSettings = await loadShopSettings(apiBase);
 const exclusiveArticles = (await fetchPublishedArticles(apiBase)).filter(
   (article) => article.category === "exclusive",
 );
 const initialFeaturedArticles = exclusiveArticles.slice(0, 4);
+const latestReviews = await fetchLatestReviews(apiBase, 6);
 const exclusiveArticlePhotos = initialFeaturedArticles
   .map((article) => ({ src: article.image, alt: `${article.name} ${article.title}` }))
   .filter((photo, index, photos) => photos.findIndex((candidate) => candidate.src === photo.src) === index);
@@ -131,6 +133,8 @@ const jsonLd = {
     </div>
     <FeaturedArticles initialProducts={initialFeaturedArticles} apiBase={apiBase} client:load />
   </section>
+
+  <LatestReviews reviews={latestReviews} />
 
   <section class="sb-home-section sb-packaging" id="packing">
     <div class="sb-packaging-copy">

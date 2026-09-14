@@ -6,9 +6,10 @@ const { product, priority = false } = Astro.props as {
   product: Product;
   priority?: boolean;
 };
+const soldOut = product.stockQty <= 0;
 ---
 
-<article class="product-card">
+<article class:list={["product-card", { "is-sold-out": soldOut }]}>
   <a class="product-image" href={`/product?id=${encodeURIComponent(product.id)}`}>
     <img
       src={product.image}
@@ -16,12 +17,16 @@ const { product, priority = false } = Astro.props as {
       loading={priority ? "eager" : "lazy"}
       fetchpriority={priority ? "high" : "auto"}
     />
-    <span>{product.badge}</span>
+    <span class={soldOut ? "product-card-stock-status" : undefined}>{soldOut ? "Out of stock" : product.badge}</span>
   </a>
   <div class="product-copy">
     <div>
       <small>{product.brand}</small>
       <h3>{product.name} · {product.title}</h3>
+      <span class="product-card-rating" aria-label={product.reviewCount ? `${product.reviewAverage} out of 5 from ${product.reviewCount} reviews` : "No reviews yet"}>
+        <span aria-hidden="true">★</span> {product.reviewCount ? product.reviewAverage.toFixed(1) : "New"}
+        <small>({product.reviewCount})</small>
+      </span>
       <p>{product.pieces} · {product.type}</p>
     </div>
     <div>

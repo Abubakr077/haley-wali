@@ -18,6 +18,10 @@ automatic-sale slide.
    generated from current published articles, so unavailable values do not leave
    empty permanent filters. Branded brand choices use the saved brand names.
 3. Customer opens an article, checks pictures, pieces, fabric, size and price.
+   Published articles remain visible when their stock reaches zero. Article
+   cards and details show `Out of stock`, sold-out Pret sizes cannot be selected,
+   and Add to Bag remains disabled until stock is restored in Store Manager.
+   Approved rating averages and counts appear near article names.
    If unsure, the customer can open a prefilled WhatsApp enquiry containing the
    article name, code, current price, selected size and direct product link.
    During an automatic sale, the original price is crossed out beside the
@@ -36,7 +40,7 @@ automatic-sale slide.
    send to confirm the COD order with Haley Wali. This manual message does not
    use the paid WhatsApp Business Platform. The customer can then track using
    order number plus mobile.
-9. Any visitor can rate and review an available article without signing in.
+9. Any visitor can rate and review a published article without signing in.
    The review remains private until the Store Manager approves it.
 10. Customers can save articles to a device-local wishlist, open them again
     from the Wishlist page and remove them using the same heart control.
@@ -180,7 +184,9 @@ charge until an offer makes that order's delivery free.
 4. Store Manager -> Product Reviews shows the moderation queue.
 5. The manager approves a suitable review, rejects it, or deletes it.
 6. Only approved reviews and their optional photos appear publicly and
-   contribute to the public review count and average.
+   contribute to the public review count and average. Home shows the latest
+   approved reviews in a responsive section after featured articles, with a
+   direct link back to each reviewed article.
 
 ## Failure expectations
 

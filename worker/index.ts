@@ -1175,11 +1175,6 @@ async function getPublishedPret(db: CatalogDatabase) {
        WHERE cp.category = 'pret'
          AND cp.publish_status = 'published'
          AND cp.selling_price_pkr IS NOT NULL
-         AND (
-           (cp.supply_mode = 'owned_stock' AND cp.stock_qty > 0)
-           OR
-           (cp.supply_mode = 'on_demand' AND sp.source_available = 1)
-         )
        ORDER BY cp.updated_at DESC`,
     )
     .all();
@@ -1246,7 +1241,7 @@ async function getManualProducts(db: CatalogDatabase, publishedOnly = false) {
          created_at AS createdAt,
          updated_at AS updatedAt
        FROM manual_products
-       ${publishedOnly ? "WHERE publish_status = 'published' AND selling_price_pkr IS NOT NULL AND stock_qty > 0" : ""}
+       ${publishedOnly ? "WHERE publish_status = 'published' AND selling_price_pkr IS NOT NULL" : ""}
        ORDER BY updated_at DESC`,
     )
     .all();
@@ -1266,11 +1261,26 @@ async function getManualProducts(db: CatalogDatabase, publishedOnly = false) {
 }
 
 async function getPublishedArticles(db: CatalogDatabase) {
-  const [manual, imported] = await Promise.all([
+  const [manual, imported, reviewSummaryResult] = await Promise.all([
     getManualProducts(db, true),
     getPublishedPret(db),
+    db.prepare(
+      `SELECT product_id AS productId, COUNT(*) AS reviewCount, ROUND(AVG(rating), 1) AS reviewAverage
+       FROM product_reviews
+       WHERE status = 'approved'
+       GROUP BY product_id`,
+    ).all(),
   ]);
-  return [...manual, ...imported];
+  const reviewSummaries = new Map(
+    (reviewSummaryResult.results ?? []).map((summary) => [String(summary.productId), {
+      reviewCount: Number(summary.reviewCount ?? 0),
+      reviewAverage: Number(summary.reviewAverage ?? 0),
+    }]),
+  );
+  return [...manual, ...imported].map((article) => ({
+    ...article,
+    ...(reviewSummaries.get(String(article.id)) ?? { reviewCount: 0, reviewAverage: 0 }),
+  }));
 }
 
 type ManualProductInput = {
@@ -2635,17 +2645,55 @@ async function reviewSubmitterHash(request: Request): Promise<string> {
 
 async function getPublishedReviews(db: CatalogDatabase, productId: string) {
   if (!productId) return { reviews: [], count: 0, average: 0 };
-  const result = await db.prepare(
-    `SELECT id, customer_name AS name, rating, title, comment, image_url AS imageUrl, created_at AS createdAt
-     FROM product_reviews
-     WHERE product_id = ? AND status = 'approved'
-     ORDER BY created_at DESC LIMIT 50`,
-  ).bind(productId).all();
+  const [result, summary] = await Promise.all([
+    db.prepare(
+      `SELECT id, customer_name AS name, rating, title, comment, image_url AS imageUrl, created_at AS createdAt
+       FROM product_reviews
+       WHERE product_id = ? AND status = 'approved'
+       ORDER BY created_at DESC LIMIT 50`,
+    ).bind(productId).all(),
+    db.prepare(
+      `SELECT COUNT(*) AS count, ROUND(AVG(rating), 1) AS average
+       FROM product_reviews
+       WHERE product_id = ? AND status = 'approved'`,
+    ).bind(productId).first<{ count: number; average: number | null }>(),
+  ]);
   const reviews = result.results ?? [];
-  const average = reviews.length
-    ? reviews.reduce((total, review) => total + Number(review.rating), 0) / reviews.length
-    : 0;
-  return { reviews, count: reviews.length, average: Math.round(average * 10) / 10 };
+  return {
+    reviews,
+    count: Number(summary?.count ?? 0),
+    average: Number(summary?.average ?? 0),
+  };
+}
+
+async function getLatestPublishedReviews(db: CatalogDatabase, requestedLimit: number) {
+  const limit = Math.min(12, Math.max(1, Number.isFinite(requestedLimit) ? Math.floor(requestedLimit) : 6));
+  const result = await db.prepare(
+    `SELECT
+       pr.id,
+       pr.product_id AS productId,
+       pr.customer_name AS name,
+       pr.rating,
+       pr.title,
+       pr.comment,
+       pr.image_url AS imageUrl,
+       pr.created_at AS createdAt,
+       COALESCE(mp.public_title, cp.public_title) AS articleName,
+       COALESCE(mp.image_url, sp.image_url) AS articleImageUrl
+     FROM product_reviews pr
+     LEFT JOIN manual_products mp ON mp.id = pr.product_id
+     LEFT JOIN catalog_products cp ON cp.id = pr.product_id
+     LEFT JOIN supplier_products sp ON sp.id = cp.supplier_product_id
+     WHERE pr.status = 'approved'
+       AND (
+         (mp.id IS NOT NULL AND mp.publish_status = 'published' AND mp.selling_price_pkr IS NOT NULL)
+         OR
+         (cp.id IS NOT NULL AND cp.publish_status = 'published' AND cp.selling_price_pkr IS NOT NULL)
+       )
+     ORDER BY pr.created_at DESC
+     LIMIT ?`,
+  ).bind(limit).all();
+  return { reviews: result.results ?? [] };
 }
 
 async function createProductReview(
@@ -3120,6 +3168,12 @@ const applicationWorker = {
 
     if (request.method === "GET" && url.pathname === "/api/reviews") {
       await prepareCatalog(env.DB);
+      if (url.searchParams.get("latest") === "1") {
+        return jsonResponse(
+          await getLatestPublishedReviews(env.DB, Number(url.searchParams.get("limit") ?? 6)),
+          { headers: { ...publicCorsHeaders(request, env), "cache-control": "public, max-age=10, s-maxage=30" } },
+        );
+      }
       return jsonResponse(
         await getPublishedReviews(env.DB, url.searchParams.get("productId") ?? ""),
         { headers: { ...publicCorsHeaders(request, env), "cache-control": "public, max-age=10, s-maxage=30" } },

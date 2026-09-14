@@ -162,6 +162,14 @@ Downloads folder. Do not require those external files at runtime.
   pill-shaped `Write a review` disclosure that fills leftover heading space.
   Keep the form collapsed until the customer asks for it; do not give reviews
   landing-page scale.
+- Article cards show a compact approved rating average and count below the
+  article name. Product details repeat that summary beside the name and link it
+  to the full review section. When stock is zero, retain the article photography
+  and replace the image badge with a high-contrast `Out of stock` status.
+- Home places up to six latest approved reviews in a responsive card grid after
+  featured articles. Review photos may lead their card; text-only reviews use
+  the same card treatment. Keep this content in the page flow so it never covers
+  navigation or the floating bag control.
 - Pret product details show one Article Measurements table using that article's
   saved values. Sizes are columns, measurements are rows, and the selected size
   is highlighted. The heading stays stacked above the table so size columns can

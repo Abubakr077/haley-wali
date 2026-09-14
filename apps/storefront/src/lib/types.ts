@@ -23,6 +23,8 @@ export type Product = {
   sizes?: string[];
   stockQty: number;
   stockBySize?: Record<string, number>;
+  reviewAverage: number;
+  reviewCount: number;
   description: string;
   includes: string[];
   care: string;

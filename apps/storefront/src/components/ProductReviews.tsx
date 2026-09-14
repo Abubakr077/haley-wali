@@ -78,6 +78,7 @@ async function optimizeReviewImage(file: File): Promise<File> {
 export default function ProductReviews({ productId, apiBase }: { productId: string; apiBase: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [average, setAverage] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -100,11 +101,12 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
     fetch(`${apiBase}/api/reviews?productId=${encodeURIComponent(productId)}`)
       .then(async (response) => {
         if (!response.ok) throw new Error("Reviews could not be loaded.");
-        return response.json() as Promise<{ reviews?: Review[]; average?: number }>;
+        return response.json() as Promise<{ reviews?: Review[]; average?: number; count?: number }>;
       })
       .then((result) => {
         setReviews(result.reviews ?? []);
         setAverage(Number(result.average ?? 0));
+        setReviewCount(Number(result.count ?? result.reviews?.length ?? 0));
       })
       .catch(() => setLoadFailed(true))
       .finally(() => setLoading(false));
@@ -154,10 +156,10 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
           <p className="eyebrow">CUSTOMER FEEDBACK</p>
           <h2 id="reviews-heading">REVIEWS</h2>
         </div>
-        <div className="review-summary" aria-label={reviews.length ? `${average} out of 5 from ${reviews.length} reviews` : "No reviews yet"}>
-          <strong>{reviews.length ? average.toFixed(1) : "NEW"}</strong>
-          <span aria-hidden="true">{reviews.length ? "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average)) : "☆☆☆☆☆"}</span>
-          <small>{reviews.length} {reviews.length === 1 ? "review" : "reviews"}</small>
+        <div className="review-summary" aria-label={reviewCount ? `${average} out of 5 from ${reviewCount} reviews` : "No reviews yet"}>
+          <strong>{reviewCount ? average.toFixed(1) : "NEW"}</strong>
+          <span aria-hidden="true">{reviewCount ? "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average)) : "☆☆☆☆☆"}</span>
+          <small>{reviewCount} {reviewCount === 1 ? "review" : "reviews"}</small>
         </div>
         <details className="review-compose">
           <summary>WRITE A REVIEW</summary>

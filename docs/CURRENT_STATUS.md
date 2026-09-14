@@ -1,6 +1,6 @@
 # Current status and next work
 
-Status reviewed from source and production configuration on **2026-09-01**.
+Status reviewed from source and production configuration on **2026-09-14**.
 
 ## Implemented
 
@@ -105,6 +105,14 @@ Status reviewed from source and production configuration on **2026-09-01**.
   before the Worker validates and uploads it to Supabase Storage. Store Manager
   can inspect the photo with the pending review; only approved reviews and
   photos appear publicly, and deleting the review cleans up its stored photo.
+- Published articles remain visible across Home, Shop, Search, Wishlist and
+  article details after stock reaches zero. Cards show an `Out of stock` badge,
+  article details disable sold-out Pret sizes and Add to Bag, and checkout keeps
+  its server-side stock validation.
+- Approved rating averages and counts appear on article cards and beside the
+  article name on details. Home shows up to six latest approved reviews in a
+  responsive section after featured articles, including review photos and
+  direct article links when available.
 - Product details show exact remaining stock, a device-local wishlist action
   and live related articles; the header links to a dedicated Wishlist page.
 - A free product-page WhatsApp help action is prefilled with the article name,

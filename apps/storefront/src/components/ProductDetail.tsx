@@ -120,9 +120,11 @@ export default function ProductDetail({
   const selectedImageIndex = Math.max(0, gallery.indexOf(selectedImage));
   const selectedStock = size ? product.stockBySize?.[size] : product.stockQty;
   const requiresSize = Boolean(product.sizes?.length);
-  const addToBagReason = requiresSize && !size
-    ? "Select a size first"
-    : Number(selectedStock ?? 0) <= 0
+  const addToBagReason = product.stockQty <= 0
+    ? "This article is sold out"
+    : requiresSize && !size
+      ? "Select a size first"
+      : Number(selectedStock ?? 0) <= 0
       ? "This article is sold out"
       : "";
   const whatsappDigits = whatsappNumber.replace(/\D/g, "");
@@ -195,7 +197,14 @@ export default function ProductDetail({
         </div>
       <div className="detail-copy">
         <span className="product-brand">{product.brand}</span>
-        <h1>{product.name}</h1>
+        <div className="detail-title-row">
+          <h1>{product.name}</h1>
+          <a className="detail-rating-summary" href="#reviews-heading" aria-label={product.reviewCount ? `${product.reviewAverage} out of 5 from ${product.reviewCount} reviews. Jump to reviews.` : "No reviews yet. Jump to reviews."}>
+            <span aria-hidden="true">★</span>
+            <strong>{product.reviewCount ? product.reviewAverage.toFixed(1) : "NEW"}</strong>
+            <small>{product.reviewCount} {product.reviewCount === 1 ? "review" : "reviews"}</small>
+          </a>
+        </div>
         <p className="product-subtitle">
           {product.title} · {product.pieces}{product.articleCode ? ` · ${product.articleCode}` : ""}
         </p>
@@ -221,13 +230,14 @@ export default function ProductDetail({
                     type="radio"
                     name="size"
                     value={value}
+                    disabled={Number(product.stockBySize?.[value] ?? 0) <= 0}
                     checked={size === value}
                     onChange={() => {
                       setSize(value);
                       setMessage("");
                     }}
                   />
-                  <span>{value}</span>
+                  <span>{value}{Number(product.stockBySize?.[value] ?? 0) <= 0 ? <small>SOLD OUT</small> : null}</span>
                 </label>
               ))}
             </div>
@@ -237,7 +247,9 @@ export default function ProductDetail({
         )}
         <p className={`stock-count${Number(selectedStock ?? 0) <= 3 ? " low-stock" : ""}`}>
           <span aria-hidden="true"></span>
-          {product.sizes?.length && !size
+          {product.stockQty <= 0
+            ? "Out of stock"
+            : product.sizes?.length && !size
             ? `${product.stockQty} available across all sizes — select your size`
             : `${selectedStock ?? product.stockQty} available${size ? ` in ${size}` : ""}`}
         </p>
@@ -248,11 +260,11 @@ export default function ProductDetail({
               type="button"
               onClick={add}
               disabled={Boolean(addToBagReason)}
-              aria-describedby={requiresSize && !size ? "select-size-first" : undefined}
+              aria-describedby={requiresSize && !size && product.stockQty > 0 ? "select-size-first" : undefined}
             >
               ADD TO BAG
             </button>
-            {requiresSize && !size ? <span className="sr-only" id="select-size-first">Select a size first to add this article to your bag.</span> : null}
+            {requiresSize && !size && product.stockQty > 0 ? <span className="sr-only" id="select-size-first">Select a size first to add this article to your bag.</span> : null}
           </span>
           <WishlistButton productId={product.id} />
         </div>

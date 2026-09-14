@@ -42,18 +42,21 @@ these shapes as API changes and add migrations when the database shape changes.
 
 | Method | Route | Purpose |
 | --- | --- | --- |
-| GET | `/api/catalog/articles` | Published, priced and available articles from both catalog sources. |
+| GET | `/api/catalog/articles` | Published and priced articles from both catalog sources, including sold-out articles and approved rating summaries. |
 | GET | `/api/catalog/pret` | Legacy Pret-only compatibility endpoint. |
 | GET | `/api/shop/settings` | Public nationwide delivery and automatic sale settings. |
 | POST | `/api/offers/preview` | Recalculate bag subtotal, optional code, delivery and total from D1. |
 | POST | `/api/orders` | Validate live catalog data and create a COD order. Optional `offerCode`. |
 | GET | `/api/orders/track?number=...&phone=...` | Customer order tracking. |
 | POST | `/api/support/requests` | Save an exchange, return, complaint or question. |
-| GET/POST | `/api/reviews` | Read approved article reviews or submit a new pending review. |
+| GET/POST | `/api/reviews` | Read approved article reviews or submit a new pending review. GET with `?latest=1&limit=6` returns recent approved reviews for published articles. |
 
 Public article responses may contain public title, selling price, original
 pre-sale price, automatic sale name/percentage, brand,
 collection, garment type, images, pieces, details and available variants. They
+also contain approved review count and average. A published article remains in
+the public response when its stock reaches zero so the storefront can label it
+out of stock; checkout still rejects quantities that are not available. They
 must not expose supplier identity, supplier price, buying cost or margin.
 
 ## Admin API
