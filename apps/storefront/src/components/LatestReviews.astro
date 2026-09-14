@@ -13,7 +13,7 @@ const hasOnlySample = reviews.length === 1 && reviews[0]?.isSample;
         <p class="sb-kicker">CUSTOMER FEEDBACK</p>
         <h2 id="latest-reviews-heading">What customers are saying</h2>
       </div>
-      <p>{hasOnlySample ? "A preview of how approved customer feedback will appear here." : "Recent feedback shared by Haley Wali customers and checked before publication."}</p>
+      {hasOnlySample ? <p>A preview of how approved customer feedback will appear here.</p> : null}
     </header>
     <div
       class:list={["home-review-grid", { "is-single": reviews.length === 1 }]}
