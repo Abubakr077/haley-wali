@@ -31,7 +31,8 @@ const categoryCopy = {
 
 function customerBrandFilterName(value: string) {
   const name = value.trim().replace(/\s+/g, " ");
-  return name.toLocaleLowerCase("en") === "branded" ? "Other Brands" : name;
+  const normalizedName = name.toLocaleLowerCase("en");
+  return normalizedName === "branded" || normalizedName === "other brands" ? "Other Brands" : name;
 }
 
 export function ProductCard({ product }: { product: Product }) {
@@ -182,7 +183,11 @@ export default function CatalogExplorer({
         const key = name.toLocaleLowerCase("en");
         if (name && !names.has(key)) names.set(key, name);
       });
-    return [...names.values()].sort((a, b) => a.localeCompare(b, "en"));
+    return [...names.values()].sort((a, b) => {
+      if (a === "Other Brands") return 1;
+      if (b === "Other Brands") return -1;
+      return a.localeCompare(b, "en");
+    });
   }, [products]);
   const filterProducts = useMemo(
     () => products.filter((product) => category === "all" || product.category === category),

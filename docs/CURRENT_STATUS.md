@@ -16,8 +16,11 @@ Status reviewed from source and production configuration on **2026-09-14**.
 - Desktop HW Exclusive and Branded navigation now opens full-width,
   keyboard-accessible mega menus with direct Pret/ready-to-wear and unstitched
   collection links. Branded additionally lists only brand names found in
-  current published stock. Mobile presents the same hierarchy as expandable
-  menu groups, and type links arrive with the catalogue filter already active.
+  current published stock, orders `Other Brands` last, caps the preview at five
+  brands and leaves the complete list in the Branded catalogue filter reached
+  through the existing `View all Branded` action. Mobile presents the same
+  hierarchy as expandable menu groups, and type links arrive with the catalogue
+  filter already active.
 - Public share metadata for WhatsApp, Facebook and similar apps: PNG favicon
   and apple-touch icon, a default `og-share` card, Open Graph/Twitter tags, and
   per-article titles, descriptions and photos on `/product?id=`. Bag, checkout

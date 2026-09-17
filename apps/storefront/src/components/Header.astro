@@ -10,16 +10,27 @@ const shopExclusive = path === "/shop" && category === "exclusive";
 const shopBranded = path === "/shop" && category === "branded";
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
 const publishedArticles = await fetchPublishedArticles(apiBase);
+const otherBrandsLabel = "Other Brands";
 const brandedBrands = [...new Map(
   publishedArticles
     .filter((article) => article.category === "branded")
     .map((article) => {
       const originalName = article.brand.trim().replace(/\s+/g, " ");
-      const name = originalName.toLocaleLowerCase("en") === "branded" ? "Other Brands" : originalName;
+      const normalizedName = originalName.toLocaleLowerCase("en");
+      const name = normalizedName === "branded" || normalizedName === "other brands" ? otherBrandsLabel : originalName;
       return [name.toLocaleLowerCase("en"), name] as const;
     })
     .filter(([key]) => key),
-).values()].sort((a, b) => a.localeCompare(b, "en"));
+).values()].sort((a, b) => {
+  if (a === otherBrandsLabel) return 1;
+  if (b === otherBrandsLabel) return -1;
+  return a.localeCompare(b, "en");
+});
+const otherBrands = brandedBrands.find((brand) => brand === otherBrandsLabel);
+const namedBrands = brandedBrands.filter((brand) => brand !== otherBrandsLabel);
+const menuBrands = brandedBrands.length > 5
+  ? [...namedBrands.slice(0, otherBrands ? 4 : 5), ...(otherBrands ? [otherBrands] : [])]
+  : brandedBrands;
 ---
 
 <header class="site-header">
@@ -73,9 +84,13 @@ const brandedBrands = [...new Map(
           </div>
           <div class="header-mega-column header-brand-links">
             <small>AVAILABLE BRANDS</small>
-            {brandedBrands.length ? brandedBrands.map((brand) => (
-              <a href={`/shop?category=branded&brand=${encodeURIComponent(brand)}`}>{brand} <span aria-hidden="true">→</span></a>
-            )) : <p>Brands will appear here when Branded articles are published.</p>}
+            {brandedBrands.length ? (
+              <div class="header-brand-list">
+                {menuBrands.map((brand) => (
+                  <a href={`/shop?category=branded&brand=${encodeURIComponent(brand)}`}>{brand} <span aria-hidden="true">→</span></a>
+                ))}
+              </div>
+            ) : <p>Brands will appear here when Branded articles are published.</p>}
           </div>
         </div>
       </section>
@@ -111,7 +126,7 @@ const brandedBrands = [...new Map(
           <a href="/shop?category=branded">All Branded</a>
           <a href="/shop?category=branded&type=pret">Pret / Ready to Wear</a>
           <a href="/shop?category=branded&type=unstitched">Unstitched</a>
-          {brandedBrands.map((brand) => (
+          {menuBrands.map((brand) => (
             <a href={`/shop?category=branded&brand=${encodeURIComponent(brand)}`}>{brand}</a>
           ))}
         </div>

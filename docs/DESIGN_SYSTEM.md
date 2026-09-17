@@ -85,8 +85,11 @@ Downloads folder. Do not require those external files at runtime.
   cascading flyouts. Keep the editorial introduction, article types and
   discovery/available-brand links in three readable columns. Open on hover and
   keyboard focus without preventing the main category link from working.
-  Branded brand links must come from current published stock. On mobile, present
-  the same hierarchy as tap-to-expand groups inside the main menu.
+  Branded brand links must come from current published stock, keep named brands
+  alphabetical, and place `Other Brands` last. Keep the mega menu compact with
+  at most five brand links; the existing `View all Branded` action leads to the
+  catalogue, where Filter contains the complete brand list. Use the same limited
+  brand preview on mobile.
 - Main categories are `HW Exclusive` and `Branded`; Pret and Unstitched are
   filters/types under Branded.
 - Collection headers keep Filter and Sort as compact, side-by-side controls.

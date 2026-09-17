@@ -2617,7 +2617,9 @@ main { min-height: 52vh; }
 .header-mega-intro>a b { margin-left: 7px; font-size: 16px; font-weight: 400; }
 .header-mega-column>small { margin-bottom: 12px; }
 .desktop-nav .header-mega-column>a,
-.home-starbucks .desktop-nav .header-mega-column>a {
+.home-starbucks .desktop-nav .header-mega-column>a,
+.desktop-nav .header-brand-list>a,
+.home-starbucks .desktop-nav .header-brand-list>a {
   width: 100%;
   min-height: 47px;
   padding: 11px 0;
@@ -2631,14 +2633,17 @@ main { min-height: 52vh; }
   font-weight: 500;
 }
 .desktop-nav .header-mega-column>a:hover,
-.home-starbucks .desktop-nav .header-mega-column>a:hover { color: var(--retail-accent); }
-.header-mega-column>a span { font-size: 17px; font-weight: 400; transition: transform .18s ease; }
-.header-mega-column>a:hover span { transform: translateX(4px); }
-.header-brand-links {
-  max-height: 185px;
-  padding-right: 8px;
-  overflow-y: auto;
-  scrollbar-width: thin;
+.home-starbucks .desktop-nav .header-mega-column>a:hover,
+.desktop-nav .header-brand-list>a:hover,
+.home-starbucks .desktop-nav .header-brand-list>a:hover { color: var(--retail-accent); }
+.header-mega-column>a span,
+.header-brand-list>a span { font-size: 17px; font-weight: 400; transition: transform .18s ease; }
+.header-mega-column>a:hover span,
+.header-brand-list>a:hover span { transform: translateX(4px); }
+.header-brand-links { align-self: start; }
+.header-brand-list {
+  width: 100%;
+  display: grid;
 }
 .header-brand-links>p { margin: 2px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .home-starbucks .header-mega-menu,
