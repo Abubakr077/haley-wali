@@ -1,4 +1,5 @@
 import { useEffect, useState, type SubmitEvent } from "react";
+import { trackMetaEvent } from "../lib/metaPixel";
 
 export default function ContactForm({ apiBase }: { apiBase: string }) {
   const [message, setMessage] = useState("");
@@ -33,6 +34,9 @@ export default function ContactForm({ apiBase }: { apiBase: string }) {
       });
       const result = await response.json() as { request?: { number: string }; error?: string };
       if (!response.ok || !result.request) throw new Error(result.error || "Could not send your request.");
+      trackMetaEvent("Contact", {
+        content_category: requestType,
+      });
       form.reset();
       setMessage(`Your request ${result.request.number} has been received. Please keep this number for follow-up.`);
     } catch (error) {

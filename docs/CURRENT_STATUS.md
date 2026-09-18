@@ -26,6 +26,11 @@ Status reviewed from source and production configuration on **2026-09-14**.
   per-article titles, descriptions and photos on `/product?id=`. Bag, checkout
   and success pages are `noindex`. `robots.txt` and `/sitemap.xml` list public
   shop pages and published articles.
+- Meta Pixel base tracking is installed in the shared public storefront layout
+  for pixel ID `1057333967138452`, so every customer-facing page sends a
+  standard PageView when browser tracking is allowed. The storefront also tracks
+  standard ecommerce events for ViewContent, Search, AddToWishlist, AddToCart,
+  InitiateCheckout, Purchase and Contact.
 - Mobile storefront controls use 44px touch targets. The smallest phone layout
   shows one readable article per row, catalogue sorting no longer overlaps the
   collection introduction, and article measurement tables scroll sideways
