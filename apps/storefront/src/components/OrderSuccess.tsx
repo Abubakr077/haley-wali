@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { pkrValue, trackMetaEvent } from "../lib/metaPixel";
 import { formatPkr } from "../lib/products";
 import { LoadingState } from "./LoadingState";
 
@@ -24,6 +25,18 @@ export default function OrderSuccess({ whatsappNumber }: { whatsappNumber: strin
       setReady(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!order) return;
+    const trackedKey = `haley-wali-meta-purchase-${order.number}`;
+    if (localStorage.getItem(trackedKey)) return;
+    trackMetaEvent("Purchase", {
+      value: pkrValue(order.total),
+      currency: "PKR",
+      order_id: order.number,
+    });
+    localStorage.setItem(trackedKey, "1");
+  }, [order]);
 
   if (!ready) return <LoadingState label="Loading order confirmation" description="Preparing your Cash on Delivery confirmation." />;
 

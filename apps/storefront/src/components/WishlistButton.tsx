@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { trackMetaEvent } from "../lib/metaPixel";
 import { readWishlist, toggleWishlist, WISHLIST_EVENT } from "../lib/wishlist";
 
 export default function WishlistButton({ productId, compact = false }: { productId: string; compact?: boolean }) {
@@ -16,7 +17,16 @@ export default function WishlistButton({ productId, compact = false }: { product
     <button
       className={`wishlist-button${compact ? " compact" : ""}${saved ? " saved" : ""}`}
       type="button"
-      onClick={() => setSaved(toggleWishlist(productId))}
+      onClick={() => {
+        const nextSaved = toggleWishlist(productId);
+        setSaved(nextSaved);
+        if (nextSaved) {
+          trackMetaEvent("AddToWishlist", {
+            content_ids: [productId],
+            content_type: "product",
+          });
+        }
+      }}
       aria-pressed={saved}
       aria-label={saved ? "Remove article from wishlist" : "Save article to wishlist"}
     >

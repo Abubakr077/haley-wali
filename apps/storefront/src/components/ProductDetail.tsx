@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { addToCart } from "../lib/cart";
 import { formatPkr, mapPublishedArticle } from "../lib/products";
 import type { Product } from "../lib/types";
+import { pkrValue, trackMetaEvent } from "../lib/metaPixel";
 import ProductReviews from "./ProductReviews";
 import { ProductCard } from "./CatalogExplorer";
 import WishlistButton from "./WishlistButton";
@@ -75,6 +76,18 @@ export default function ProductDetail({
   }, [apiBase, initialId]);
 
   useEffect(() => {
+    if (!product) return;
+    trackMetaEvent("ViewContent", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_category: product.category,
+      content_type: "product",
+      value: pkrValue(product.price),
+      currency: "PKR",
+    });
+  }, [product?.id]);
+
+  useEffect(() => {
     if (!viewerOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -112,6 +125,14 @@ export default function ProductDetail({
       return;
     }
     addToCart(product, size || "Standard");
+    trackMetaEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_category: product.category,
+      content_type: "product",
+      value: pkrValue(product.price),
+      currency: "PKR",
+    });
     setMessage("Article added to your bag. You can continue shopping or open your bag.");
   }
 
@@ -161,8 +182,10 @@ export default function ProductDetail({
   ];
 
   function showImage(offset: number) {
+    if (!product) return;
+    const fallbackImage = product.image;
     setMainImage((current) => {
-      const currentIndex = Math.max(0, gallery.indexOf(current || product.image));
+      const currentIndex = Math.max(0, gallery.indexOf(current || fallbackImage));
       return gallery[(currentIndex + offset + gallery.length) % gallery.length];
     });
     setZoom(1);
@@ -277,6 +300,11 @@ export default function ProductDetail({
               target="_blank"
               rel="noreferrer"
               aria-label={`Ask about ${product.name} on WhatsApp`}
+              onClick={() => trackMetaEvent("Contact", {
+                content_ids: [product.id],
+                content_name: product.name,
+                content_type: "product",
+              })}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.4L3 20.4l1.3-4.7a8.5 8.5 0 1 1 16.2-4Z" />

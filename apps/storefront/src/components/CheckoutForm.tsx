@@ -8,6 +8,7 @@ import {
   syncCartSalePrices,
   type OfferQuote,
 } from "../lib/offers";
+import { pkrValue, trackMetaEvent } from "../lib/metaPixel";
 import { formatPkr } from "../lib/products";
 import type { CartItem } from "../lib/types";
 import { LoadingState } from "./LoadingState";
@@ -26,6 +27,7 @@ export default function CheckoutForm({ apiBase }: { apiBase: string }) {
   const [offerError, setOfferError] = useState("");
   const [applying, setApplying] = useState(false);
   const [phone, setPhone] = useState("");
+  const [checkoutTracked, setCheckoutTracked] = useState(false);
 
   useEffect(() => {
     const savedCart = readCart();
@@ -71,6 +73,19 @@ export default function CheckoutForm({ apiBase }: { apiBase: string }) {
       cancelled = true;
     };
   }, [apiBase, cart, ready]);
+
+  useEffect(() => {
+    if (!ready || checkoutTracked || !cart.length) return;
+    const subtotal = cartSubtotal(cart);
+    trackMetaEvent("InitiateCheckout", {
+      content_ids: cart.map((item) => item.id),
+      content_type: "product",
+      num_items: cart.reduce((sum, item) => sum + item.quantity, 0),
+      value: pkrValue((quote?.totalPkr ?? subtotal + deliveryFallback)),
+      currency: "PKR",
+    });
+    setCheckoutTracked(true);
+  }, [cart, checkoutTracked, deliveryFallback, quote?.totalPkr, ready]);
 
   async function applyCode() {
     const code = codeDraft.trim().toUpperCase();

@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type SubmitEvent } from "react";
+import { trackMetaEvent } from "../lib/metaPixel";
 import { formatPkr, mapPublishedArticle } from "../lib/products";
 import type { Product, ProductCategory } from "../lib/types";
 import WishlistButton from "./WishlistButton";
@@ -298,6 +299,16 @@ export default function CatalogExplorer({
     setMaximumPrice("");
   }
 
+  function submitSearch(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const searchString = query.trim();
+    if (!searchString) return;
+    trackMetaEvent("Search", {
+      search_string: searchString,
+      content_category: category,
+    });
+  }
+
   return (
     <>
       {searchMode ? (
@@ -306,7 +317,7 @@ export default function CatalogExplorer({
             <strong>Search on haleywali.pk</strong>
             <a href="/" aria-label="Close search">CLOSE</a>
           </div>
-          <form onSubmit={(event) => event.preventDefault()}>
+          <form onSubmit={submitSearch}>
             <input
               aria-label="Search articles"
               autoFocus
