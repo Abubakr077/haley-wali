@@ -69,7 +69,9 @@ Status reviewed from source and production configuration on **2026-09-14**.
   previews, store/website structured data, Product and breadcrumb structured
   data, and product price/availability social metadata. Search, tracking,
   wishlist, bag, checkout and success are excluded from search indexing; the
-  sitemap contains only public shopping, information and article URLs.
+  sitemap contains only public shopping, information and article URLs. Google
+  Search Console HTML-file verification is present at
+  `/google8ea135d17499229d.html`.
 - Shared customer loading states across Home featured articles, Shop, Search,
   article details, Wishlist, Bag, Checkout, order confirmation, order tracking
   and reviews. Article lists use card skeletons; smaller requests use a clear
