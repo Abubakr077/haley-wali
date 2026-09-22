@@ -414,6 +414,7 @@ type StoreOrder = {
   total: number;
   payment?: string;
   status: string;
+  postexTrackingNumber?: string | null;
   createdAt: string;
   updatedAt?: string;
   items?: Array<{
@@ -1369,6 +1370,11 @@ function OrderDetailPanel({
 }) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [trackingNumber, setTrackingNumber] = useState(order.postexTrackingNumber ?? "");
+
+  useEffect(() => {
+    setTrackingNumber(order.postexTrackingNumber ?? "");
+  }, [order.id, order.postexTrackingNumber]);
 
   async function change(status: string) {
     setSaving(true);
@@ -1407,6 +1413,27 @@ function OrderDetailPanel({
     }
   }
 
+  async function saveTrackingNumber() {
+    setSaving(true);
+    setMessage("");
+    try {
+      const result = await readJson<{ orders: StoreOrder[] }>(
+        await fetch("/api/admin/orders", {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ id: order.id, postexTrackingNumber: trackingNumber }),
+        }),
+      );
+      const updated = result.orders.find((item) => item.id === order.id);
+      if (updated) onUpdated({ ...order, ...updated });
+      setMessage(trackingNumber.trim() ? "PostEx tracking number saved." : "PostEx tracking number removed.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <div className="order-detail-layout">
       <section className="order-detail-main">
@@ -1424,6 +1451,29 @@ function OrderDetailPanel({
         <label>ORDER STATUS<select disabled={saving} value={order.status} onChange={(event) => change(event.target.value)}>
           <option value="received">Received</option><option value="confirmed">Confirmed</option><option value="packed">Packed</option><option value="dispatched">Dispatched</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option>
         </select></label>
+        {(order.status === "dispatched" || order.status === "delivered") ? (
+          <div className="order-postex-field">
+            <label>POSTEX TRACKING NUMBER
+              <input
+                type="text"
+                inputMode="text"
+                autoComplete="off"
+                maxLength={40}
+                placeholder="Number from PostEx"
+                disabled={saving}
+                value={trackingNumber}
+                onChange={(event) => setTrackingNumber(event.target.value.toUpperCase())}
+              />
+            </label>
+            <p>Customers see this number and a PostEx tracking link after you save it.</p>
+            <button
+              className="primary-action"
+              type="button"
+              disabled={saving || trackingNumber.trim() === (order.postexTrackingNumber ?? "")}
+              onClick={saveTrackingNumber}
+            >{trackingNumber.trim() ? "SAVE TRACKING NUMBER" : "REMOVE TRACKING NUMBER"}</button>
+          </div>
+        ) : null}
         <dl>
           <div><dt>Subtotal</dt><dd>{formatPkr(order.subtotal || 0)}</dd></div>
           {order.discount ? <div><dt>Discount{order.offerCode ? ` · ${order.offerCode}` : ""}</dt><dd>− {formatPkr(order.discount)}</dd></div> : null}

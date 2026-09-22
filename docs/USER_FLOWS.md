@@ -120,7 +120,11 @@ future imports while its normal Article record exists.
 4. Store manager verifies stock and calls the customer if needed.
 5. Order moves through `confirmed`, `packed`, `dispatched`, `delivered`, or
    `cancelled`.
-6. Customer tracking shows the current stage.
+6. After dispatch, the manager may save the PostEx tracking number on the order.
+   Customer tracking shows the current Haley Wali stage and, when a PostEx number
+   is saved on a dispatched or delivered order, the number and a link to the
+   public PostEx tracking page. The customer enters that number there for
+   courier updates; PostEx status is not copied into Haley Wali automatically.
 7. A cancelled order may be permanently deleted from its detail page. Deletion
    removes its articles and any offer-redemption record only after cancellation
    has safely restored reserved stock.

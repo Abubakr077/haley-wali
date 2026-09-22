@@ -165,6 +165,7 @@ export const orders = sqliteTable(
     totalPkr: integer("total_pkr").notNull(),
     paymentMethod: text("payment_method").notNull().default("Cash on Delivery"),
     status: text("status").notNull().default("received"),
+    postexTrackingNumber: text("postex_tracking_number"),
     whatsappStatus: text("whatsapp_status").notNull().default("not_configured"),
     checkoutToken: text("checkout_token").unique(),
     stockRestored: integer("stock_restored", { mode: "boolean" }).notNull().default(false),

@@ -884,6 +884,11 @@ img { max-width: 100%; }
 .info-sections article { padding: 25px 0; display: grid; grid-template-columns: minmax(200px, .5fr) 1fr; gap: 40px; border-bottom: 1px solid var(--line); }
 .info-sections h2 { margin: 0; font-size: 18px; font-weight: 500; }
 .info-sections p { margin: 0; color: var(--muted); line-height: 1.7; }
+.postex-tracking { display: grid; gap: 14px; }
+.postex-tracking strong { color: var(--ink); font-weight: 700; overflow-wrap: anywhere; }
+.postex-tracking-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.postex-tracking-actions .primary-button,
+.postex-tracking-actions .secondary-button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 .site-footer { padding: 0 var(--page-pad) 16px; background: var(--chrome); border-top: 1px solid var(--line); }
 .footer-links {
   display: grid;

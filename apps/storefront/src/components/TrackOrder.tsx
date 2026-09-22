@@ -6,6 +6,7 @@ type TrackedOrder = {
   city: string;
   total: number;
   status: string;
+  postexTrackingNumber?: string | null;
 };
 
 const statusCopy: Record<string, string> = {
@@ -21,6 +22,7 @@ export default function TrackOrder({ apiBase }: { apiBase: string }) {
   const [order, setOrder] = useState<TrackedOrder | null>(null);
   const [message, setMessage] = useState("");
   const [checking, setChecking] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,6 +31,7 @@ export default function TrackOrder({ apiBase }: { apiBase: string }) {
     const phone = String(data.get("phone") ?? "");
     setMessage("");
     setOrder(null);
+    setCopied(false);
     setChecking(true);
     try {
       const response = await fetch(
@@ -80,6 +83,30 @@ export default function TrackOrder({ apiBase }: { apiBase: string }) {
           </article>
           <article><h2>DELIVERY CITY</h2><p>{order.city}</p></article>
           <article><h2>CURRENT STAGE</h2><p>{order.status.toUpperCase()}</p></article>
+          {(order.status === "dispatched" || order.status === "delivered") && order.postexTrackingNumber ? (
+            <article>
+              <h2>POSTEX PARCEL TRACKING</h2>
+              <div className="postex-tracking">
+                <p>Tracking number: <strong>{order.postexTrackingNumber}</strong></p>
+                <div className="postex-tracking-actions">
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(order.postexTrackingNumber!);
+                        setCopied(true);
+                      } catch {
+                        setMessage("Select and copy the tracking number above.");
+                      }
+                    }}
+                  >{copied ? "NUMBER COPIED" : "COPY NUMBER"}</button>
+                  <a className="primary-button" href="https://postex.pk/tracking" target="_blank" rel="noopener noreferrer">TRACK ON POSTEX ↗</a>
+                </div>
+                <p>Enter the tracking number on PostEx to see the latest courier updates.</p>
+              </div>
+            </article>
+          ) : null}
         </section>
       ) : null}
     </>

@@ -667,6 +667,7 @@ async function ensureCatalogSchema(db: CatalogDatabase): Promise<void> {
        total_pkr integer NOT NULL,
        payment_method text DEFAULT 'Cash on Delivery' NOT NULL,
        status text DEFAULT 'received' NOT NULL,
+       postex_tracking_number text,
        whatsapp_status text DEFAULT 'not_configured' NOT NULL,
        checkout_token text UNIQUE,
        stock_restored integer DEFAULT 0 NOT NULL,
@@ -794,6 +795,7 @@ async function ensureCatalogSchema(db: CatalogDatabase): Promise<void> {
     ["stock_restored", "integer DEFAULT 0 NOT NULL"],
     ["discount_pkr", "integer DEFAULT 0 NOT NULL"],
     ["offer_code", "text"],
+    ["postex_tracking_number", "text"],
   ]);
   await ensureColumns("store_settings", [
     ["sale_active", "integer DEFAULT 1 NOT NULL"],
@@ -2375,6 +2377,7 @@ async function getOrders(db: CatalogDatabase) {
          delivery_pkr AS delivery, discount_pkr AS discount, offer_code AS offerCode,
          total_pkr AS total,
          payment_method AS payment, status,
+         postex_tracking_number AS postexTrackingNumber,
          created_at AS createdAt, updated_at AS updatedAt
        FROM orders ORDER BY created_at DESC`,
     )
@@ -2392,6 +2395,7 @@ async function getOrderDetail(db: CatalogDatabase, id: string) {
          delivery_pkr AS delivery, discount_pkr AS discount, offer_code AS offerCode,
          total_pkr AS total,
          payment_method AS payment, status,
+         postex_tracking_number AS postexTrackingNumber,
          created_at AS createdAt, updated_at AS updatedAt
        FROM orders WHERE id = ?`,
     )
@@ -2413,6 +2417,8 @@ async function trackOrder(db: CatalogDatabase, number: string, phone: string) {
   return db
     .prepare(
       `SELECT order_number AS number, city, total_pkr AS total, status,
+              CASE WHEN status IN ('dispatched', 'delivered')
+                THEN postex_tracking_number ELSE NULL END AS postexTrackingNumber,
               created_at AS createdAt, updated_at AS updatedAt
        FROM orders WHERE upper(order_number) = upper(?) AND phone = ?`,
     )
@@ -2481,8 +2487,41 @@ async function updateOrderStatus(
     return getOrders(db);
   }
   await db
-    .prepare("UPDATE orders SET status = ?, updated_at = ? WHERE id = ?")
-    .bind(status, new Date().toISOString(), id)
+    .prepare(`UPDATE orders
+              SET status = ?,
+                  postex_tracking_number = CASE
+                    WHEN ? IN ('received', 'confirmed', 'packed') THEN NULL
+                    ELSE postex_tracking_number
+                  END,
+                  updated_at = ?
+              WHERE id = ?`)
+    .bind(status, status, new Date().toISOString(), id)
+    .run();
+  return getOrders(db);
+}
+
+async function updatePostexTrackingNumber(
+  db: CatalogDatabase,
+  id: string,
+  input: unknown,
+) {
+  if (!id) throw new Error("Choose an order.");
+  if (typeof input !== "string") throw new Error("Enter a valid PostEx tracking number.");
+  const number = input.trim().toUpperCase();
+  if (number && !/^[A-Z0-9-]{6,40}$/.test(number)) {
+    throw new Error("Use 6–40 letters, numbers or hyphens for the PostEx tracking number.");
+  }
+  const order = await db
+    .prepare("SELECT status FROM orders WHERE id = ?")
+    .bind(id)
+    .first<{ status: string }>();
+  if (!order) throw new Error("Order was not found.");
+  if (order.status !== "dispatched" && order.status !== "delivered") {
+    throw new Error("Add a PostEx tracking number after dispatch.");
+  }
+  await db
+    .prepare("UPDATE orders SET postex_tracking_number = ?, updated_at = ? WHERE id = ?")
+    .bind(number || null, new Date().toISOString(), id)
     .run();
   return getOrders(db);
 }
@@ -3302,13 +3341,14 @@ const applicationWorker = {
     if (request.method === "PATCH" && url.pathname === "/api/admin/orders") {
       try {
         await prepareCatalog(env.DB);
-        const input = (await request.json()) as { id?: string; status?: string };
+        const input = (await request.json()) as { id?: string; status?: string; postexTrackingNumber?: unknown };
+        if ((input.status === undefined) === (input.postexTrackingNumber === undefined)) {
+          throw new Error("Update either order status or the PostEx tracking number.");
+        }
         return jsonResponse({
-          orders: await updateOrderStatus(
-            env.DB,
-            String(input.id ?? ""),
-            String(input.status ?? ""),
-          ),
+          orders: input.status !== undefined
+            ? await updateOrderStatus(env.DB, String(input.id ?? ""), String(input.status))
+            : await updatePostexTrackingNumber(env.DB, String(input.id ?? ""), input.postexTrackingNumber),
         });
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

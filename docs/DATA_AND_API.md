@@ -16,7 +16,8 @@
 - `manual_products`: HW Exclusive and manually added Branded articles.
 - `manual_variant_stock`: stock quantity for each Pret article size.
 - `orders`: customer delivery details, article subtotal, applied offer code,
-  discount, live delivery amount, total and status. Its legacy
+  discount, live delivery amount, total, status and optional PostEx tracking
+  number. Its legacy
   `whatsapp_status` column remains unused to avoid a destructive migration.
 - `order_items`: article title, selected size, quantity and price snapshot.
 - `store_settings`: singleton nationwide delivery PKR plus automatic sale name,
@@ -47,7 +48,7 @@ these shapes as API changes and add migrations when the database shape changes.
 | GET | `/api/shop/settings` | Public nationwide delivery and automatic sale settings. |
 | POST | `/api/offers/preview` | Recalculate bag subtotal, optional code, delivery and total from D1. |
 | POST | `/api/orders` | Validate live catalog data and create a COD order. Optional `offerCode`. |
-| GET | `/api/orders/track?number=...&phone=...` | Customer order tracking. |
+| GET | `/api/orders/track?number=...&phone=...` | Customer order tracking; returns a PostEx number only for dispatched or delivered orders. |
 | POST | `/api/support/requests` | Save an exchange, return, complaint or question. |
 | GET/POST | `/api/reviews` | Read approved article reviews or submit a new pending review. GET with `?latest=1&limit=6` returns recent approved reviews for published articles. |
 
@@ -72,7 +73,7 @@ must not expose supplier identity, supplier price, buying cost or margin.
 | POST | `/api/admin/import/supplier` | Run supplier sync immediately. |
 | GET/PATCH | `/api/admin/settings` | Read or update nationwide delivery PKR. Whole rupees only, including 0. |
 | GET/POST/PATCH | `/api/admin/offers` | List, create or update offer codes. GET with `?id=` returns one offer. |
-| GET/PATCH/DELETE | `/api/admin/orders` | List orders, update an order stage, or permanently delete a cancelled order. GET with `?id=` returns one order with its articles; DELETE also uses `?id=`. |
+| GET/PATCH/DELETE | `/api/admin/orders` | List orders, update an order stage or its PostEx tracking number after dispatch, or permanently delete a cancelled order. GET with `?id=` returns one order with its articles; DELETE also uses `?id=`. |
 | GET/PATCH/DELETE | `/api/admin/requests` | List/detail customer-care requests, update their status or permanently delete one. DELETE uses `?id=`. |
 | GET/PATCH/DELETE | `/api/admin/reviews` | Moderate or delete submitted article reviews. |
 
