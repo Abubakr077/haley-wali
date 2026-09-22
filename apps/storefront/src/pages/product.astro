@@ -9,6 +9,24 @@ const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
 const initialId = Astro.url.searchParams.get("id") ?? "";
 const liveProducts = initialId ? await fetchPublishedArticles(apiBase) : products;
 const article = liveProducts.find((item) => item.id === initialId);
+let deliveryPkr: number | null = null;
+if (article) {
+  try {
+    const response = await fetch(`${apiBase}/api/shop/settings`, {
+      headers: { accept: "application/json" },
+    });
+    if (response.ok) {
+      const settings = (await response.json()) as { deliveryPkr?: unknown };
+      if (typeof settings.deliveryPkr === "number"
+        && Number.isInteger(settings.deliveryPkr)
+        && settings.deliveryPkr >= 0) {
+        deliveryPkr = settings.deliveryPkr;
+      }
+    }
+  } catch {
+    // Do not publish a guessed delivery charge in search results.
+  }
+}
 const title = article ? `${article.name} — Haley Wali` : "Article Details — Haley Wali";
 const description = article
   ? `${article.categoryLabel} ${article.type} · ${formatPkr(article.price)} · Cash on Delivery across Pakistan.`
@@ -53,6 +71,44 @@ const jsonLd = article
               ? "https://schema.org/InStock"
               : "https://schema.org/OutOfStock",
             seller: { "@id": "https://haleywali.pk/#store" },
+            ...(deliveryPkr !== null ? {
+              shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingRate: {
+                  "@type": "MonetaryAmount",
+                  value: deliveryPkr,
+                  currency: "PKR",
+                },
+                shippingDestination: {
+                  "@type": "DefinedRegion",
+                  addressCountry: "PK",
+                },
+                deliveryTime: {
+                  "@type": "ShippingDeliveryTime",
+                  handlingTime: {
+                    "@type": "QuantitativeValue",
+                    minValue: 2,
+                    maxValue: 4,
+                    unitCode: "DAY",
+                  },
+                  transitTime: {
+                    "@type": "QuantitativeValue",
+                    minValue: 2,
+                    maxValue: 5,
+                    unitCode: "DAY",
+                  },
+                },
+              },
+            } : {}),
+            hasMerchantReturnPolicy: {
+              "@type": "MerchantReturnPolicy",
+              applicableCountry: "PK",
+              returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+              merchantReturnDays: 7,
+              itemCondition: "https://schema.org/NewCondition",
+              refundType: "https://schema.org/ExchangeRefund",
+              merchantReturnLink: "https://haleywali.pk/info/exchange",
+            },
           },
         },
         {

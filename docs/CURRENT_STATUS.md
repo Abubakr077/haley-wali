@@ -67,7 +67,13 @@ Status reviewed from source and production configuration on **2026-09-14**.
   with live HTML sale copy and links. It does not replace Khaak's article images.
 - SEO includes canonical and Pakistan-English alternate links, large image
   previews, store/website structured data, Product and breadcrumb structured
-  data, and product price/availability social metadata. Search, tracking,
+  data, and product price/availability social metadata. Product offers include
+  Pakistan-wide shipping markup using the live Store Manager delivery charge
+  when that setting is available, plus the published seven-day exchange-only
+  policy. Shipping timing matches the published 2–4-working-day preparation
+  and estimated 2–5-working-day PostEx delivery after dispatch. The markup
+  never substitutes the default delivery charge after a settings request fails.
+  Search, tracking,
   wishlist, bag, checkout and success are excluded from search indexing; the
   sitemap contains only public shopping, information and article URLs. Google
   Search Console HTML-file verification is present at
