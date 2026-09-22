@@ -206,9 +206,10 @@ Status reviewed from source and production configuration on **2026-09-14**.
   sends manually; the paid Meta notification hook has been removed.
 - Dispatched and delivered orders can carry a PostEx tracking number saved from
   Store Manager order details. After the customer verifies their order number
-  and phone on Track Order, the page shows that number and links to PostEx's
-  public tracking page for live courier updates. No PostEx API credentials or
-  automatic status sync are used.
+  and phone on Track Order, the page uses Haley Wali stages until dispatch,
+  then emphasizes the PostEx number and public tracking link for courier
+  updates. It does not duplicate the stage label beside PostEx tracking. No
+  PostEx API credentials or automatic status sync are used.
 - Store Manager nationwide delivery PKR (default 250), an editable automatic
   shop-wide sale (default 10% Season End Sale), plus offer codes for
   percent off, fixed PKR off and/or free delivery. Bag, checkout and the

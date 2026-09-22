@@ -82,7 +82,9 @@ export default function TrackOrder({ apiBase }: { apiBase: string }) {
             <p>{statusCopy[order.status] || "Your order is being processed."}</p>
           </article>
           <article><h2>DELIVERY CITY</h2><p>{order.city}</p></article>
-          <article><h2>CURRENT STAGE</h2><p>{order.status.toUpperCase()}</p></article>
+          {!((order.status === "dispatched" || order.status === "delivered") && order.postexTrackingNumber) ? (
+            <article><h2>ORDER STAGE</h2><p>{order.status.toUpperCase()}</p></article>
+          ) : null}
           {(order.status === "dispatched" || order.status === "delivered") && order.postexTrackingNumber ? (
             <article>
               <h2>POSTEX PARCEL TRACKING</h2>

@@ -14,7 +14,8 @@ const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:300
     <p class="eyebrow">CUSTOMER CARE</p>
     <h1 class="display-title">Track order</h1>
     <p class="info-intro">
-      Enter the order number and the mobile number used at checkout.
+      Enter the order number and mobile number used at checkout. After dispatch,
+      use the PostEx link shown with your parcel number for courier updates.
     </p>
     <TrackOrder apiBase={apiBase} client:load />
   </section>
