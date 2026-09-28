@@ -1,3 +1,4 @@
+import { publicJson } from "./publicFetch";
 import type { CartItem } from "./types";
 
 const OFFER_KEY = "haley-wali-offer-code";
@@ -58,8 +59,7 @@ export function syncCartSalePrices(cart: CartItem[], settings: ShopSettings): Ca
 
 export async function loadShopSettings(apiBase: string): Promise<ShopSettings> {
   try {
-    const response = await fetch(`${apiBase}/api/shop/settings`);
-    const result = (await response.json()) as Partial<ShopSettings>;
+    const result = await publicJson<Partial<ShopSettings>>(`${apiBase}/api/shop/settings`, 2500);
     const deliveryPkr = Number(result.deliveryPkr);
     const salePercent = Number(result.salePercent);
     return {

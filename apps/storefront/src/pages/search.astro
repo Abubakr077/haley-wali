@@ -5,7 +5,7 @@ import { fetchPublishedArticles } from "../lib/products";
 
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
 const initialQuery = Astro.url.searchParams.get("q") ?? "";
-const initialProducts = await fetchPublishedArticles(apiBase);
+const initialProducts = await fetchPublishedArticles(apiBase, Astro.locals);
 ---
 
 <BaseLayout

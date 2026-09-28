@@ -1,3 +1,4 @@
+import { responsiveImage, CARD_SIZES } from "../lib/images";
 import { useEffect, useMemo, useState, type SubmitEvent } from "react";
 import { trackMetaEvent } from "../lib/metaPixel";
 import { formatPkr, mapPublishedArticle } from "../lib/products";
@@ -36,7 +37,7 @@ function customerBrandFilterName(value: string) {
   return normalizedName === "branded" || normalizedName === "other brands" ? "Other Brands" : name;
 }
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const soldOut = product.stockQty <= 0;
   return (
     <article className={`product-card${soldOut ? " is-sold-out" : ""}`}>
@@ -46,9 +47,10 @@ export function ProductCard({ product }: { product: Product }) {
         href={`/product?id=${encodeURIComponent(product.id)}`}
       >
         <img
-          src={product.image}
+          {...responsiveImage(product.image, CARD_SIZES)}
           alt={`${product.name} ${product.title}`}
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
         />
         <span className={soldOut ? "product-card-stock-status" : undefined}>{soldOut ? "Out of stock" : product.badge}</span>
       </a>
@@ -97,12 +99,16 @@ export default function CatalogExplorer({
   const [maximumPrice, setMaximumPrice] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [sort, setSort] = useState("new");
-  const [syncState, setSyncState] = useState("Checking published articles…");
-  const [loading, setLoading] = useState(true);
+  const [syncState, setSyncState] = useState(initialProducts.length ? `${initialProducts.length} published articles available` : "Checking published articles…");
+  const [loading, setLoading] = useState(initialProducts.length === 0);
   const [catalogUnavailable, setCatalogUnavailable] = useState(false);
 
   useEffect(() => {
-    fetch(`${apiBase}/api/catalog/articles`)
+    const controller = new AbortController();
+    let deadline: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      deadline = setTimeout(() => controller.abort(), 15000);
+      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error("Catalog API unavailable");
         const result = (await response.json()) as {
@@ -127,7 +133,10 @@ export default function CatalogExplorer({
         setCatalogUnavailable(true);
         setSyncState("Published articles are temporarily unavailable");
       })
-      .finally(() => setLoading(false));
+      .finally(() => { clearTimeout(deadline); setLoading(false); });
+    };
+    const timer = setTimeout(refresh, initialProducts.length > 0 ? 30000 : 0);
+    return () => { clearTimeout(timer); clearTimeout(deadline); controller.abort(); };
   }, [apiBase, initialProducts]);
 
   const visible = useMemo(() => {
@@ -561,8 +570,8 @@ export default function CatalogExplorer({
             </section>
           ) : visible.length ? (
             <div className="product-grid">
-              {visible.map((product) => (
-                <ProductCard product={product} key={product.id} />
+              {visible.map((product, index) => (
+                <ProductCard product={product} priority={index < 2} key={product.id} />
               ))}
             </div>
           ) : (

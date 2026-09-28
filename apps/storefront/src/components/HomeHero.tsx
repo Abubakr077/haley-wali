@@ -1,3 +1,4 @@
+import { responsiveImage } from "../lib/images";
 import { useEffect, useRef, useState } from "react";
 
 export type HomeHeroSlide = {
@@ -18,6 +19,8 @@ export type HomeHeroSlide = {
 
 export default function HomeHero({ slides }: { slides: HomeHeroSlide[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prepared, setPrepared] = useState<number[]>([0]);
+  const [loadedImages, setLoadedImages] = useState<number[]>([]);
   const [paused, setPaused] = useState(false);
   const touchStart = useRef<number | null>(null);
   const hasMultipleSlides = slides.length > 1;
@@ -33,6 +36,16 @@ export default function HomeHero({ slides }: { slides: HomeHeroSlide[] }) {
 
     return () => window.clearInterval(timer);
   }, [hasMultipleSlides, paused, slides.length]);
+
+  useEffect(() => {
+    setPrepared(current => current.includes(activeIndex) ? current : [...current, activeIndex]);
+    if (!loadedImages.includes(activeIndex)) return;
+    const timer = setTimeout(() => {
+      const next = (activeIndex + 1) % slides.length;
+      setPrepared(current => current.includes(next) ? current : [...current, next]);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [activeIndex, slides.length, loadedImages]);
 
   if (!slides.length) return null;
 
@@ -69,16 +82,17 @@ export default function HomeHero({ slides }: { slides: HomeHeroSlide[] }) {
             key={slide.id}
           >
             <div className={`sb-hero-media${slide.imageKind === "sale" ? " sb-hero-sale-media" : ""}`}>
-              <picture>
-                {slide.mobileImage ? <source media="(max-width: 760px)" srcSet={slide.mobileImage} /> : null}
+              {(isActive || prepared.includes(index)) ? <picture>
+                {slide.mobileImage ? <source media="(max-width: 760px)" srcSet={responsiveImage(slide.mobileImage, "100vw").srcSet ?? slide.mobileImage} sizes="100vw" /> : null}
                 <img
                   className={`sb-hero-image-${slide.imageKind}`}
-                  src={slide.image}
+                  {...responsiveImage(slide.image, "100vw")}
                   alt=""
+                  onLoad={() => setLoadedImages(current => current.includes(index) ? current : [...current, index])}
                   fetchPriority={index === 0 ? "high" : "auto"}
                   loading={index === 0 ? "eager" : "lazy"}
                 />
-              </picture>
+              </picture> : null}
             </div>
             <div className="sb-hero-copy" aria-live={paused ? "polite" : "off"}>
               <p className="sb-kicker">{slide.kicker}</p>

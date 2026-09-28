@@ -239,3 +239,11 @@ Check home, shop, search, product, bag, checkout, tracking, information pages,
 manager and mobile widths. Look specifically for horizontal overflow, clipped
 headings, oversized empty sections, misaligned logo/icons, unreadable inputs,
 cards with unused space, and footer gaps.
+
+## Image loading
+
+Storefront cards, article detail photos and Home collection/hero photos use
+responsive WebP build assets where available, preserving framing and aspect
+ratio. The first two Shop/Search cards are eager; later cards remain lazy.
+Article zoom always uses the original stored photo. Hero photos beyond the
+active/next prepared slide are not requested during initial rendering.

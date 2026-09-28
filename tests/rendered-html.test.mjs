@@ -167,3 +167,23 @@ test("runs the local article, order and tracking lifecycle", async () => {
   assert.equal(adminOrders.orders.length, 1);
   database.close();
 });
+
+test("fresh public Worker reads a migrated database without schema setup", async () => {
+  const { database } = await render();
+  const binding = sqliteBinding(database);
+  const prepare = binding.prepare.bind(binding);
+  const queries = [];
+  binding.prepare = (sql) => { queries.push(sql); return prepare(sql); };
+  const url = new URL('../dist/server/index.js', import.meta.url);
+  url.searchParams.set('public-cold-read', `${process.pid}-${Date.now()}`);
+  const { default: worker } = await import(url.href);
+  const env = { DB: binding, ASSETS: { fetch: async () => new Response('missing', { status: 404 }) } };
+  const ctx = { waitUntil() {}, passThroughOnException() {} };
+  for (const path of ['/api/shop/settings', '/api/reviews?latest=1', '/api/catalog/articles']) {
+    const response = await worker.fetch(new Request(`http://localhost${path}`), env, ctx);
+    assert.equal(response.status, 200);
+  }
+  assert.ok(queries.length > 0);
+  assert.ok(queries.every(sql => !/^\s*(CREATE|ALTER|PRAGMA|INSERT)/i.test(sql)), 'Public reads must not bootstrap a migrated database');
+  database.close();
+});

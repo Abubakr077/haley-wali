@@ -9,7 +9,7 @@ const shopAll = path === "/shop" && category !== "exclusive" && category !== "br
 const shopExclusive = path === "/shop" && category === "exclusive";
 const shopBranded = path === "/shop" && category === "branded";
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
-const publishedArticles = await fetchPublishedArticles(apiBase);
+const publishedArticles = await fetchPublishedArticles(apiBase, Astro.locals);
 const otherBrandsLabel = "Other Brands";
 const brandedBrands = [...new Map(
   publishedArticles

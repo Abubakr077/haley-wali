@@ -65,9 +65,9 @@ async function optimizeReviewImage(file: File): Promise<File> {
       context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
       for (const quality of [0.8, 0.7, 0.6, 0.5]) {
         best = await canvasToWebp(canvas, quality);
-        if (best.size <= REVIEW_IMAGE_TARGET_BYTES) break;
+        if (best && best.size <= REVIEW_IMAGE_TARGET_BYTES) break;
       }
-      if (best.size <= REVIEW_IMAGE_TARGET_BYTES) break;
+      if (best && best.size <= REVIEW_IMAGE_TARGET_BYTES) break;
       scale *= 0.82;
     }
     if (!best || best.size > REVIEW_IMAGE_UPLOAD_LIMIT_BYTES) {

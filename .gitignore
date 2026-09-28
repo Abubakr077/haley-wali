@@ -50,3 +50,6 @@ next-env.d.ts
 /work/
 /supabase.txt
 /haley-wali-catalog-operations@*
+
+/apps/storefront/public/generated-images/
+/apps/storefront/src/lib/image-manifest.json

@@ -1,3 +1,4 @@
+import { publicRead } from "./public-cache";
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import handler from "vinext/server/app-router-entry";
 import {
@@ -868,6 +869,16 @@ async function prepareCatalog(db: CatalogDatabase): Promise<void> {
   } catch (error) {
     catalogSchemaReady = null;
     throw error;
+  }
+}
+
+// Established databases read immediately. Bootstrap only a genuinely missing schema.
+async function readCatalog<T>(db: CatalogDatabase, read: () => Promise<T>): Promise<T> {
+  try { return await read(); } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!/no such table|no such column|has no column named/i.test(message)) throw error;
+    await prepareCatalog(db);
+    return read();
   }
 }
 
@@ -2937,20 +2948,18 @@ const applicationWorker = {
       (url.pathname === "/api/catalog/articles" ||
         url.pathname === "/api/catalog/pret")
     ) {
-      const loadProducts = async () => ({
-        products: url.pathname === "/api/catalog/pret"
-          ? await getPublishedPret(env.DB)
-          : await getPublishedArticles(env.DB),
-        settings: await getStoreSettings(env.DB),
-      });
+      const loadProducts = async () => {
+        const [products, settings] = await Promise.all([
+          url.pathname === "/api/catalog/pret" ? getPublishedPret(env.DB) : getPublishedArticles(env.DB),
+          getStoreSettings(env.DB),
+        ]);
+        return { products, settings };
+      };
       // The production database is already migrated. Read it immediately so a
       // new Worker isolate does not perform the full schema bootstrap before a
       // visitor can see published articles. A genuinely new/old database still
       // self-prepares and retries once.
-      const loaded = await loadProducts().catch(async () => {
-        await prepareCatalog(env.DB);
-        return loadProducts();
-      });
+      const loaded = await readCatalog(env.DB, loadProducts);
       const publicProducts = loaded.products.map((product) => {
         const article = { ...product } as typeof product & { inventorySource?: string };
         delete article.inventorySource;
@@ -2982,8 +2991,7 @@ const applicationWorker = {
     }
 
     if (request.method === "GET" && url.pathname === "/api/shop/settings") {
-      await prepareCatalog(env.DB);
-      return jsonResponse(await getStoreSettings(env.DB), {
+      return jsonResponse(await readCatalog(env.DB, () => getStoreSettings(env.DB)), {
         headers: {
           ...publicCorsHeaders(request, env),
           "cache-control": "public, max-age=30, s-maxage=60",
@@ -3227,15 +3235,14 @@ const applicationWorker = {
     }
 
     if (request.method === "GET" && url.pathname === "/api/reviews") {
-      await prepareCatalog(env.DB);
       if (url.searchParams.get("latest") === "1") {
         return jsonResponse(
-          await getLatestPublishedReviews(env.DB, Number(url.searchParams.get("limit") ?? 6)),
+          await readCatalog(env.DB, () => getLatestPublishedReviews(env.DB, Number(url.searchParams.get("limit") ?? 6))),
           { headers: { ...publicCorsHeaders(request, env), "cache-control": "public, max-age=10, s-maxage=30" } },
         );
       }
       return jsonResponse(
-        await getPublishedReviews(env.DB, url.searchParams.get("productId") ?? ""),
+        await readCatalog(env.DB, () => getPublishedReviews(env.DB, url.searchParams.get("productId") ?? "")),
         { headers: { ...publicCorsHeaders(request, env), "cache-control": "public, max-age=10, s-maxage=30" } },
       );
     }
@@ -3447,7 +3454,7 @@ const applicationWorker = {
 
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const response = await applicationWorker.fetch(request, env, ctx);
+    const response = await publicRead(request, () => applicationWorker.fetch(request, env, ctx), ctx);
     const url = new URL(request.url);
     const isManagerResponse = url.pathname.startsWith("/api/admin/") ||
       (request.headers.get("accept") ?? "").includes("text/html");

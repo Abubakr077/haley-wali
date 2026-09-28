@@ -1,4 +1,5 @@
 ---
+import { responsiveImageAttributes as responsiveImage } from "../lib/images";
 import FeaturedArticles from "../components/FeaturedArticles";
 import HomeHero, { type HomeHeroSlide } from "../components/HomeHero";
 import LatestReviews from "../components/LatestReviews.astro";
@@ -7,12 +8,13 @@ import { loadShopSettings } from "../lib/offers";
 import { fetchLatestReviews, fetchPublishedArticles } from "../lib/products";
 import type { PublishedReview } from "../lib/products";
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
-const shopSettings = await loadShopSettings(apiBase);
-const exclusiveArticles = (await fetchPublishedArticles(apiBase)).filter(
-  (article) => article.category === "exclusive",
-);
+const [shopSettings, publishedArticles, publishedReviews] = await Promise.all([
+  loadShopSettings(apiBase),
+  fetchPublishedArticles(apiBase, Astro.locals),
+  fetchLatestReviews(apiBase, 6),
+]);
+const exclusiveArticles = publishedArticles.filter((article) => article.category === "exclusive");
 const initialFeaturedArticles = exclusiveArticles.slice(0, 4);
-const publishedReviews = await fetchLatestReviews(apiBase, 6);
 const sampleArticle = initialFeaturedArticles[0];
 const latestReviews: PublishedReview[] = publishedReviews.length ? publishedReviews : [{
   id: "sample-review",
@@ -125,13 +127,13 @@ const jsonLd = {
       <a class="sb-collection-card" href="/shop?category=exclusive">
         <div class="sb-exclusive-collage" aria-label="Published HW Exclusive article photography">
           {exclusiveCollectionPhotos.length ? exclusiveCollectionPhotos.map((photo) => (
-            <img src={photo.src} alt={photo.alt} loading="lazy" />
-          )) : <img src="/assets/collection-sheet.png" alt="HW Exclusive customised suits" loading="lazy" />}
+            <img {...responsiveImage(photo.src, "(max-width: 760px) 50vw, 25vw")} alt={photo.alt} loading="lazy" />
+          )) : <img {...responsiveImage("/assets/collection-sheet.png", "50vw")} alt="HW Exclusive customised suits" loading="lazy" />}
         </div>
         <div class="sb-collection-copy"><span>OUR OWN ARTICLES</span><h3>HW Exclusive</h3><p>Customised suits made for Haley Wali.</p><span class="sb-button sb-button-outline sb-card-button">Shop collection</span></div>
       </a>
       <a class="sb-collection-card" href="/shop?category=branded">
-        <img src="/assets/sapphire.webp" alt="Branded unstitched suit" loading="lazy" />
+        <img {...responsiveImage("/assets/sapphire.webp", "(max-width: 760px) 100vw, 50vw")} alt="Branded unstitched suit" loading="lazy" />
         <div class="sb-collection-copy"><span>CHANGING STOCK</span><h3>Branded</h3><p>Pret and unstitched articles from known brands.</p><span class="sb-button sb-button-outline sb-card-button">Browse branded</span></div>
       </a>
     </nav>

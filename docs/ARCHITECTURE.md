@@ -138,3 +138,24 @@ the initial shop volume.
   `SUPABASE_SECRET_KEY` and `SUPABASE_STORAGE_BUCKET`; the secret key is
   never exposed to either browser application.
 - Supplier identity is an internal operational detail.
+
+## Public delivery performance
+
+`lib/products.ts` shares its catalogue promise via `Astro.locals` within one SSR
+request. `lib/publicFetch.ts` bounds SSR calls and logs only endpoint paths,
+duration and failure category. Home and product-page independent reads run in
+parallel. Public API schema readiness uses read-first recovery; production
+migrations remain owned by the guarded deployment pipeline.
+
+`worker/public-cache.ts` caches only anonymous public catalogue/settings/review
+GET responses at the canonical manager hostname. Existing Cache-Control TTLs
+apply; keys separate CORS origins and full review query parameters. Errors,
+admin/order responses, writes, cookies and Authorization bypass caching. This
+permits up to 30 seconds of catalogue/review staleness and 60 seconds for
+settings. Checkout/order writes always recompute against D1.
+
+`prepare-storefront-images.mjs` creates a build-local manifest and responsive
+WebP assets from campaign files and the published catalogue's Supabase public
+photos. No storage credentials or paid transformations are used. The browser
+chooses sizes via srcset; original URLs stay in article data and the zoom viewer.
+New media and failed optional downloads use original URLs until a later release.

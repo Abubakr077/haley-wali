@@ -215,3 +215,21 @@ not use it as the normal local release path.
 - Before production, add owner authentication, restrict admin API access/CORS,
   implement stock reservation/decrement, live-test the free WhatsApp
   confirmation link, and verify the supplier media permission.
+
+## Responsive image build
+
+Storefront `prebuild`, `predev` and `precheck` run
+`scripts/prepare-storefront-images.mjs` using pinned Sharp. The script reads the
+public catalogue at `PUBLIC_CATALOG_API_BASE` (defaults to the canonical manager),
+fetches only HTTPS Supabase public-storage photos, and writes ignored
+`apps/storefront/public/generated-images/` and `src/lib/image-manifest.json`.
+Generated filenames hash source content. Do not edit or commit these outputs.
+Optional remote failures fall back to original media without blocking a release;
+local campaign conversion failures stop the build. The current release prepared
+50 sources successfully. New uploads work immediately at their original URLs;
+responsive copies appear after the next storefront build/release.
+
+`npm run test:performance` checks public caching isolation and timeouts. `npm test`
+includes these checks and verifies that a fresh public Worker performs no schema
+setup against an established database. Do not infer live speed improvements from
+local development-server timings; remeasure production after the release.

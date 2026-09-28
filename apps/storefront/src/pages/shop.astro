@@ -7,7 +7,7 @@ const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:300
 // Render published articles on the server as well as refreshing them in the browser.
 // This keeps the collection visible if a visitor's browser cannot complete a
 // cross-origin refresh request after hydration.
-const initialProducts = await fetchPublishedArticles(apiBase);
+const initialProducts = await fetchPublishedArticles(apiBase, Astro.locals);
 const requestedCategory = Astro.url.searchParams.get("category");
 const initialCategory =
   requestedCategory === "exclusive" ||

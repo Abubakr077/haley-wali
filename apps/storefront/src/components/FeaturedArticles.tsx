@@ -16,7 +16,11 @@ export default function FeaturedArticles({
   const [catalogUnavailable, setCatalogUnavailable] = useState(false);
 
   useEffect(() => {
-    fetch(`${apiBase}/api/catalog/articles`)
+    const controller = new AbortController();
+    let deadline: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      deadline = setTimeout(() => controller.abort(), 15000);
+      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error("Catalog unavailable");
         const result = await response.json() as { products?: Parameters<typeof mapPublishedArticle>[0][] };
@@ -31,7 +35,10 @@ export default function FeaturedArticles({
         // Keep the already-rendered articles visible if the browser refresh fails.
         setCatalogUnavailable(true);
       })
-      .finally(() => setLoaded(true));
+      .finally(() => { clearTimeout(deadline); setLoaded(true); });
+    };
+    const timer = setTimeout(refresh, initialProducts.length > 0 ? 30000 : 0);
+    return () => { clearTimeout(timer); clearTimeout(deadline); controller.abort(); };
   }, [apiBase, initialProducts]);
 
   if (!loaded) return <ArticleGridLoading label="Loading latest HW Exclusive articles" />;

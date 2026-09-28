@@ -1,4 +1,5 @@
 ---
+import { publicJson } from "../lib/publicFetch";
 import ProductDetail from "../components/ProductDetail";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { fetchPublishedArticles, formatPkr, products } from "../lib/products";
@@ -7,26 +8,14 @@ import { DEFAULT_SHARE_IMAGE_ALT, SITE_ORIGIN, absoluteUrl, shareImageUrl } from
 const apiBase = import.meta.env.PUBLIC_CATALOG_API_BASE ?? "http://127.0.0.1:3000";
 const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
 const initialId = Astro.url.searchParams.get("id") ?? "";
-const liveProducts = initialId ? await fetchPublishedArticles(apiBase) : products;
+const [liveProducts, settings] = await Promise.all([
+  initialId ? fetchPublishedArticles(apiBase, Astro.locals) : Promise.resolve(products),
+  initialId ? publicJson<{ deliveryPkr?: unknown }>(`${apiBase}/api/shop/settings`, 2500).catch(() => null) : Promise.resolve(null),
+]);
 const article = liveProducts.find((item) => item.id === initialId);
-let deliveryPkr: number | null = null;
-if (article) {
-  try {
-    const response = await fetch(`${apiBase}/api/shop/settings`, {
-      headers: { accept: "application/json" },
-    });
-    if (response.ok) {
-      const settings = (await response.json()) as { deliveryPkr?: unknown };
-      if (typeof settings.deliveryPkr === "number"
-        && Number.isInteger(settings.deliveryPkr)
-        && settings.deliveryPkr >= 0) {
-        deliveryPkr = settings.deliveryPkr;
-      }
-    }
-  } catch {
-    // Do not publish a guessed delivery charge in search results.
-  }
-}
+// Omit shipping markup rather than inventing a delivery charge after a failed request.
+const deliveryPkr = typeof settings?.deliveryPkr === "number"
+  && Number.isInteger(settings.deliveryPkr) && settings.deliveryPkr >= 0 ? settings.deliveryPkr : null;
 const title = article ? `${article.name} — Haley Wali` : "Article Details — Haley Wali";
 const description = article
   ? `${article.categoryLabel} ${article.type} · ${formatPkr(article.price)} · Cash on Delivery across Pakistan.`

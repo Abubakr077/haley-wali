@@ -1,5 +1,38 @@
 # Current status and next work
 
+## Performance update — 2026-09-28
+
+- Homepage settings, catalogue and reviews load concurrently. Server catalogue
+  data is shared with the header through request-local state; no cross-request
+  promises or customer data are retained. Server waits are bounded to 4 seconds
+  for catalogue data, 2.5 seconds for settings and 1.5 seconds for latest reviews.
+- Shop renders supplied articles immediately instead of hiding them behind the
+  initial skeleton. Home/Shop/article browser refreshes start after 30 seconds
+  when SSR supplied usable data; failed SSR still triggers immediate recovery.
+  Browser catalogue refreshes have a 15-second deadline and retain usable SSR
+  content on network failure. Checkout still validates live price and stock.
+- Public settings/reviews read a migrated database directly. Missing-schema
+  errors alone trigger the existing bootstrap/retry for local or old databases.
+  Healthy public requests no longer run CREATE/PRAGMA initialization on startup.
+- Anonymous catalogue, settings and review GETs use the Workers Cache API with
+  their existing short TTLs (30 seconds; settings 60 seconds). CORS origins have
+  separate keys. Admin/customer endpoints, writes and credentialed requests
+  bypass this cache. Public responses expose X-Public-Cache and Server-Timing.
+- Builds generate WebP sizes for campaign images and published Supabase article
+  photos. Originals remain in storage and power full-screen zoom. Unknown/new
+  photos fall back to originals until the next build. Supplier-hosted photos
+  remain external. The hero initially renders only its first photo, then prepares
+  the next after the active image loads. Shop's first two images are eager.
+- Measured build sizes: campaign image 2,293 KB -> 102 KB at full source width;
+  sale image 1,610 KB -> 37 KB. These are file-size improvements, not a claim of
+  measured production load-time improvement before deployment.
+- Validation: both production builds, catalogue tests, public cache/timeout
+  regressions, order/tracking lifecycle, review upload/moderation and fresh Worker
+  public reads passed. Storefront type check passed (two existing deprecation
+  hints). Chrome desktop Home and mobile Shop/article gallery were inspected;
+  mobile cards selected 320px copies and zoom loaded the original photo.
+
+
 Status reviewed from source and production configuration on **2026-09-14**.
 
 ## Implemented
@@ -93,10 +126,9 @@ Status reviewed from source and production configuration on **2026-09-14**.
   logo artwork.
 - Store Manager reads the established public D1 catalogue immediately and runs
   schema preparation only when a new or older database actually needs it. It
-  also caches that readiness work for each active Worker isolate. The storefront
-  does not impose a client-side catalogue timeout: slow connections remain
-  visibly loading, while genuine connection failures use a retry state rather
-  than an incorrect empty catalogue.
+  also caches that readiness work for each active Worker isolate. The storefront uses bounded catalogue requests and preserves server-rendered
+  articles on refresh failure; when no articles could be fetched it shows a
+  retry state rather than claiming the catalogue is empty.
 - Astro customer website with React only for interactive shopping areas.
 - The public catalogue API accepts the canonical `haleywali.pk` origin, its
   `www` redirect origin and the direct storefront Worker URL, so the same

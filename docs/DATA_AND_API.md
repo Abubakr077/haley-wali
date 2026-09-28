@@ -220,3 +220,13 @@ order. Checkout never trusts a browser-sent delivery or discount amount.
   operational testing.
 - Use public data only. Do not bypass access controls or hit the supplier at a
   high frequency.
+
+## Public read caching and diagnostics
+
+Anonymous GET requests for `/api/catalog/articles`, `/api/catalog/pret`,
+`/api/shop/settings` and `/api/reviews` are cached at the manager Worker edge.
+Existing 30-second shared TTLs apply to articles/reviews and 60 seconds to
+settings; CORS origins and query parameters are isolated. Responses include
+`X-Public-Cache: HIT|MISS|BYPASS` and a `Server-Timing` measurement on fresh
+public reads. Error responses and authenticated/customer/order APIs are not
+cached. Prices and stock are always validated live when an order is submitted.

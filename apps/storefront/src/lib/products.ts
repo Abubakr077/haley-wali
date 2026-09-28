@@ -1,3 +1,4 @@
+import { publicJson } from "./publicFetch";
 import type { Product } from "./types";
 
 // Production starts empty. Articles appear only after Store Manager publishes them.
@@ -11,13 +12,14 @@ export function findProduct(id: string) {
   return products.find((product) => product.id === id);
 }
 
-export async function fetchPublishedArticles(apiBase: string) {
+export function fetchPublishedArticles(apiBase: string, scope?: { publishedArticles?: Promise<Product[]> }) {
+  if (!scope) return loadPublishedArticles(apiBase);
+  return scope.publishedArticles ??= loadPublishedArticles(apiBase);
+}
+
+async function loadPublishedArticles(apiBase: string) {
   try {
-    const response = await fetch(`${apiBase}/api/catalog/articles`, {
-      headers: { accept: "application/json" },
-    });
-    if (!response.ok) return [] as Product[];
-    const result = (await response.json()) as { products?: PublishedArticle[] };
+    const result = await publicJson<{ products?: PublishedArticle[] }>(`${apiBase}/api/catalog/articles`);
     return (result.products ?? []).map(mapPublishedArticle);
   } catch {
     return [] as Product[];
@@ -40,11 +42,7 @@ export type PublishedReview = {
 
 export async function fetchLatestReviews(apiBase: string, limit = 6) {
   try {
-    const response = await fetch(`${apiBase}/api/reviews?latest=1&limit=${limit}`, {
-      headers: { accept: "application/json" },
-    });
-    if (!response.ok) return [] as PublishedReview[];
-    const result = (await response.json()) as { reviews?: PublishedReview[] };
+    const result = await publicJson<{ reviews?: PublishedReview[] }>(`${apiBase}/api/reviews?latest=1&limit=${limit}`, 1500);
     return result.reviews ?? [];
   } catch {
     return [] as PublishedReview[];

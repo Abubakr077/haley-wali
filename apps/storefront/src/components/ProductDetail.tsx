@@ -1,3 +1,4 @@
+import { responsiveImage, DETAIL_SIZES } from "../lib/images";
 import { useEffect, useState } from "react";
 import { addToCart } from "../lib/cart";
 import { formatPkr, mapPublishedArticle } from "../lib/products";
@@ -59,7 +60,11 @@ export default function ProductDetail({
   const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
-    fetch(`${apiBase}/api/catalog/articles`)
+    const controller = new AbortController();
+    let deadline: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      deadline = setTimeout(() => controller.abort(), 15000);
+      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error("Could not load article");
         const result = (await response.json()) as {
@@ -72,7 +77,10 @@ export default function ProductDetail({
         if (match) setMainImage((current) => current || match.image);
       })
       .catch(() => undefined)
-      .finally(() => setLoading(false));
+      .finally(() => { clearTimeout(deadline); setLoading(false); });
+    };
+    const timer = setTimeout(refresh, initialProducts.some(item => item.id === initialId) ? 30000 : 0);
+    return () => { clearTimeout(timer); clearTimeout(deadline); controller.abort(); };
   }, [apiBase, initialId]);
 
   useEffect(() => {
@@ -202,7 +210,7 @@ export default function ProductDetail({
         <div className="detail-gallery detail-zara-gallery">
           <div className="detail-gallery-frame">
             <button className="detail-image-open" type="button" onClick={() => setViewerOpen(true)} aria-label="Open article image viewer">
-              <img className="detail-product-image" key={selectedImage} src={selectedImage} alt={`${product.name} ${product.title}`} />
+              <img className="detail-product-image" key={selectedImage} {...responsiveImage(selectedImage, DETAIL_SIZES)} fetchPriority="high" alt={`${product.name} ${product.title}`} />
               <span className="detail-zoom-hint" aria-hidden="true">⌕&nbsp; ZOOM</span>
             </button>
             {gallery.length > 1 ? (
