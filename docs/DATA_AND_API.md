@@ -230,3 +230,11 @@ settings; CORS origins and query parameters are isolated. Responses include
 `X-Public-Cache: HIT|MISS|BYPASS` and a `Server-Timing` measurement on fresh
 public reads. Error responses and authenticated/customer/order APIs are not
 cached. Prices and stock are always validated live when an order is submitted.
+
+### Browser freshness
+
+Public cache hits restore browser max-age 10 seconds (settings 30 seconds), even
+if Cloudflare's cached response inherited a longer zone TTL. Storefront public
+reads use fetch `cache: no-store` to avoid old browser responses; anonymous reads
+still use the Worker's 30-second edge cache (settings 60 seconds). No change to
+checkout's live D1 stock and pricing validation.

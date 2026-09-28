@@ -55,3 +55,44 @@ test('public JSON deadline aborts a stalled request and rejects HTTP failures', 
   globalThis.fetch.mock.mockImplementation(async()=>new Response('failure', {status:503}));
   await assert.rejects(publicJson('https://example.com/api/catalog/articles'), /HTTP 503/);
 });
+
+test('cache hits restore short browser TTLs even when the cache returns a zone override', async t => {
+  mockCache(t, { default: { match: async () => new Response('{}', {
+    headers: { 'cache-control': 'public, max-age=14400, s-maxage=30', age: '5' },
+  }) }});
+  for (const [path, expected] of [
+    ['/api/catalog/articles', 'public, max-age=10, s-maxage=30'],
+    ['/api/reviews?latest=1', 'public, max-age=10, s-maxage=30'],
+    ['/api/shop/settings', 'public, max-age=30, s-maxage=60'],
+  ]) {
+    const result = await publicRead(new Request(`https://manager.haleywali.pk${path}`),
+      () => { throw new Error('Cache should satisfy this request'); }, { waitUntil() {} });
+    assert.equal(result.headers.get('cache-control'), expected);
+    assert.equal(result.headers.get('age'), '5');
+  }
+});
+
+test('release image input selects only public media and fails closed on invalid input', async () => {
+  const { DatabaseSync } = await import('node:sqlite');
+  const { publishedImageQuery, imageSourcesFromD1, loadImageSources } = await import('../scripts/storefront-image-sources.mjs');
+  const db = new DatabaseSync(':memory:');
+  try {
+    db.exec(`CREATE TABLE manual_products(image_url TEXT, gallery_json TEXT, publish_status TEXT, selling_price_pkr INTEGER, cost_price_pkr INTEGER);
+      CREATE TABLE catalog_products(supplier_product_id TEXT, category TEXT, publish_status TEXT, selling_price_pkr INTEGER);
+      CREATE TABLE supplier_products(id TEXT, image_url TEXT, gallery_json TEXT);
+      INSERT INTO manual_products VALUES ('public', '["gallery", "public"]', 'published', 100, 50),
+        ('draft', '[]', 'draft', 100, 50), ('unpriced', '[]', 'published', NULL, 50);
+      INSERT INTO supplier_products VALUES ('one', 'imported', '[]');
+      INSERT INTO catalog_products VALUES ('one', 'pret', 'published', 100);`);
+    const results = db.prepare(publishedImageQuery).all();
+    assert.deepEqual(Object.keys(results[0]).sort(), ['galleryJson','imageUrl']);
+    const sources = imageSourcesFromD1([{ success: true, results }]);
+    assert.deepEqual(sources, ['public', 'gallery', 'imported']);
+    assert.throws(() => imageSourcesFromD1([{ success: false, results: [] }]));
+    assert.deepEqual(await loadImageSources({ file: 'snapshot', readFile: async () => JSON.stringify(sources),
+      fetcher: () => { throw new Error('Snapshot must not depend on public API'); } }), sources);
+    await assert.rejects(loadImageSources({ api: 'https://example.com', required: true,
+      fetcher: async () => new Response('blocked', { status: 403 }) }), /Required catalogue/);
+    await assert.rejects(loadImageSources({ file: 'snapshot', readFile: async () => '{}' }), /Invalid published/);
+  } finally { db.close(); }
+});

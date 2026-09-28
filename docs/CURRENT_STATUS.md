@@ -33,6 +33,32 @@
   mobile cards selected 320px copies and zoom loaded the original photo.
 
 
+### Post-deployment corrections — 2026-09-28
+
+- Live checks of e58542a showed desktop PageSpeed 97 (previously 63), desktop
+  LCP 0.8s (3.2s), mobile Speed Index 4.5s (12.6s), and mobile CLS 0. Mobile
+  LCP was still 5.2s and the score was 78. These are single lab runs, not proof
+  that every customer's loading problem is resolved.
+- CI had prepared only five local sources because the public catalogue fetch
+  failed. The guarded release now queries only published, priced article image
+  URLs from D1 using its existing deployment authorization, writes an ignored
+  build input, and requires successful article image conversion. Public API/bot
+  checks no longer determine whether production article sizes are generated.
+- Cache API hits had returned a four-hour browser TTL. The Worker now restores
+  each public endpoint's short browser TTL after cache lookup. Storefront public
+  reads bypass browser storage, including old four-hour responses, while the
+  Worker retains its short edge cache and checkout still reads live stock.
+- The hero is now server-rendered Astro HTML with a small native carousel script,
+  rather than a React island. First paint has no fade-in; transitions begin only
+  after slide selection. Inert templates defer inactive photos, and rotation
+  waits for the active image. Arrows, dots, touch navigation, keyboard focus
+  pausing and reduced-motion handling remain available.
+- Validation: 14 tests and both production builds passed; all 50 image sources
+  prepared without fallback. Chrome desktop/mobile carousel controls and
+  responsive image selection checked. Production cache headers, CI image counts
+  and mobile PageSpeed must be remeasured after this correction is deployed.
+
+
 Status reviewed from source and production configuration on **2026-09-14**.
 
 ## Implemented

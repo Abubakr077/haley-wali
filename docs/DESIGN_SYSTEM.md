@@ -247,3 +247,9 @@ responsive WebP build assets where available, preserving framing and aspect
 ratio. The first two Shop/Search cards are eager; later cards remain lazy.
 Article zoom always uses the original stored photo. Hero photos beyond the
 active/next prepared slide are not requested during initial rendering.
+
+The hero heading and first image render as Astro HTML without React hydration or
+an initial opacity animation. The native carousel preserves the existing visual
+layout, arrows, dots and swipe interaction. Later photos live in inert templates
+until needed, and autoplay begins after the active photo is ready. Reduced-motion
+users retain manual controls without automatic rotation.

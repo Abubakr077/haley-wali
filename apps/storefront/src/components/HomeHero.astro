@@ -1,0 +1,177 @@
+---
+import { responsiveImageAttributes as responsiveImage } from "../lib/images";
+export type HomeHeroSlide = {
+  id: string;
+  kicker: string;
+  heading: string;
+  description: string;
+  image: string;
+  mobileImage?: string;
+  imageKind: "campaign" | "article" | "sale";
+  primaryHref: string;
+  primaryLabel: string;
+  secondaryHref: string;
+  secondaryLabel: string;
+  noteLabel: string;
+  noteValue: string;
+};
+
+const { slides } = Astro.props as { slides: HomeHeroSlide[] };
+const hasMultipleSlides = slides.length > 1;
+---
+    <haley-home-hero
+      class="sb-home-hero"
+      role="region"
+      aria-label="Haley Wali featured collection"
+      aria-roledescription="carousel"
+    >
+      {slides.map((slide, index) => {
+        const isActive = index === 0;
+        return (
+          <article
+            class={`sb-hero-slide sb-hero-slide-${slide.imageKind}${isActive ? " is-active" : ""}`}
+            aria-hidden={!isActive}
+          >
+            <div class={`sb-hero-media${slide.imageKind === "sale" ? " sb-hero-sale-media" : ""}`}>
+              {isActive ? (
+                <picture>
+                  {slide.mobileImage ? <source media="(max-width: 760px)" srcset={responsiveImage(slide.mobileImage, "100vw").srcset ?? slide.mobileImage} sizes="100vw" /> : null}
+                  <img class={`sb-hero-image-${slide.imageKind}`} {...responsiveImage(slide.image, "100vw")} alt="" fetchpriority="high" loading="eager" />
+                </picture>
+              ) : (
+                <template>
+                  <picture>
+                    {slide.mobileImage ? <source media="(max-width: 760px)" srcset={responsiveImage(slide.mobileImage, "100vw").srcset ?? slide.mobileImage} sizes="100vw" /> : null}
+                    <img class={`sb-hero-image-${slide.imageKind}`} {...responsiveImage(slide.image, "100vw")} alt="" loading="eager" />
+                  </picture>
+                </template>
+              )}
+            </div>
+            <div class="sb-hero-copy" aria-live="off">
+              <p class="sb-kicker">{slide.kicker}</p>
+              {index === 0 ? <h1>{slide.heading}</h1> : <h2>{slide.heading}</h2>}
+              <p>{slide.description}</p>
+              <div class="sb-action-row">
+                <a class="sb-button sb-button-light" href={slide.primaryHref} tabindex={isActive ? 0 : -1}>{slide.primaryLabel}</a>
+                <a class="sb-button sb-button-outline-light" href={slide.secondaryHref} tabindex={isActive ? 0 : -1}>{slide.secondaryLabel}</a>
+              </div>
+              <ul class="sb-hero-notes" aria-label="Shopping benefits">
+                <li>Cash on Delivery</li>
+                <li>Delivery across Pakistan</li>
+                <li>Article checked before dispatch</li>
+              </ul>
+            </div>
+            <div class="sb-photo-note">
+              <span>{slide.noteLabel}</span>
+              <strong>{slide.noteValue}</strong>
+            </div>
+          </article>
+        );
+      })}
+
+      {hasMultipleSlides ? (
+        <>
+          <button class="sb-hero-arrow sb-hero-arrow-prev" type="button" data-direction="-1" aria-label="Show previous hero image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+          </button>
+          <button class="sb-hero-arrow sb-hero-arrow-next" type="button" data-direction="1" aria-label="Show next hero image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+          </button>
+          <div class="sb-hero-pagination" aria-label="Choose hero image">
+            {slides.map((slide, index) => (
+              <button
+                class={index === 0 ? "is-active" : ""}
+                type="button"
+                data-slide={index}
+                aria-label={`Show slide ${index + 1}: ${slide.noteValue}`}
+                aria-pressed={index === 0}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
+    </haley-home-hero>
+
+<script>
+  class HomeHero extends HTMLElement {
+    connectedCallback() {
+      const slides = [...this.querySelectorAll<HTMLElement>('.sb-hero-slide')];
+      const dots = [...this.querySelectorAll<HTMLButtonElement>('[data-slide]')];
+      if (slides.length < 2) return;
+      let active = 0;
+      let hovered = false;
+      let focused = false;
+      let manual = false;
+      let touchStart: number | null = null;
+      let rotation: ReturnType<typeof setTimeout>;
+      let prepare: ReturnType<typeof setTimeout>;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      const prepareSlide = (index: number) => {
+        const template = slides[index].querySelector('template');
+        if (template) template.replaceWith(template.content.cloneNode(true));
+      };
+      const schedule = () => {
+        clearTimeout(rotation);
+        if (!hovered && !focused && !manual && !document.hidden && !reduced.matches) {
+          rotation = setTimeout(() => select(active + 1), 6000);
+        }
+      };
+      const ready = (index: number) => {
+        if (active !== index) return;
+        clearTimeout(prepare);
+        prepare = setTimeout(() => prepareSlide((active + 1) % slides.length), 2500);
+        schedule();
+      };
+      const waitForImage = (index: number) => {
+        const image = slides[index].querySelector('img');
+        if (!image || image.complete) ready(index);
+        else {
+          image.addEventListener('load', () => ready(index), { once: true });
+          image.addEventListener('error', () => ready(index), { once: true });
+        }
+      };
+      const select = (index: number, interaction = false) => {
+        clearTimeout(rotation);
+        clearTimeout(prepare);
+        if (interaction) manual = true;
+        active = (index + slides.length) % slides.length;
+        prepareSlide(active);
+        // Initial SSR paint has no opacity transition. Animate only later selections.
+        this.dataset.interactive = 'true';
+        slides.forEach((slide, index) => {
+          const selected = index === active;
+          slide.classList.toggle('is-active', selected);
+          slide.setAttribute('aria-hidden', String(!selected));
+          slide.querySelectorAll('a').forEach(link => link.tabIndex = selected ? 0 : -1);
+        });
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('is-active', index === active);
+          dot.setAttribute('aria-pressed', String(index === active));
+        });
+        waitForImage(active);
+      };
+      this.querySelectorAll<HTMLButtonElement>('[data-direction]').forEach(button => {
+        button.addEventListener('click', () => select(active + Number(button.dataset.direction), true));
+      });
+      dots.forEach((dot, index) => dot.addEventListener('click', () => select(index, true)));
+      this.addEventListener('mouseenter', () => { hovered = true; clearTimeout(rotation); });
+      this.addEventListener('mouseleave', () => { hovered = false; schedule(); });
+      this.addEventListener('focusin', () => { focused = true; clearTimeout(rotation); });
+      this.addEventListener('focusout', event => {
+        focused = this.contains(event.relatedTarget as Node | null);
+        schedule();
+      });
+      this.addEventListener('touchstart', event => { touchStart = event.touches[0]?.clientX ?? null; }, { passive: true });
+      this.addEventListener('touchend', event => {
+        if (touchStart === null) return;
+        const distance = touchStart - (event.changedTouches[0]?.clientX ?? touchStart);
+        touchStart = null;
+        if (Math.abs(distance) >= 48) select(active + (distance > 0 ? 1 : -1), true);
+      }, { passive: true });
+      document.addEventListener('visibilitychange', schedule);
+      reduced.addEventListener('change', schedule);
+      waitForImage(0);
+    }
+  }
+  customElements.define('haley-home-hero', HomeHero);
+</script>

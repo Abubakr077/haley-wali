@@ -1,3 +1,4 @@
+import { publishedImageQuery, imageSourcesFromD1 } from "./storefront-image-sources.mjs";
 import { spawn } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
@@ -18,7 +19,7 @@ const cloudflareEnv = {
 };
 
 function run(command, args, options = {}) {
-  const { capture = false, env = cloudflareEnv } = options;
+  const { capture = false, quiet = false, env = cloudflareEnv } = options;
   return new Promise((resolveRun, reject) => {
     const child = spawn(command, args, {
       cwd: root,
@@ -31,12 +32,12 @@ function run(command, args, options = {}) {
       child.stdout.on("data", (chunk) => {
         const output = chunk.toString();
         stdout += output;
-        process.stdout.write(output);
+        if (!quiet) process.stdout.write(output);
       });
       child.stderr.on("data", (chunk) => {
         const output = chunk.toString();
         stderr += output;
-        process.stderr.write(output);
+        if (!quiet) process.stderr.write(output);
       });
     }
     child.on("error", reject);
@@ -121,10 +122,22 @@ await run(vinext, ["deploy"], {
 });
 
 console.log("\n5/7 Building and deploying the customer storefront...");
+// Use authenticated D1 rather than depending on public-site bot checks from CI.
+const imageResult = await run(wrangler, [
+  "d1", "execute", databaseName, "--remote", "--config", "wrangler.jsonc",
+  "--command", publishedImageQuery, "--json",
+], { capture: true, quiet: true });
+const imageSources = imageSourcesFromD1(JSON.parse(imageResult.stdout));
+const imageSourcesPath = join(root, ".wrangler", "published-image-sources.json");
+await mkdir(dirname(imageSourcesPath), { recursive: true });
+await writeFile(imageSourcesPath, JSON.stringify(imageSources));
+console.log(`Preparing ${imageSources.length} published article image URLs.`);
 await run(npm, ["run", "build:storefront"], {
   env: {
     ...cloudflareEnv,
     PUBLIC_CATALOG_API_BASE: managerUrl,
+    HALEY_ARTICLE_IMAGE_SOURCES: imageSourcesPath,
+    HALEY_REQUIRE_ARTICLE_IMAGES: "1",
   },
 });
 await run(wrangler, [

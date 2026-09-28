@@ -19,6 +19,11 @@ export async function publicRead(
       const hit = await cache.match(key);
       if (hit) {
         const response = new Response(hit.body, hit);
+        // Cache API hits can inherit the zone's four-hour Browser Cache TTL.
+        // Restore the endpoint policy before sending the response downstream.
+        response.headers.set("cache-control", url.pathname === "/api/shop/settings"
+          ? "public, max-age=30, s-maxage=60"
+          : "public, max-age=10, s-maxage=30");
         response.headers.set("x-public-cache", "HIT");
         return response;
       }

@@ -4,7 +4,7 @@ export async function publicJson<T>(url: string, timeoutMs = 4000): Promise<T> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const response = await fetch(url, { headers: { accept: "application/json" }, signal: controller.signal });
+    const response = await fetch(url, { cache: "no-store", headers: { accept: "application/json" }, signal: controller.signal });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.json() as T;
   } catch (error) {

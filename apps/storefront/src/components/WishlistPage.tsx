@@ -18,7 +18,7 @@ export default function WishlistPage({ apiBase }: { apiBase: string }) {
   }, []);
 
   useEffect(() => {
-    fetch(`${apiBase}/api/catalog/articles`)
+    fetch(`${apiBase}/api/catalog/articles`, { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Catalog unavailable");
         const result = await response.json() as { products?: Parameters<typeof mapPublishedArticle>[0][] };

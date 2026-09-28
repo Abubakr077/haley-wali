@@ -224,9 +224,16 @@ public catalogue at `PUBLIC_CATALOG_API_BASE` (defaults to the canonical manager
 fetches only HTTPS Supabase public-storage photos, and writes ignored
 `apps/storefront/public/generated-images/` and `src/lib/image-manifest.json`.
 Generated filenames hash source content. Do not edit or commit these outputs.
-Optional remote failures fall back to original media without blocking a release;
-local campaign conversion failures stop the build. The current release prepared
-50 sources successfully. New uploads work immediately at their original URLs;
+Local development permits optional remote failures to fall back to originals;
+local campaign conversion failures always stop the build. The guarded production
+release queries only published, priced article image/gallery URLs from D1 through
+its existing Wrangler authorization, writes `.wrangler/published-image-sources.json`
+(ignored), and supplies `HALEY_ARTICLE_IMAGE_SOURCES` plus
+`HALEY_REQUIRE_ARTICLE_IMAGES=1` to the storefront build. The input contains no
+customer data, cost prices or secrets. A failed query, invalid input or failed
+allowed remote image conversion stops the storefront release instead of silently
+publishing an incomplete manifest. Supplier-hosted photos remain external.
+Direct local builds can still use the public API without any D1 credentials. New uploads work immediately at their original URLs;
 responsive copies appear after the next storefront build/release.
 
 `npm run test:performance` checks public caching isolation and timeouts. `npm test`

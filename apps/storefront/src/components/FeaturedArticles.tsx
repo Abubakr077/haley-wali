@@ -20,7 +20,7 @@ export default function FeaturedArticles({
     let deadline: ReturnType<typeof setTimeout>;
     const refresh = () => {
       deadline = setTimeout(() => controller.abort(), 15000);
-      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal })
+      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Catalog unavailable");
         const result = await response.json() as { products?: Parameters<typeof mapPublishedArticle>[0][] };

@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+import { loadImageSources } from './storefront-image-sources.mjs';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
@@ -8,15 +9,11 @@ await mkdir(output, { recursive: true });
 const manifest = {};
 const sources = ['/assets/campaign-hero.png', '/assets/season-end-sale-hero.png', '/assets/mehr-hero-slide.png', '/assets/collection-sheet.png', '/assets/sapphire.webp'];
 const api = process.env.PUBLIC_CATALOG_API_BASE || 'https://manager.haleywali.pk';
-// Only public catalogue media is fetched. A failed optional source keeps its original URL.
-try {
-  const response = await fetch(`${api}/api/catalog/articles`, { signal: AbortSignal.timeout(15000) });
-  if (!response.ok) throw new Error('Catalogue unavailable');
-  const { products = [] } = await response.json();
-  for (const product of products) sources.push(product.imageUrl, ...(product.gallery || []));
-} catch {
-  console.warn('Responsive images: catalogue unavailable; remote images retain original URLs.');
-}
+const required = process.env.HALEY_REQUIRE_ARTICLE_IMAGES === '1';
+sources.push(...await loadImageSources({
+  file: process.env.HALEY_ARTICLE_IMAGE_SOURCES,
+  api, required, readFile,
+}));
 let failed = 0;
 const queue = [...new Set(sources.filter(Boolean))];
 async function convert(source) {
@@ -62,5 +59,6 @@ await Promise.all(Array.from({ length: 3 }, async () => {
     }
   }
 }));
+if (required && failed) throw new Error(`Responsive images: ${failed} required article photos failed; release stopped.`);
 await writeFile(new URL('src/lib/image-manifest.json', root), JSON.stringify(manifest));
 console.log(`Responsive images: ${Object.keys(manifest).length} sources prepared; ${failed} remote fallbacks.`);

@@ -148,8 +148,9 @@ parallel. Public API schema readiness uses read-first recovery; production
 migrations remain owned by the guarded deployment pipeline.
 
 `worker/public-cache.ts` caches only anonymous public catalogue/settings/review
-GET responses at the canonical manager hostname. Existing Cache-Control TTLs
-apply; keys separate CORS origins and full review query parameters. Errors,
+GET responses at the canonical manager hostname. Short browser TTLs are restored after cache lookup to avoid inherited zone
+overrides. Storefront public fetches bypass old browser-cached responses; edge TTLs
+still apply; keys separate CORS origins and full review query parameters. Errors,
 admin/order responses, writes, cookies and Authorization bypass caching. This
 permits up to 30 seconds of catalogue/review staleness and 60 seconds for
 settings. Checkout/order writes always recompute against D1.
@@ -158,4 +159,8 @@ settings. Checkout/order writes always recompute against D1.
 WebP assets from campaign files and the published catalogue's Supabase public
 photos. No storage credentials or paid transformations are used. The browser
 chooses sizes via srcset; original URLs stay in article data and the zoom viewer.
-New media and failed optional downloads use original URLs until a later release.
+New media uses original URLs until a later release. Production releases obtain
+published image URLs directly from an authenticated D1 read and fail on missing
+input or failed allowed downloads; local builds permit optional fallbacks.
+The homepage carousel uses Astro HTML and a small native script, keeping the
+headline independent of React hydration and inactive images in inert templates.

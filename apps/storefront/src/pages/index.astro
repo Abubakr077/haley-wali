@@ -1,7 +1,7 @@
 ---
 import { responsiveImageAttributes as responsiveImage } from "../lib/images";
 import FeaturedArticles from "../components/FeaturedArticles";
-import HomeHero, { type HomeHeroSlide } from "../components/HomeHero";
+import HomeHero, { type HomeHeroSlide } from "../components/HomeHero.astro";
 import LatestReviews from "../components/LatestReviews.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { loadShopSettings } from "../lib/offers";
@@ -113,7 +113,7 @@ const jsonLd = {
   description="Shop customised HW Exclusive clothing with Cash on Delivery across Pakistan."
   jsonLd={jsonLd}
 >
-  <HomeHero slides={heroSlides} client:load />
+  <HomeHero slides={heroSlides} />
 
   <section class="sb-home-section sb-collection-section">
     <header class="sb-section-heading">

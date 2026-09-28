@@ -103,7 +103,7 @@ export default function ProductReviews({ productId, apiBase }: { productId: stri
   }, [image]);
 
   useEffect(() => {
-    fetch(`${apiBase}/api/reviews?productId=${encodeURIComponent(productId)}`)
+    fetch(`${apiBase}/api/reviews?productId=${encodeURIComponent(productId)}`, { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Reviews could not be loaded.");
         return response.json() as Promise<{ reviews?: Review[]; average?: number; count?: number; distribution?: RatingDistribution }>;

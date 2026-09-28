@@ -64,7 +64,7 @@ export default function ProductDetail({
     let deadline: ReturnType<typeof setTimeout>;
     const refresh = () => {
       deadline = setTimeout(() => controller.abort(), 15000);
-      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal })
+      fetch(`${apiBase}/api/catalog/articles`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Could not load article");
         const result = (await response.json()) as {

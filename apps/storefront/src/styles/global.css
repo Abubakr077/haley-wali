@@ -1015,6 +1015,7 @@ img { max-width: 100%; }
   text-transform: uppercase;
 }
 .home-starbucks .sb-home-hero {
+  display: block;
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
@@ -1029,9 +1030,11 @@ img { max-width: 100%; }
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+.home-starbucks .sb-home-hero[data-interactive] .sb-hero-slide {
   transition: opacity .65s ease, visibility 0s linear .65s;
 }
-.home-starbucks .sb-hero-slide.is-active {
+.home-starbucks .sb-home-hero .sb-hero-slide.is-active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -1926,7 +1929,7 @@ main { min-height: 52vh; }
   .loading-spinner,
   .loading-product-image,
   .loading-product-card>div>span { animation: none; }
-  .home-starbucks .sb-hero-slide,
+  .home-starbucks .sb-home-hero[data-interactive] .sb-hero-slide,
   .home-starbucks .sb-hero-media img,
   .home-starbucks .sb-hero-pagination button { transition: none; }
 }
