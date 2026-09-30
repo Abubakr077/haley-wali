@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 import { suggestSellingPrice } from "../modules/catalog-import/pricing.ts";
+import { videoEmbed } from "../apps/storefront/src/lib/video.ts";
 
 type Variant = {
   title: string;
@@ -380,6 +381,7 @@ type ManualArticle = {
   description: string;
   imageUrl: string | null;
   gallery: string[];
+  videoUrl?: string | null;
   pieces: string;
   season: string;
   fabric: string;
@@ -703,6 +705,196 @@ function ArticleImageFields({ article }: { article?: ManualArticle }) {
   );
 }
 
+const MAX_ARTICLE_VIDEO_BYTES = 50 * 1024 * 1024;
+
+async function detectedArticleVideoType(file: File): Promise<"video/mp4" | "video/webm" | null> {
+  const head = new Uint8Array(await file.slice(0, 4).arrayBuffer());
+  if (head[0] === 0x1a && head[1] === 0x45 && head[2] === 0xdf && head[3] === 0xa3) return "video/webm";
+  const box = new Uint8Array(await file.slice(4, 8).arrayBuffer());
+  if (String.fromCharCode(...box) === "ftyp") return "video/mp4";
+  return null;
+}
+
+function putArticleVideo(
+  uploadUrl: string,
+  file: File,
+  contentType: string,
+  onProgress: (percent: number) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("PUT", uploadUrl);
+    request.setRequestHeader("content-type", contentType);
+    request.setRequestHeader("x-upsert", "false");
+    request.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    };
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 300) resolve();
+      else reject(new Error(`Video upload failed (${request.status}). ${request.responseText.slice(0, 160)}`));
+    };
+    request.onerror = () => reject(new Error("Video upload failed. Check the connection and try again."));
+    request.send(file);
+  });
+}
+
+function deleteArticleVideo(url: string, keepalive = false) {
+  return fetch("/api/admin/article-videos", {
+    method: "DELETE",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ url }),
+    keepalive,
+  });
+}
+
+function ArticleVideoFields({ article }: { article?: ManualArticle }) {
+  const [videoUrl, setVideoUrl] = useState(article?.videoUrl || "");
+  const [mode, setMode] = useState<"upload" | "link">(
+    article?.videoUrl && videoEmbed(article.videoUrl)?.kind === "embed" ? "link" : "upload",
+  );
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState("");
+  const [inputKey, setInputKey] = useState(0);
+  const fileInputId = useId();
+  const uploadedUrls = useRef(new Set<string>());
+  const [syncedArticle, setSyncedArticle] = useState(article);
+  if (syncedArticle !== article) {
+    setSyncedArticle(article);
+    setVideoUrl(article?.videoUrl || "");
+  }
+
+  useEffect(() => {
+    const urls = uploadedUrls.current;
+    return () => { urls.forEach((url) => { void deleteArticleVideo(url, true); }); };
+  }, []);
+
+  const preview = videoEmbed(videoUrl);
+
+  function discard(url: string) {
+    if (!url) return;
+    uploadedUrls.current.delete(url);
+    void deleteArticleVideo(url);
+  }
+
+  async function upload() {
+    if (!file) return;
+    setMessage("");
+    if (file.size > MAX_ARTICLE_VIDEO_BYTES) {
+      setMessage("The video must be smaller than 50 MB. Export a shorter or lower-resolution version.");
+      return;
+    }
+    const contentType = await detectedArticleVideoType(file);
+    if (!contentType) {
+      setMessage(`${file.name || "This file"} is not a valid MP4 or WebM video.`);
+      return;
+    }
+    setUploading(true);
+    setProgress(0);
+    try {
+      const signed = await readJson<{ uploadUrl: string; publicUrl: string }>(
+        await fetch("/api/admin/article-videos", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ contentType, size: file.size }),
+        }),
+      );
+      await putArticleVideo(signed.uploadUrl, file, contentType, setProgress);
+      if (videoUrl && videoUrl !== article?.videoUrl) discard(videoUrl);
+      uploadedUrls.current.add(signed.publicUrl);
+      setVideoUrl(signed.publicUrl);
+      setFile(null);
+      setInputKey((value) => value + 1);
+      setMessage("Video uploaded. Save the article to keep this change.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function remove() {
+    if (videoUrl && videoUrl !== article?.videoUrl) discard(videoUrl);
+    setVideoUrl("");
+    setMessage("Video removed from the article. Save changes to finish.");
+  }
+
+  return (
+    <section className="article-image-fields article-video-fields wide-field" aria-labelledby="article-video-title">
+      <input type="hidden" name="videoUrl" value={videoUrl} />
+      <div className="article-image-heading">
+        <div>
+          <strong id="article-video-title">ARTICLE VIDEO <span>(optional, HW Exclusive only)</span></strong>
+          <span>Upload one MP4 or WebM video up to 50 MB, or paste a YouTube, Instagram or TikTok link. The product page shows the video only when one is added.</span>
+        </div>
+        <div className="article-video-modes" role="group" aria-label="Video source">
+          <button type="button" aria-pressed={mode === "upload"} onClick={() => setMode("upload")}>UPLOAD FILE</button>
+          <button type="button" aria-pressed={mode === "link"} onClick={() => setMode("link")}>PASTE LINK</button>
+        </div>
+      </div>
+
+      {mode === "upload" ? (
+        <div className="article-image-upload article-video-upload">
+          <input
+            key={inputKey}
+            id={fileInputId}
+            className="article-image-file-input"
+            aria-label="Choose article video"
+            type="file"
+            accept="video/mp4,video/webm"
+            onChange={(event) => { setFile(event.currentTarget.files?.[0] ?? null); setMessage(""); }}
+          />
+          <label className="article-image-file-button" htmlFor={fileInputId}>
+            <span>{file ? file.name : "CHOOSE VIDEO"}</span>
+            <small>MP4 OR WEBM · UP TO 50 MB</small>
+          </label>
+          <button type="button" disabled={uploading || !file} onClick={upload}>
+            {uploading ? `UPLOADING ${progress}%` : videoUrl ? "REPLACE" : "UPLOAD"}
+          </button>
+        </div>
+      ) : (
+        <label className="article-video-link">
+          VIDEO LINK
+          <input
+            value={preview?.kind === "file" ? "" : videoUrl}
+            onChange={(event) => setVideoUrl(event.target.value.trim())}
+            placeholder="https://www.youtube.com/watch?v=… or an Instagram / TikTok video link"
+            inputMode="url"
+          />
+        </label>
+      )}
+
+      {uploading ? (
+        <progress className="article-video-progress" max={100} value={progress} aria-label="Video upload progress" />
+      ) : null}
+
+      {videoUrl ? (
+        <div className="article-video-preview">
+          {preview?.kind === "file" ? (
+            <video src={preview.src} controls playsInline preload="metadata" />
+          ) : preview?.kind === "embed" ? (
+            <iframe
+              className={`is-${preview.orientation}`}
+              src={preview.src}
+              title="Article video preview"
+              loading="lazy"
+              allow="encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          ) : (
+            <p className="article-image-empty">This link is not a supported YouTube, Instagram or TikTok video.</p>
+          )}
+          <button type="button" onClick={remove}>REMOVE VIDEO</button>
+        </div>
+      ) : <p className="article-image-empty">No article video added.</p>}
+
+      <p className="article-image-message" aria-live="polite">{message}</p>
+    </section>
+  );
+}
+
 function brandKey(value: string) {
   return value.trim().replace(/\s+/g, " ").toLocaleLowerCase("en");
 }
@@ -885,6 +1077,7 @@ function ArticleFields({
         <input name="subtitle" defaultValue={article?.subtitle || "Clothing Article"} required />
       </label>
       <ArticleImageFields article={article} />
+      {collection === "exclusive" ? <ArticleVideoFields article={article} /> : null}
       <label>
         BUYING COST
         <input name="costPricePkr" inputMode="numeric" defaultValue={article?.costPricePkr ?? ""} />
@@ -969,6 +1162,7 @@ function formArticle(form: HTMLFormElement, action: string, id?: string) {
     subtitle: String(data.get("subtitle")),
     imageUrl: String(data.get("imageUrl")),
     gallery: String(data.get("gallery") || "").split("\n").map((value) => value.trim()).filter(Boolean),
+    videoUrl: String(data.get("videoUrl") || ""),
     costPricePkr: number("costPricePkr"),
     pricePkr: number("pricePkr"),
     stockQty: number("stockQty") ?? 0,

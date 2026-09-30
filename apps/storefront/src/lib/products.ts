@@ -63,6 +63,7 @@ export type PublishedArticle = {
   reviewCount?: number;
   imageUrl: string | null;
   gallery?: string[];
+  videoUrl?: string | null;
   variants?: Array<{ title: string; available: boolean; stockQty?: number }>;
   brand?: string;
   collection?: "exclusive" | "branded";
@@ -107,6 +108,7 @@ export function mapPublishedArticle(article: PublishedArticle): Product {
     reviewCount: Number(article.reviewCount ?? 0),
     image: article.imageUrl ?? "/brand/haley-wali-logo.svg",
     gallery: article.gallery,
+    video: article.videoUrl || undefined,
     color: article.color || "As shown",
     fabric: article.fabric || "See article details",
     badge: article.collection === "branded" ? "Branded" : "HW Exclusive",

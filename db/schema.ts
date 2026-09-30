@@ -101,6 +101,7 @@ export const manualProducts = sqliteTable(
     description: text("description").notNull().default(""),
     imageUrl: text("image_url"),
     galleryJson: text("gallery_json").notNull().default("[]"),
+    videoUrl: text("video_url"),
     variantsJson: text("variants_json").notNull().default("[]"),
     pieces: text("pieces").notNull().default("1 Piece"),
     season: text("season").notNull().default("All Season"),

@@ -397,7 +397,9 @@ function storedSupabaseImageKey(value: unknown, env: Env): string | null {
     const prefix = `/storage/v1/object/public/${encodeURIComponent(config.bucket)}/`;
     if (url.origin !== new URL(config.url).origin || !url.pathname.startsWith(prefix)) return null;
     const key = url.pathname.slice(prefix.length).split("/").map(decodeURIComponent).join("/");
-    return /^(?:reviews\/)?\d{4}\/\d{2}\/[0-9a-f-]+\.(?:jpg|png|webp)$/.test(key) ? key : null;
+    return /^(?:(?:reviews\/)?\d{4}\/\d{2}\/[0-9a-f-]+\.(?:jpg|png|webp)|videos\/\d{4}\/\d{2}\/[0-9a-f-]+\.(?:mp4|webm))$/.test(key)
+      ? key
+      : null;
   } catch {
     return null;
   }
@@ -414,15 +416,97 @@ async function deleteUnreferencedArticleImages(
     if (!supabaseKey) continue;
     const referenced = await db.prepare(
       `SELECT id FROM manual_products
-       WHERE image_url = ? OR instr(gallery_json, ?) > 0
+       WHERE image_url = ? OR instr(gallery_json, ?) > 0 OR video_url = ?
        UNION ALL
        SELECT id FROM product_reviews WHERE image_url = ?
        LIMIT 1`,
-    ).bind(value, value, value).first();
+    ).bind(value, value, value, value).first();
     if (!referenced && supabaseKey) supabaseKeys.push(supabaseKey);
   }
   const supabase = supabaseStorageConfig(env);
   if (supabase && supabaseKeys.length) await deleteSupabaseImages(supabase, supabaseKeys);
+}
+
+const MAX_ARTICLE_VIDEO_BYTES = 50 * 1024 * 1024;
+const ARTICLE_VIDEO_TYPES = new Map([
+  ["video/mp4", "mp4"],
+  ["video/webm", "webm"],
+]);
+
+async function createArticleVideoUpload(request: Request, env: Env): Promise<Response> {
+  const input = await request.json() as { contentType?: unknown; size?: unknown };
+  const contentType = String(input.contentType ?? "");
+  const extension = ARTICLE_VIDEO_TYPES.get(contentType);
+  if (!extension) {
+    return jsonResponse({ error: "Choose an MP4 or WebM video." }, { status: 400 });
+  }
+  const size = Number(input.size ?? 0);
+  if (!Number.isFinite(size) || size < 1 || size > MAX_ARTICLE_VIDEO_BYTES) {
+    return jsonResponse({ error: "The video must be smaller than 50 MB." }, { status: 400 });
+  }
+  const supabase = supabaseStorageConfig(env);
+  if (!supabase) {
+    return jsonResponse({ error: "Supabase storage is not configured for the Store Manager." }, { status: 503 });
+  }
+  const date = new Date();
+  const key = `videos/${date.getUTCFullYear()}/${String(date.getUTCMonth() + 1).padStart(2, "0")}/${crypto.randomUUID()}.${extension}`;
+  const response = await fetch(
+    `${supabase.url}/storage/v1/object/upload/sign/${encodeURIComponent(supabase.bucket)}/${storagePath(key)}`,
+    {
+      method: "POST",
+      headers: {
+        ...supabaseStorageHeaders(supabase.secretKey),
+        "content-type": "application/json",
+      },
+      body: "{}",
+    },
+  );
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Supabase video upload could not be prepared (${response.status}): ${detail.slice(0, 180)}`);
+  }
+  const signed = await response.json() as { url?: string };
+  const signedPath = String(signed.url ?? "");
+  if (!signedPath.startsWith("/object/upload/sign/") || !new URL(signedPath, supabase.url).searchParams.get("token")) {
+    throw new Error("Supabase did not return a signed video upload URL.");
+  }
+  return jsonResponse({
+    uploadUrl: `${supabase.url}/storage/v1${signedPath}`,
+    publicUrl: supabasePublicImageUrl(supabase, key),
+    contentType,
+  }, { status: 201 });
+}
+
+function normalizeArticleVideo(value: unknown, env: Env): string | null {
+  const raw = String(value ?? "").trim();
+  if (!raw) return null;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new Error("Enter a complete video link, including https://.");
+  }
+  const storedKey = storedSupabaseImageKey(raw, env);
+  if (storedKey?.startsWith("videos/")) return raw;
+
+  const host = url.hostname.toLocaleLowerCase("en").replace(/^(?:www\.|m\.)/, "");
+  const segments = url.pathname.split("/").filter(Boolean);
+  const youtubeId = /^[A-Za-z0-9_-]{11}$/;
+  if (host === "youtube.com") {
+    const watchId = url.searchParams.get("v") ?? "";
+    if (segments[0] === "watch" && youtubeId.test(watchId)) return `https://www.youtube.com/watch?v=${watchId}`;
+    if (segments[0] === "shorts" && youtubeId.test(segments[1] ?? "")) return `https://www.youtube.com/shorts/${segments[1]}`;
+  }
+  if (host === "youtu.be" && youtubeId.test(segments[0] ?? "")) {
+    return `https://www.youtube.com/watch?v=${segments[0]}`;
+  }
+  if (host === "instagram.com" && /^(?:p|reel|reels)$/.test(segments[0] ?? "") && /^[A-Za-z0-9_-]+$/.test(segments[1] ?? "")) {
+    return `https://www.instagram.com/${segments[0] === "p" ? "p" : "reel"}/${segments[1]}/`;
+  }
+  if (host === "tiktok.com" && /^@[A-Za-z0-9._-]+$/.test(segments[0] ?? "") && segments[1] === "video" && /^\d+$/.test(segments[2] ?? "")) {
+    return `https://www.tiktok.com/${segments[0]}/video/${segments[2]}`;
+  }
+  throw new Error("Use an uploaded MP4/WebM video, or a YouTube, Instagram or TikTok video link.");
 }
 
 const SESSION_COOKIE = "haley_wali_admin";
@@ -519,11 +603,13 @@ function withManagerSecurityHeaders(response: Response): Response {
     "content-security-policy": [
       "default-src 'self'",
       "base-uri 'self'",
-      "connect-src 'self'",
+      "connect-src 'self' https://*.supabase.co",
       "font-src 'self' data:",
       "form-action 'self'",
       "frame-ancestors 'none'",
+      "frame-src https://www.youtube-nocookie.com https://www.instagram.com https://www.tiktok.com",
       "img-src 'self' data: blob: https:",
+      "media-src 'self' blob: https:",
       "object-src 'none'",
       "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
@@ -790,6 +876,7 @@ async function ensureCatalogSchema(db: CatalogDatabase): Promise<void> {
     ["dupatta_details", "text DEFAULT '' NOT NULL"],
     ["model_details", "text DEFAULT '' NOT NULL"],
     ["measurements_json", "text DEFAULT '[]' NOT NULL"],
+    ["video_url", "text"],
   ]);
   await ensureColumns("orders", [
     ["checkout_token", "text"],
@@ -1235,6 +1322,7 @@ async function getManualProducts(db: CatalogDatabase, publishedOnly = false) {
          description,
          image_url AS imageUrl,
          gallery_json AS galleryJson,
+         CASE WHEN collection = 'exclusive' THEN video_url ELSE NULL END AS videoUrl,
          variants_json AS variantsJson,
          pieces,
          season,
@@ -1307,6 +1395,7 @@ type ManualProductInput = {
   description?: string;
   imageUrl?: string;
   gallery?: string[];
+  videoUrl?: string | null;
   pieces?: string;
   season?: string;
   fabric?: string;
@@ -1325,9 +1414,10 @@ type ManualProductInput = {
   action?: string;
 };
 
-function cleanProductInput(input: ManualProductInput, approvedBrandName?: string | null) {
+function cleanProductInput(input: ManualProductInput, env: Env, approvedBrandName?: string | null) {
   const title = String(input.title ?? "").trim();
   const collection = input.collection === "branded" ? "branded" : "exclusive";
+  const videoUrl = collection === "exclusive" ? normalizeArticleVideo(input.videoUrl, env) : null;
   const brand = collection === "exclusive"
     ? "Haley Wali"
     : approvedBrandName ?? approvedArticleBrand(input.brand)?.name;
@@ -1383,6 +1473,7 @@ function cleanProductInput(input: ManualProductInput, approvedBrandName?: string
     gallery: Array.isArray(input.gallery)
       ? input.gallery.map((url) => String(url).trim()).filter(Boolean)
       : [],
+    videoUrl,
     pieces: String(input.pieces || "1 Piece").trim(),
     season: String(input.season || "All Season").trim(),
     fabric: String(input.fabric || "See article details").trim(),
@@ -1428,22 +1519,23 @@ async function replaceManualVariantStock(
 
 async function createManualProduct(
   db: CatalogDatabase,
+  env: Env,
   input: ManualProductInput,
 ) {
   const approvedBrandName = input.collection === "branded"
     ? await canonicalApprovedArticleBrand(db, input.brand)
     : null;
-  const article = cleanProductInput(input, approvedBrandName);
+  const article = cleanProductInput(input, env, approvedBrandName);
   const now = new Date().toISOString();
   await db
     .prepare(
       `INSERT INTO manual_products (
          id, collection, garment_type, brand, public_title, article_code, subtitle,
-         description, image_url, gallery_json, variants_json, pieces, fabric,
+         description, image_url, gallery_json, video_url, variants_json, pieces, fabric,
          season, color, care, shirt_details, trouser_details, dupatta_details,
          model_details, measurements_json, includes_json, cost_price_pkr, selling_price_pkr,
          publish_status, stock_qty, created_at, updated_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       article.id,
@@ -1456,6 +1548,7 @@ async function createManualProduct(
       article.description,
       article.imageUrl,
       JSON.stringify([...new Set([article.imageUrl, ...article.gallery].filter(Boolean))]),
+      article.videoUrl,
       JSON.stringify(
         article.sizeStock.map((variant) => ({ ...variant, available: variant.stockQty > 0 })),
       ),
@@ -1490,14 +1583,15 @@ async function updateManualProduct(
   const approvedBrandName = input.collection === "branded"
     ? await canonicalApprovedArticleBrand(db, input.brand)
     : null;
-  const article = cleanProductInput(input, approvedBrandName);
+  const article = cleanProductInput(input, env, approvedBrandName);
   const current = await db
-    .prepare("SELECT id, image_url AS imageUrl, gallery_json AS galleryJson FROM manual_products WHERE id = ?")
+    .prepare("SELECT id, image_url AS imageUrl, gallery_json AS galleryJson, video_url AS videoUrl FROM manual_products WHERE id = ?")
     .bind(article.id)
-    .first() as { id?: string; imageUrl?: string | null; galleryJson?: string | null } | null;
+    .first() as { id?: string; imageUrl?: string | null; galleryJson?: string | null; videoUrl?: string | null } | null;
   if (!current) throw new Error("Article was not found.");
   const previousImages = [current.imageUrl, ...parseJsonArray(current.galleryJson)];
   const nextImages = new Set([article.imageUrl, ...article.gallery].filter(Boolean));
+  const previousVideo = current.videoUrl ?? null;
   const publishStatus =
     article.action === "publish"
       ? "published"
@@ -1509,7 +1603,7 @@ async function updateManualProduct(
       `UPDATE manual_products SET
          collection = ?, garment_type = ?, brand = ?, public_title = ?,
          article_code = ?, subtitle = ?, description = ?, image_url = ?, gallery_json = ?,
-         variants_json = ?, pieces = ?, fabric = ?, season = ?, color = ?, care = ?,
+         video_url = ?, variants_json = ?, pieces = ?, fabric = ?, season = ?, color = ?, care = ?,
          shirt_details = ?, trouser_details = ?, dupatta_details = ?, model_details = ?,
          measurements_json = ?, includes_json = ?, cost_price_pkr = ?, selling_price_pkr = ?,
          publish_status = COALESCE(?, publish_status), stock_qty = ?,
@@ -1526,6 +1620,7 @@ async function updateManualProduct(
       article.description,
       article.imageUrl,
       JSON.stringify([...new Set([article.imageUrl, ...article.gallery].filter(Boolean))]),
+      article.videoUrl,
       JSON.stringify(
         article.sizeStock.map((variant) => ({ ...variant, available: variant.stockQty > 0 })),
       ),
@@ -1552,7 +1647,10 @@ async function updateManualProduct(
   await deleteUnreferencedArticleImages(
     db,
     env,
-    previousImages.filter((url) => !nextImages.has(String(url))),
+    [
+      ...previousImages.filter((url) => !nextImages.has(String(url))),
+      ...(previousVideo && previousVideo !== article.videoUrl ? [previousVideo] : []),
+    ],
   );
   return getManualProducts(db);
 }
@@ -1560,14 +1658,14 @@ async function updateManualProduct(
 async function removeManualProduct(db: CatalogDatabase, env: Env, id: string) {
   if (!id) throw new Error("Article id is required.");
   const current = await db.prepare(
-    "SELECT image_url AS imageUrl, gallery_json AS galleryJson FROM manual_products WHERE id = ?",
-  ).bind(id).first() as { imageUrl?: string | null; galleryJson?: string | null } | null;
+    "SELECT image_url AS imageUrl, gallery_json AS galleryJson, video_url AS videoUrl FROM manual_products WHERE id = ?",
+  ).bind(id).first() as { imageUrl?: string | null; galleryJson?: string | null; videoUrl?: string | null } | null;
   await db.prepare("DELETE FROM manual_products WHERE id = ?").bind(id).run();
   if (current) {
     await deleteUnreferencedArticleImages(
       db,
       env,
-      [current.imageUrl, ...parseJsonArray(current.galleryJson)],
+      [current.imageUrl, ...parseJsonArray(current.galleryJson), current.videoUrl],
     );
   }
   return getManualProducts(db);
@@ -3154,6 +3252,30 @@ const applicationWorker = {
       }
     }
 
+    if (request.method === "POST" && url.pathname === "/api/admin/article-videos") {
+      try {
+        await prepareCatalog(env.DB);
+        return await createArticleVideoUpload(request, env);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return jsonResponse({ error: message }, { status: 400 });
+      }
+    }
+
+    if (request.method === "DELETE" && url.pathname === "/api/admin/article-videos") {
+      try {
+        await prepareCatalog(env.DB);
+        const input = await request.json() as { url?: string };
+        if (storedSupabaseImageKey(input.url, env)?.startsWith("videos/")) {
+          await deleteUnreferencedArticleImages(env.DB, env, [input.url]);
+        }
+        return jsonResponse({ deleted: true });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return jsonResponse({ error: message }, { status: 400 });
+      }
+    }
+
     if (
       request.method === "POST" &&
       url.pathname === "/api/admin/articles"
@@ -3162,7 +3284,7 @@ const applicationWorker = {
         await prepareCatalog(env.DB);
         const input = (await request.json()) as ManualProductInput;
         return jsonResponse(
-          { products: await createManualProduct(env.DB, input) },
+          { products: await createManualProduct(env.DB, env, input) },
           { status: 201 },
         );
       } catch (error) {

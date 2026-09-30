@@ -78,6 +78,13 @@
       "when": 1790118000000,
       "tag": "0011_postex_tracking",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790363400000,
+      "tag": "0012_article_video",
+      "breakpoints": true
     }
   ]
 }

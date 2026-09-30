@@ -90,6 +90,7 @@ TypeScript import module -> private imported drafts in D1
   editable automatic sale campaign.
 - `drizzle/0009_approved_article_brands.sql` stores manager-selected canonical
   brand suggestions so later articles do not require another AI request.
+- `drizzle/0011_article_video.sql` adds the optional HW Exclusive article video.
 
 ## Hosting direction
 

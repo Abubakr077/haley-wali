@@ -194,6 +194,12 @@ Status reviewed from source and production configuration on **2026-09-14**.
   distribution, most-recent heading, customer initials and optional review
   photography. No verified-purchase claim is shown because reviews are not yet
   linked to completed orders.
+- HW Exclusive articles support one optional video: an MP4/WebM upload of up
+  to 50 MB sent directly to Supabase Storage through a signed upload URL, or a
+  YouTube, Instagram or TikTok link. The product page shows a themed
+  `ARTICLE VIDEO` card above Ratings & Reviews only when a video exists; Branded
+  articles never show the field or the section. This needs migration
+  `0011_article_video` and a Supabase bucket limit of at least 50 MB.
 - Product details show exact remaining stock, a device-local wishlist action
   and live related articles; the header links to a dedicated Wishlist page.
 - A free product-page WhatsApp help action is prefilled with the article name,

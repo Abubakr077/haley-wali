@@ -893,6 +893,20 @@ a { color: inherit; text-decoration: none; }
 .article-image-url-fields { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .manual-fields .article-image-url-fields textarea { min-height: 90px; }
 .article-image-message { min-height: 20px; margin: 12px 0 0; color: var(--blue); font-size: 13px; }
+.article-video-fields .article-image-heading strong span { color: var(--muted); font-size: 11px; font-weight: 400; letter-spacing: 0; }
+.article-video-modes { display: flex; gap: 6px; }
+.article-video-modes button { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); background: transparent; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: .04em; cursor: pointer; }
+.article-video-modes button[aria-pressed="true"] { border-color: var(--blue); background: var(--blue); color: #fff; }
+.article-video-upload,
+.article-video-link { margin-top: 16px; }
+.article-video-progress { width: 100%; height: 8px; margin-top: 12px; accent-color: var(--blue); }
+.article-video-preview { margin-top: 18px; display: grid; justify-items: start; gap: 10px; }
+.article-video-preview video,
+.article-video-preview iframe { width: min(100%, 560px); max-height: 420px; border: 1px solid var(--line); background: var(--foreground); }
+.article-video-preview video { object-fit: contain; }
+.article-video-preview iframe { aspect-ratio: 16 / 9; }
+.article-video-preview iframe.is-portrait { width: min(100%, 260px); max-height: none; aspect-ratio: 9 / 16; }
+.article-video-preview button { min-height: 32px; padding: 0 9px; border: 1px solid #9c4956; background: transparent; color: #8a2d3f; font-size: 9px; font-weight: 700; letter-spacing: .04em; cursor: pointer; }
 .manual-list { border-top: 1px solid var(--line); }
 .manual-list>.manager-section-head,
 .orders-panel>.manager-section-head { padding: 42px max(18px, 5vw) 30px; }
@@ -957,6 +971,7 @@ a { color: inherit; text-decoration: none; }
   .pricing-card { padding: 28px; }
   .manual-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .article-image-heading { align-items: stretch; flex-direction: column; }
+  .article-video-modes button { flex: 1; }
   .article-image-upload { align-items: stretch; }
   .article-image-preview { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .orders-table article { grid-template-columns: 1fr 1fr; }

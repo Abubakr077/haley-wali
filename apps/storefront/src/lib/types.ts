@@ -17,6 +17,7 @@ export type Product = {
   saleName?: string;
   image: string;
   gallery?: string[];
+  video?: string;
   color: string;
   fabric: string;
   badge: string;

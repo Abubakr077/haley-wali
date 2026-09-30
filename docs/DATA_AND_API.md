@@ -13,7 +13,9 @@
 
 ### Store catalog and orders
 
-- `manual_products`: HW Exclusive and manually added Branded articles.
+- `manual_products`: HW Exclusive and manually added Branded articles. The
+  optional `video_url` holds one article video and is used only for HW
+  Exclusive articles.
 - `manual_variant_stock`: stock quantity for each Pret article size.
 - `orders`: customer delivery details, article subtotal, applied offer code,
   discount, live delivery amount, total, status and optional PostEx tracking
@@ -69,6 +71,7 @@ must not expose supplier identity, supplier price, buying cost or margin.
 | POST | `/api/admin/brands/suggest` | On an explicit manager button click, use Workers AI to propose at most three canonical real fashion-brand names. |
 | POST | `/api/admin/brands/approve` | Persist the manager-selected AI suggestion so it can be reused without another AI request. |
 | POST/DELETE | `/api/admin/article-images` | Upload authenticated optimized article images to Supabase Storage or remove an unreferenced upload. |
+| POST/DELETE | `/api/admin/article-videos` | POST `{ contentType, size }` returns a signed Supabase upload URL and the future public URL for one MP4/WebM video; DELETE `{ url }` removes an unreferenced uploaded video. |
 | GET/PATCH/DELETE | `/api/admin/catalog/imported` | Price, publish or archive imported drafts. Delete uses `?id=`. |
 | POST | `/api/admin/import/supplier` | Run supplier sync immediately. |
 | GET/PATCH | `/api/admin/settings` | Read or update nationwide delivery PKR. Whole rupees only, including 0. |
@@ -140,6 +143,31 @@ remains `Branded`; catalogue filters and the Branded mega menu present one
   form exit when possible.
 - External image URLs and supplier-hosted images are never deleted by Haley
   Wali cleanup logic.
+
+## Article video (HW Exclusive only)
+
+- Each HW Exclusive article may have one optional video. Branded articles never
+  store or return a video: the Worker saves `NULL` for them, and the catalogue
+  query selects `CASE WHEN collection = 'exclusive' THEN video_url ELSE NULL END`.
+- The product page shows an `ARTICLE VIDEO` card between the article details and
+  Ratings & Reviews only when a video exists.
+- Uploads: MP4 or WebM up to 50 MB. The Store Manager detects the type from the
+  file signature (WebM first 4 bytes `1A45DFA3`, MP4 bytes 4-7 `ftyp`), asks the
+  Worker for a signed upload URL
+  (`POST /storage/v1/object/upload/sign/{bucket}/{key}`), then uploads the file
+  directly from the browser with `PUT`, so video bytes never pass through the
+  Worker. Keys use `videos/YYYY/MM/<uuid>.mp4|webm`.
+- The Supabase bucket's file-size limit must be at least 50 MB and, if MIME
+  types are restricted, must allow `video/mp4` and `video/webm`.
+- Links: YouTube (`watch`, `youtu.be`, `shorts`), Instagram (`p`, `reel`) and
+  TikTok (`/@user/video/{id}`) are normalized by the Worker. The storefront
+  embeds `https://www.youtube-nocookie.com/embed/{id}`,
+  `https://www.instagram.com/p/{shortcode}/embed` or
+  `https://www.tiktok.com/embed/v2/{video_id}`. Orientation comes only from the
+  URL pattern: YouTube Shorts, Instagram and TikTok are portrait, other YouTube
+  links are landscape.
+- Replacing or removing an uploaded video, or deleting its article, deletes the
+  unreferenced Supabase file. Abandoned uploads are cleaned up on form exit.
 
 ## Stock and duplicate-order rules
 

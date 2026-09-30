@@ -5,6 +5,7 @@ import { formatPkr, mapPublishedArticle } from "../lib/products";
 import type { Product } from "../lib/types";
 import { pkrValue, trackMetaEvent } from "../lib/metaPixel";
 import ProductReviews from "./ProductReviews";
+import ProductVideo from "./ProductVideo";
 import { ProductCard } from "./CatalogExplorer";
 import WishlistButton from "./WishlistButton";
 import { LoadingState } from "./LoadingState";
@@ -122,15 +123,15 @@ export default function ProductDetail({
     );
   }
 
-  function add() {
+  function addSelectedToBag() {
     if (!product) return;
     if (product.sizes?.length && !size) {
       setMessage("Please select a size first.");
-      return;
+      return false;
     }
     if (selectedStock != null && selectedStock <= 0) {
       setMessage(size ? `Size ${size} is sold out.` : "This article is sold out.");
-      return;
+      return false;
     }
     addToCart(product, size || "Standard");
     trackMetaEvent("AddToCart", {
@@ -141,7 +142,17 @@ export default function ProductDetail({
       value: pkrValue(product.price),
       currency: "PKR",
     });
+    return true;
+  }
+
+  function add() {
+    if (!addSelectedToBag()) return;
     setMessage("Article added to your bag. You can continue shopping or open your bag.");
+  }
+
+  function buyNow() {
+    if (!addSelectedToBag()) return;
+    window.location.assign("/checkout");
   }
 
   const gallery = [...new Set([product.image, ...(product.gallery ?? [])].filter(Boolean))];
@@ -297,6 +308,16 @@ export default function ProductDetail({
           </span>
           <WishlistButton productId={product.id} />
         </div>
+        <span className="detail-buy-now" data-tooltip={addToBagReason || undefined}>
+          <button
+            className="primary-button full-button"
+            type="button"
+            onClick={buyNow}
+            disabled={Boolean(addToBagReason)}
+          >
+            BUY NOW
+          </button>
+        </span>
         {whatsappHelpUrl ? (
           <div className="detail-whatsapp-help">
             <div>
@@ -376,6 +397,8 @@ export default function ProductDetail({
         </div>
       </div>
       </section>
+      {product.category === "exclusive" && product.video
+        ? <ProductVideo product={product} /> : null}
       <ProductReviews productId={product.id} apiBase={apiBase} />
       {relatedProducts.length ? <section className="related-articles"><div className="related-heading"><div><p className="eyebrow">YOU MAY ALSO LIKE</p><h2>RELATED ARTICLES</h2></div><a href="/shop">VIEW ALL</a></div><div className="product-grid">{relatedProducts.map((item) => <ProductCard product={item} key={item.id} />)}</div></section> : null}
       {viewerOpen ? (
